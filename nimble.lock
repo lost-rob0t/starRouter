@@ -1,0 +1,16 @@
+{
+  "version": 2,
+  "packages": {
+    "zmq": {
+      "version": "1.4.0",
+      "vcsRevision": "06380aa3bdbf2933990b131a46b1865837e89d49",
+      "url": "https://github.com/nim-lang/nim-zmq",
+      "downloadMethod": "git",
+      "dependencies": [],
+      "checksums": {
+        "sha1": "8a94e1e3d5ee0d2cac9b8093fd0243cc98a4f728"
+      }
+    }
+  },
+  "tasks": {}
+}
