@@ -3,10 +3,16 @@
 
 import zmq
 import std/strformat
-import jsony
-import starintel_doc
 import mycouch
 import asyncdispatch
-
+import cligen
 import lib/[client, server, proto]
 export client, server, proto
+
+
+
+proc main(pubAddress: string = "tcp://localhost:6000", apiAddress: string = "tcp://localhost:6001")  =
+  var router = newStarRouter(pubAddress, apiAddress)
+  waitFor router.run()
+
+dispatch main

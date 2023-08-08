@@ -5,3 +5,29 @@ Star Router is a zeromq based messaging broker for starintel.
 
 Note, this is not even alpha quality.
 Also do not expose this to the web, a solution for that will come.
+
+
+
+** Installation
+nimble for some reason... fails to compile but still it will get the depps needed.
+
+Install deps and fail
+#+begin_src shell
+nimble install
+#+end_src
+
+Then when that erros compile by hand.
+
+#+begin_src shell
+nim c -d:release -o:./starRouter src/starRouter.nim
+#+end_src
+
+then copy that to someplace into your path.
+
+
+
+
+** Contribution
+Feel free to open PR or issues or donate
+
++ XMR: 8Bt75mjmyreavdkZoANJUVSUrPBvTLhESfeRd3QJYnh5dYh6HMJVtxg7SRCgZzzhFQYHpzqh4URKWLk2CvrcKhiJCCfGh8L

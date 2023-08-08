@@ -26,17 +26,13 @@ type
 
 
 
-proc newStarRouter(pubListen: string = "tcp://127.0.0.1:6000", apiListen: string = "tcp://*:6001"): StarRouter =
+proc newStarRouter*(pubListen: string = "tcp://127.0.0.1:6000", apiListen: string = "tcp://*:6001"): StarRouter =
     result = StarRouter(pubListen: pubListen, apiListen: apiListen)
 
 proc connect(router: StarRouter)  =
   router.apiConn = listen(router.apiListen, REP)
   router.pubConn = listen(router.pubListen, PUB)
 
-proc multicast(router: StarRouter, msg: string) {.async.} =
-  discard router.pubConn.sendAsync(msg)
-  when defined(debug):
-    echo msg
 
 proc run*(router: StarRouter) {.async.} =
   router.connect()
@@ -44,7 +40,6 @@ proc run*(router: StarRouter) {.async.} =
     let data = await router.apiConn.receiveAsync()
     await router.apiConn.sendAsync("ACK")
     await router.pubConn.sendAsync(data)
-
 when isMainModule:
   var router = newStarRouter()
   echo "Starting StarRouter"

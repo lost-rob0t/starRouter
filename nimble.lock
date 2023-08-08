@@ -1,0 +1,81 @@
+{
+  "version": 2,
+  "packages": {
+    "redis": {
+      "version": "0.4.0",
+      "vcsRevision": "90930b1fa805eca1a690e1f63a68e8df536c2e2e",
+      "url": "https://github.com/nim-lang/redis",
+      "downloadMethod": "git",
+      "dependencies": [],
+      "checksums": {
+        "sha1": "099e04a0a27b26f47363045456f330515651cdac"
+      }
+    },
+    "macroutils": {
+      "version": "1.2.0",
+      "vcsRevision": "b460c6804c97df8cfdc80c308b574ae90b30ac61",
+      "url": "https://github.com/PMunch/macroutils",
+      "downloadMethod": "git",
+      "dependencies": [],
+      "checksums": {
+        "sha1": "1759c705ba1fe48426ee7ca2d0c7fa265e91806b"
+      }
+    },
+    "macroplus": {
+      "version": "0.2.5",
+      "vcsRevision": "ab49b1b2bfd92fbf69b39ddb3096472d72aaf815",
+      "url": "https://github.com/hamidb80/macroplus",
+      "downloadMethod": "git",
+      "dependencies": [],
+      "checksums": {
+        "sha1": "08f56f12579c8c790e02c296946314182a06f137"
+      }
+    },
+    "mycouch": {
+      "version": "0.4.2",
+      "vcsRevision": "8e1b740c623c21e4b180f2d139fa07e6d6a1eff6",
+      "url": "https://github.com/hamidb80/mycouch",
+      "downloadMethod": "git",
+      "dependencies": [
+        "macroutils",
+        "macroplus"
+      ],
+      "checksums": {
+        "sha1": "13af18f21088a157077d215ff0607e9ec04cd11e"
+      }
+    },
+    "redpool": {
+      "version": "0.1.0",
+      "vcsRevision": "6c27bf7f3753d2e01111bf32ebb5c7b9ea6d1b3a",
+      "url": "https://github.com/lost-rob0t/redpool.git",
+      "downloadMethod": "git",
+      "dependencies": [
+        "redis"
+      ],
+      "checksums": {
+        "sha1": "f5ba2dc532befdc17a0c35a41080496e5a7fa921"
+      }
+    },
+    "cligen": {
+      "version": "1.6.13",
+      "vcsRevision": "8d4e5fb58917eb681d3babd8561ddd175f01df3d",
+      "url": "https://github.com/c-blake/cligen.git",
+      "downloadMethod": "git",
+      "dependencies": [],
+      "checksums": {
+        "sha1": "3ea97209d5fd4f21adb419efbc269bbc2afcbd30"
+      }
+    },
+    "zmq": {
+      "version": "1.4.0",
+      "vcsRevision": "06380aa3bdbf2933990b131a46b1865837e89d49",
+      "url": "https://github.com/nim-lang/nim-zmq",
+      "downloadMethod": "git",
+      "dependencies": [],
+      "checksums": {
+        "sha1": "8a94e1e3d5ee0d2cac9b8093fd0243cc98a4f728"
+      }
+    }
+  },
+  "tasks": {}
+}
