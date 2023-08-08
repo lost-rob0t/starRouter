@@ -1,0 +1,7 @@
+#+title: Readme
+
+* StarRouter
+Star Router is a zeromq based messaging broker for starintel.
+
+Note, this is not even alpha quality.
+Also do not expose this to the web, a solution for that will come.
