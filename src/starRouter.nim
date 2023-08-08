@@ -6,7 +6,7 @@ import std/strformat
 import mycouch
 import asyncdispatch
 import cligen
-import lib/[client, server, proto]
+import starRouterpkg/[client, server, proto]
 export client, server, proto
 
 
@@ -15,4 +15,5 @@ proc main(pubAddress: string = "tcp://localhost:6000", apiAddress: string = "tcp
   var router = newStarRouter(pubAddress, apiAddress)
   waitFor router.run()
 
-dispatch main
+when isMainModule:
+  dispatch main
