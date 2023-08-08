@@ -5,6 +5,9 @@ import heapqueue
 import sequtils
 import proto
 import deques, jsony
+import ulid
+import times
+import strformat
 type
   Service* = object
     ## RPC Service
@@ -28,7 +31,9 @@ type
     jobs*: HeapQueue[Job]
     ## Actor Name
     actorName*: string
-
+    ## Unique Id for the actor
+    ## Format: actorName-ulid
+    id*: string
     ## Topics the actor is subscripted to.
     subscriptions*: seq[string]
     ## Services: Is a RPC/task that an Actor can perform
@@ -38,7 +43,6 @@ type
     ## Connection string
     address*: string
     apiAddress*: string
-    #inbox*: seq[T]
 
 proc `<`*(x:  Job, y: Job): bool = x.priority < y.priority
 
@@ -85,13 +89,25 @@ func pop*[T](inbox: Inbox[T]): T = inbox.documents.popLast
 
 func push*[T](inbox:Inbox[T], item: T) = inbox.documents.addFirst(item)
 
+
+
+proc newMessage*[T](client: Client, data: T, eventType: EventType, source, topic: string): Message[T] =
+  ## Create a new message using the source as the current client id.
+  let time = now().toTime().toUnix()
+  result = Message[typeOf(data)](data: data, source: client.id, id: ulid(), topic: topic, time: time)
+
+
+
+# TODO This needs to be more reliable
 proc emit*[T](client: Client, data: T, tries: int = 0)  {.async.} =
+  ## Emit a Message or Document to the rest of the network.
   var i = tries
   client.apiSocket.send($data)
-  echo await client.apiSocket.receiveAsync()
+  discard await client.apiSocket.receiveAsync()
 
 proc fetch*[T](typ: typedesc[T] = T, client: Client, ): Future[seq[T]] {.async.} =
   # NOTE: Subs always miss the first message.
+  ## Fetch data from subscriptions
   let data = await client.subSocket.receiveAsync()
   var r: seq[typ]
   try:
@@ -99,9 +115,11 @@ proc fetch*[T](typ: typedesc[T] = T, client: Client, ): Future[seq[T]] {.async.}
   except KeyError:
     #NOTE We got the wrong type for this queue. Ignore it and move on.
     discard
-func newClient*(actorName: string, address: string, apiAddress: string, subscriptions: seq[string]): Client =
+
+proc newClient*(actorName: string, address: string, apiAddress: string, subscriptions: seq[string]): Client =
   var client = new(Client)
-  result = Client(actorName: actorName, address: address, subscriptions: subscriptions, apiAddress: apiAddress)
+  let id = ulid()
+  result = Client(actorName: actorName, address: address, subscriptions: subscriptions, apiAddress: apiAddress, id: fmt"{actorName}-{id}")
 
 proc subscribe*(client: Client, topic: string)  =
   client.subscriptions.add(topic)
@@ -161,24 +179,4 @@ when isMainModule:
   const address = "tcp://localhost:6000"
   const api = "tcp://localhost:6001"
   var client = newClient("test", address, api,@["test"])
-  client.connect()
-  var subscriber = zmq.connect(address, SUB)
-  proc subscriber1(id: int): Future[void] {.async.} =
-    # subscribe to port 5555#
-
-    # no filter
-    subscriber.setsockopt(SUBSCRIBE, "")
-
-    # NOTE: subscriber always miss the first messages that the publisher sends
-    # reference: https://zguide.zeromq.org/docs/chapter1/#Getting-the-Message-Out
-    var data = await subscriber.receiveAsync()
-    data = await subscriber.receiveAsync()
-    #let person = data.parseMessage(Person)
-  while true:
-      let doc = Person(fname: "Prime", lname: "gen", dataset: "Awsome Youtubers")
-      let message = Message[Person](data: doc, topic: "Person", typ: EventType.newDocument)
-      doc.makeUUID()
-      let j = %*message
-      asyncCheck client.emit(j)
-      asyncCheck subscriber1(1)
-      asyncCheck sleepAsync(1000)
+  echo client.id

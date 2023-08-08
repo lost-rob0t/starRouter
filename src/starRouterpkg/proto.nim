@@ -1,6 +1,7 @@
 import jsony, json
 import times
 import strformat, strutils
+import ulid
 type
   EventType* = enum
     newDocument = 0,
@@ -15,7 +16,9 @@ type
     actorName*: string
 
 
+  # TODO message id
   Message*[T] = object
+    id*: string
     data*: T
     source*: string
     typ*: EventType
@@ -36,11 +39,13 @@ proc `$`*[T](message: Message[T], typ: typedesc[T] = T): string =
   let topic = message.topic
   result = fmt"""{topic}|{data}"""
 
+proc newMessage*[T](data: T, eventType: EventType, source, topic: string): Message[T] =
+  let time = now().toTime().toUnix()
+  result = Message[typeOf(data)](data: data, source: source, id: ulid(), topic: topic, time: time)
 
 proc parseMessage*[T](typ: typedesc[T] = T, message: string): T =
   let message = message.split("|", maxsplit=1)
   result = message[1].fromJson(typ)
-
 
 when isMainModule:
   import starintel_doc, typetraits
@@ -56,8 +61,10 @@ when isMainModule:
   let message1 = Message[Person](data: doc, topic: "Person", typ: EventType.newDocument)
   let message2 = Message[Username](data: username, topic: $typeof(username), typ: EventType.newDocument)
   let message3 = Message[Relation](data: relation, topic: $typeOf(relation), typ: EventType.newDocument)
+  let message4 = username.newMessage(EventType.newDocument, "test", "Username")
   echo $message1
   echo $message2
   echo $message3
+  echo $message4
   let msg = $message1
   echo Message[Person].parseMessage(msg).topic
