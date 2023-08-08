@@ -26,7 +26,7 @@ type
 
 
 
-proc newStarRouter(pubListen: string = "tcp://127.0.0.1:6000", apiListen: string = "tcp://*:6001"): StarRouter =
+proc newStarRouter*(pubListen: string = "tcp://127.0.0.1:6000", apiListen: string = "tcp://*:6001"): StarRouter =
     result = StarRouter(pubListen: pubListen, apiListen: apiListen)
 
 proc connect(router: StarRouter)  =
