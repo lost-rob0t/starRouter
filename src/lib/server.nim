@@ -39,7 +39,7 @@ proc run*(router: StarRouter) {.async.} =
   while true:
     let data = await router.apiConn.receiveAsync()
     await router.apiConn.sendAsync("ACK")
-    await router.pubConn.sendAsync(msg)
+    await router.pubConn.sendAsync(data)
 when isMainModule:
   var router = newStarRouter()
   echo "Starting StarRouter"
