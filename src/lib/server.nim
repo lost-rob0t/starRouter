@@ -33,18 +33,13 @@ proc connect(router: StarRouter)  =
   router.apiConn = listen(router.apiListen, REP)
   router.pubConn = listen(router.pubListen, PUB)
 
-proc multicast(router: StarRouter, msg: string) {.async.} =
-  discard router.pubConn.sendAsync(msg)
-  when defined(debug):
-    echo msg
 
 proc run*(router: StarRouter) {.async.} =
   router.connect()
   while true:
     let data = await router.apiConn.receiveAsync()
     await router.apiConn.sendAsync("ACK")
-    await router.pubConn.sendAsync(data)
-
+    await router.pubConn.sendAsync(msg)
 when isMainModule:
   var router = newStarRouter()
   echo "Starting StarRouter"
