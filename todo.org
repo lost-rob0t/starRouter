@@ -1,6 +1,21 @@
 #+title: Todo
 
-* Inbox [0/2]
+* Inbox [1/7]
+** TODO Heart Beats
+** TODO XRAP
+https://rfc.zeromq.org/spec/40/
+** TODO Improve Docs
+
+[[file:~/Documents/Projects/starintel/starRouter/src/test-move/server.nim::import jsony]]
+** DONE Make messages have id's
+:LOGBOOK:
+CLOCK: [2023-08-08 Tue 19:08]--[2023-08-08 Tue 19:32] =>  0:24
+:END:
+
+[[file:~/Documents/Projects/starintel/starRouter/src/starRouterpkg/proto.nim::TODO message id]]
+** TODO Make emit more reliable
+
+[[file:~/Documents/Projects/starintel/starRouter/src/starRouterpkg/client.nim::TODO This needs to be more reliable]]
 ** TODO raise error on too old of messages
 
 Suicidal snail pattern
