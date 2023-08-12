@@ -36,35 +36,49 @@ proc connect(router: StarRouter)  =
   router.pubConn = listen(router.pubListen, PUB)
 
 
-proc sendOK*(router: StarRouter) {.async.} =
-  await router.apiConn.sendAsync("ACK")
+proc sendOK*(router: StarRouter)  =
+  router.apiConn.send($EventType.ack.ord)
 
-proc multicast*[T](router: StarRouter, message: T) {.async.} =
-  await router.pubConn.sendAsync($message)
 
-proc heartbeat(router: StarRouter) {.async.} =
-     await router.pubConn.sendAsync($heartbeat.ord)
+proc multicast*[T](router: StarRouter, message: T) =
+  router.pubConn.send($message)
+
+proc heartbeat(router: StarRouter) =
+     router.pubConn.send($heartbeat.ord)
 proc run*(router: StarRouter) {.async.} =
   router.connect()
-  # Last Value Cache.
+  var poller: ZPoller
+  poller.register(router.apiConn, ZMQ_POLLIN)
+  # TODO Last Value Cache.
   while true:
-    # Get the type of message
-    var messageType = await router.apiConn.receiveAsync()
-    let clientID = await router.apiConn.receiveAsync()
-    let message = await router.apiConn.receiveAsync()
-    await router.sendOK()
-    case messageType.parseInt:
-      of heartbeat.ord:
-        await router.heartbeat()
-      of newDocument.ord:
-        await router.multicast(message)
-      of updateDocument.ord:
-        await router.multicast(message)
-      of deleteDocument.ord:
-        await router.multicast(message)
-      else:
-        # TODO Implement MDP
-        discard
+    let res = poll(poller, 500)
+    var
+      messageType: int
+      clientID: string
+      message: string
+
+    if res > 0:
+      if events(poller[0]):
+        let buf = router.apiConn.receiveAll(NOFLAGS)
+        messageType = buf[0].parseInt
+        clientID = buf[1]
+        message = buf[2]
+        router.sendOK()
+        when defined(debug):
+          echo messageType
+          echo clientID
+          echo message
+        case messageType:
+          of heartbeat.ord:
+            router.heartbeat()
+          of newDocument.ord:
+            router.multicast(message)
+          of updateDocument.ord:
+            router.multicast(message)
+          of deleteDocument.ord:
+            router.multicast(message)
+          else:
+            router.multicast(message)
 when isMainModule:
   var router = newStarRouter()
   echo "Starting StarRouter"

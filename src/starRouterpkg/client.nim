@@ -7,7 +7,7 @@ import proto
 import deques, jsony
 import ulid
 import times
-import strformat
+import strformat, jsony
 type
   Service* = object
     ## RPC Service
@@ -108,31 +108,35 @@ proc withTimeoutEx[T](fut: Future[T], timeout: int = 5000): Future[T] {.async.} 
 
 
 
-
+# TODO Fix this, make it reliable
 proc emit*[T](client: Client, data: T, eventType: EventType, tries: int = 3) {.async.} =
   var
     state = false
     i = 0
-  while not state and i < tries:
-    await client.apiSocket.sendAsync($eventType.ord, SNDMORE)
-    await client.apiSocket.sendAsync($data)
-    let resp = await client.apiSocket.receiveAsync()
-    if resp == "ACK":
-      state = true
-      break
-    inc(i)
-    if not state:
-      raise newException(IOError, "Server Failed to reply")
+  client.apiSocket.send($eventType.ord, SNDMORE)
+  client.apiSocket.send(client.id, SNDMORE)
+  client.apiSocket.send($data)
+  let resp = await client.apiSocket.receiveAsync()
+  #while not state and i < tries:
+  #  client.apiSocket.send($eventType.ord, SNDMORE)
+  #  client.apiSocket.send($data)
+  #  let resp = await client.apiSocket.receiveAsync()
+  #  if resp == "ACK":
+  #    state = true
+  #    break
+  #  inc(i)
+  #  if not state:
+  #    raise newException(IOError, "Server Failed to reply")
 
-proc fetch*[T](typ: typedesc[T] = T, client: Client, ): Future[seq[T]] {.async.} =
-  # NOTE: Subs always miss the first message.
+# TODO Support Multipart
+proc fetch*[T](typ: typedesc[T] = T, client: Client, ): Future[T] {.async.} =
   ## Fetch data from subscriptions
   let data = await client.subSocket.receiveAsync()
-  var r: seq[typ]
   try:
-    r.add(typ.parseMessage(data))
+    result = typ.parseMessage(data)
   except KeyError:
     #NOTE We got the wrong type for this queue. Ignore it and move on.
+    #XXX <2023-08-12 Sat> How is this possible? Maybe one client, 1 inbox?
     discard
 
 proc newClient*(actorName: string, address: string, apiAddress: string, timeout: int = 10, subscriptions: seq[string]): Client =
@@ -140,36 +144,41 @@ proc newClient*(actorName: string, address: string, apiAddress: string, timeout:
   let id = ulid()
   result = Client(actorName: actorName, address: address, subscriptions: subscriptions, apiAddress: apiAddress, id: fmt"{actorName}-{id}", timeout: timeout)
 
+
 proc subscribe*(client: Client, topic: string)  =
   client.subscriptions.add(topic)
   client.subsocket.setsockopt(SUBSCRIBE, topic)
+
 
 proc unsubscribe*(client: Client, topic: string) =
   let i = client.subscriptions.find(topic)
   client.subscriptions.delete(i)
   client.subsocket.setsockopt(UNSUBSCRIBE, topic)
 
+
 proc connect*(client: Client) =
   client.subsocket = zmq.connect(client.address, SUB)
   client.apiSocket = zmq.connect(client.apiAddress, REQ)
   for topic in client.subscriptions:
     client.subsocket.setsockopt(SUBSCRIBE, topic)
+
+
 proc close*(client: Client) =
   client.subsocket.close()
   client.apisocket.close()
 
 proc runInbox*[T](typ: typedesc[T] = T, client: Client, inbox: Inbox[T]) {.async.}  =
+  var poller: ZPoller
+  poller.register(client.subsocket, ZMQ_POLLIN)
 
-  var client = client
+  var message: typ
   while true:
-    var inbox = inbox
-    let data = await typ.fetch(client)
-    let messages = data.filter(inbox.filter)
-    var message: typ
-    for item in messages:
-      inbox.push(item)
-      when defined(debug):
-        echo inbox.documents.len
+    let res = poll(poller, 500)
+    if res > 0:
+      if events(poller[0]):
+        message = await typ.fetch(client)
+        if inbox.filter(message):
+          inbox.push(message)
     while not inbox.isEmpty:
       message = inbox.pop
       await inbox.callback(message)

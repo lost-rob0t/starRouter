@@ -7,6 +7,23 @@
 
 import unittest
 
-import starRouterpkg/submodule
-test "correct welcome":
-  check getWelcomeMessage() == "Hello, World!"
+import ../src/starRouter
+from starintel_doc import Username
+import asyncdispatch
+proc echoUsername*[T](doc: Message[T]) {.async.} =
+  echo doc.data.username
+  echo doc.data.dataset
+
+proc testFilter[T](doc: T): bool =
+  result = true
+
+proc main() {.async.} =
+  var client = newClient("github-actor", "tcp://127.0.0.1:6000", "tcp://127.0.0.1:6001", 10, @[""])
+  client.connect
+  var inbox = Message[Username].newInbox(100)
+  inbox.registerCB(echoUsername)
+  inbox.registerFilter(testFilter)
+  await Message[Username].runInbox(client, inbox)
+
+
+waitFor main()

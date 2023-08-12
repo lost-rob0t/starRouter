@@ -34,6 +34,7 @@ type
 # NOTE: This is sorta bad
 # See status style guide
 converter toEvent*(s: string): EventType = parseEnum[EventType](s)
+# TODO This should be a string
 converter `$`*(x: EventType): int = x.ord
 
 
