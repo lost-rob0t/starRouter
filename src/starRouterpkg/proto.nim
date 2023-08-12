@@ -4,12 +4,16 @@ import strformat, strutils
 import ulid
 type
   EventType* = enum
-    newDocument = 0,
-    getDocument = 1,
-    updateDocument = 2,
-    newService = 3,
-    removeService = 4,
-    serviceRequest = 5,
+    heartbeat = 0
+    ack = 1,
+    nack = 2,
+    newDocument = 3,
+    deleteDocument = 4,
+    getDocument = 5,
+    updateDocument = 6,
+    newService = 7,
+    removeService = 8,
+    serviceRequest = 9,
 
   ServiceMessage* = object
     name*: string
@@ -29,8 +33,10 @@ type
 
 # NOTE: This is sorta bad
 # See status style guide
-#converter toEvent(s: string): EventType = parseEnum[EventType](s)
-converter `$`(x: EventType): int = x.ord
+converter toEvent*(s: string): EventType = parseEnum[EventType](s)
+converter `$`*(x: EventType): int = x.ord
+
+
 
 
 proc `$`*[T](message: Message[T], typ: typedesc[T] = T): string =
@@ -46,6 +52,27 @@ proc newMessage*[T](data: T, eventType: EventType, source, topic: string): Messa
 proc parseMessage*[T](typ: typedesc[T] = T, message: string): T =
   let message = message.split("|", maxsplit=1)
   result = message[1].fromJson(typ)
+
+proc isACK*(s: string): bool = s.parseInt == EventType.ack.ord
+
+proc isACK*(x: int): bool = x == EventType.ack.ord
+
+
+proc isNACK*(s: string): bool = s.parseInt == EventType.nack.ord
+
+proc isNACK*(x: int): bool = x == EventType.nack.ord
+
+proc isNewDocument*(s: string): bool = s.parseInt == EventType.newDocument.ord
+
+proc isNewDocument*(x: int): bool = x == EventType.newDocument.ord
+
+proc isUpdateDocument*(s: string): bool = s.parseInt == EventType.updateDocument.ord
+
+proc isUpdateDocument*(x: int): bool = x == EventType.updateDocument.ord
+
+proc isDeleteDocument*(s: string): bool = s.parseInt == EventType.deleteDocument.ord
+
+proc isDeleteDocument*(x: int): bool = x == EventType.deleteDocument.ord
 
 when isMainModule:
   import starintel_doc, typetraits

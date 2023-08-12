@@ -43,6 +43,8 @@ type
     ## Connection string
     address*: string
     apiAddress*: string
+    ## Timeout of messags or server respones to consider an error
+    timeout*: int
 
 proc `<`*(x:  Job, y: Job): bool = x.priority < y.priority
 
@@ -97,13 +99,30 @@ proc newMessage*[T](client: Client, data: T, eventType: EventType, source, topic
   result = Message[typeOf(data)](data: data, source: client.id, id: ulid(), topic: topic, time: time)
 
 
+proc withTimeoutEx[T](fut: Future[T], timeout: int = 5000): Future[T] {.async.} =
+  let res = await fut.withTimeout(timeout)
+  if res:
+   return fut.read()
+  else:
+    raise newException(IOError, "Request timeout")
 
-# TODO This needs to be more reliable
-proc emit*[T](client: Client, data: T, tries: int = 0)  {.async.} =
-  ## Emit a Message or Document to the rest of the network.
-  var i = tries
-  client.apiSocket.send($data)
-  discard await client.apiSocket.receiveAsync()
+
+
+
+proc emit*[T](client: Client, data: T, eventType: EventType, tries: int = 3) {.async.} =
+  var
+    state = false
+    i = 0
+  while not state and i < tries:
+    await client.apiSocket.sendAsync($eventType.ord, SNDMORE)
+    await client.apiSocket.sendAsync($data)
+    let resp = await client.apiSocket.receiveAsync()
+    if resp == "ACK":
+      state = true
+      break
+    inc(i)
+    if not state:
+      raise newException(IOError, "Server Failed to reply")
 
 proc fetch*[T](typ: typedesc[T] = T, client: Client, ): Future[seq[T]] {.async.} =
   # NOTE: Subs always miss the first message.
@@ -116,10 +135,10 @@ proc fetch*[T](typ: typedesc[T] = T, client: Client, ): Future[seq[T]] {.async.}
     #NOTE We got the wrong type for this queue. Ignore it and move on.
     discard
 
-proc newClient*(actorName: string, address: string, apiAddress: string, subscriptions: seq[string]): Client =
+proc newClient*(actorName: string, address: string, apiAddress: string, timeout: int = 10, subscriptions: seq[string]): Client =
   var client = new(Client)
   let id = ulid()
-  result = Client(actorName: actorName, address: address, subscriptions: subscriptions, apiAddress: apiAddress, id: fmt"{actorName}-{id}")
+  result = Client(actorName: actorName, address: address, subscriptions: subscriptions, apiAddress: apiAddress, id: fmt"{actorName}-{id}", timeout: timeout)
 
 proc subscribe*(client: Client, topic: string)  =
   client.subscriptions.add(topic)
@@ -178,5 +197,5 @@ when isMainModule:
   import starintel_doc except Message
   const address = "tcp://localhost:6000"
   const api = "tcp://localhost:6001"
-  var client = newClient("test", address, api,@["test"])
+  var client = newClient("test", address, api, 10, @["test"])
   echo client.id
