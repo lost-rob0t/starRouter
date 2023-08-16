@@ -46,9 +46,9 @@ type
     ## Timeout of messags or server respones to consider an error
     timeout*: int
 
-proc `<`*(x:  Job, y: Job): bool = x.priority < y.priority
+proc `<`*(x: Job, y: Job): bool = x.priority < y.priority
 
-proc `>`*(x:  Job, y: Job): bool = x.priority > y.priority
+proc `>`*(x: Job, y: Job): bool = x.priority > y.priority
 
 proc `<=`*(x: Job, y: Job): bool = x.priority <= y.priority
 
@@ -60,7 +60,7 @@ proc `==`*(x: Job, y: Job): bool = x.priority == y.priority
 
 
 proc newService*(callback: proc(), name: string): Service =
-  Service(callback: callback, name:name)
+  Service(callback: callback, name: name)
 
 proc registerService*(client: Client, service: Service) =
   client.services[service.name] = service
@@ -68,7 +68,7 @@ proc registerService*(client: Client, service: Service) =
 proc removeService*(client: Client, service: Service) =
   client.services.del(service.name)
 
-proc newInbox*[T](typ: typedesc[T] , n: int): Inbox[T] =
+proc newInbox*[T](typ: typedesc[T], n: int): Inbox[T] =
   Inbox[typ](documents: initDeque[typ](n))
 
 
@@ -89,27 +89,30 @@ func isEmpty*[T](inbox: Inbox[T]): bool = len(inbox.documents) == 0
 
 func pop*[T](inbox: Inbox[T]): T = inbox.documents.popLast
 
-func push*[T](inbox:Inbox[T], item: T) = inbox.documents.addFirst(item)
+func push*[T](inbox: Inbox[T], item: T) = inbox.documents.addFirst(item)
 
 
 
-proc newMessage*[T](client: Client, data: T, eventType: EventType, source, topic: string): Message[T] =
+proc newMessage*[T](client: Client, data: T, eventType: EventType, source,
+    topic: string): Message[T] =
   ## Create a new message using the source as the current client id.
   let time = now().toTime().toUnix()
-  result = Message[typeOf(data)](data: data, source: client.id, id: ulid(), topic: topic, time: time)
+  result = Message[typeOf(data)](data: data, source: client.id, id: ulid(),
+      topic: topic, time: time)
 
 
 proc withTimeoutEx[T](fut: Future[T], timeout: int = 5000): Future[T] {.async.} =
   let res = await fut.withTimeout(timeout)
   if res:
-   return fut.read()
+    return fut.read()
   else:
     raise newException(IOError, "Request timeout")
 
 
 
 # TODO Fix this, make it reliable
-proc emit*[T](client: Client, data: T, eventType: EventType, tries: int = 3) {.async.} =
+proc emit*[T](client: Client, data: T, eventType: EventType,
+    tries: int = 3) {.async.} =
   var
     state = false
     i = 0
@@ -129,7 +132,7 @@ proc emit*[T](client: Client, data: T, eventType: EventType, tries: int = 3) {.a
   #    raise newException(IOError, "Server Failed to reply")
 
 # TODO Support Multipart
-proc fetch*[T](typ: typedesc[T] = T, client: Client, ): Future[T] {.async.} =
+proc fetch*[T](typ: typedesc[T] = T, client: Client): Future[T] {.async.} =
   ## Fetch data from subscriptions
   let data = await client.subSocket.receiveAsync()
   try:
@@ -139,13 +142,15 @@ proc fetch*[T](typ: typedesc[T] = T, client: Client, ): Future[T] {.async.} =
     #XXX <2023-08-12 Sat> How is this possible? Maybe one client, 1 inbox?
     discard
 
-proc newClient*(actorName: string, address: string, apiAddress: string, timeout: int = 10, subscriptions: seq[string]): Client =
-  var client = new(Client)
+proc newClient*(actorName: string, address: string, apiAddress: string,
+    timeout: int = 10, subscriptions: seq[string]): Client =
   let id = ulid()
-  result = Client(actorName: actorName, address: address, subscriptions: subscriptions, apiAddress: apiAddress, id: fmt"{actorName}-{id}", timeout: timeout)
+  result = Client(actorName: actorName, address: address,
+      subscriptions: subscriptions, apiAddress: apiAddress,
+      id: fmt"{actorName}-{id}", timeout: timeout)
 
 
-proc subscribe*(client: Client, topic: string)  =
+proc subscribe*(client: Client, topic: string) =
   client.subscriptions.add(topic)
   client.subsocket.setsockopt(SUBSCRIBE, topic)
 
@@ -167,16 +172,17 @@ proc close*(client: Client) =
   client.subsocket.close()
   client.apisocket.close()
 
-proc runInbox*[T](typ: typedesc[T] = T, client: Client, inbox: Inbox[T]) {.async.}  =
+proc runInbox*[T](typ: typedesc[T] = T, client: Client, inbox: Inbox[T]) {.async.} =
   var poller: ZPoller
   poller.register(client.subsocket, ZMQ_POLLIN)
-
   var message: typ
   while true:
     let res = poll(poller, 500)
     if res > 0:
       if events(poller[0]):
         message = await typ.fetch(client)
+        when defined(debug):
+          echo message
         if inbox.filter(message):
           inbox.push(message)
     while not inbox.isEmpty:
@@ -190,8 +196,9 @@ template run*(body: untyped): untyped =
     poll()
 
 
-template withInbox*[T](client: Client, inbox: Inbox[T], typ: typedesc[T] = T, body: untyped): untyped {.dirty.}  =
-  let data  = await client.fetch[typ]
+template withInbox*[T](client: Client, inbox: Inbox[T], typ: typedesc[T] = T,
+    body: untyped): untyped {.dirty.} =
+  let data = await client.fetch[typ]
   let messages = data.filter(inbox.filter)
   for msg in messages:
     inbox.push(msg.parseMessage(T))

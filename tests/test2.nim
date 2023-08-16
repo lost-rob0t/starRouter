@@ -3,17 +3,44 @@ import ../src/starRouter except StarRouter
 import asyncdispatch
 import githubForge, json, jsony
 import dotenv, os
-from starintel_doc import Username, timestamp, newUsername
+from starintel_doc import Username, Email, timestamp, newUsername, newEmail, Url, Org, Relation, newRelation, makeMD5ID
+import strformat
 
-
-proc getUsers*(client: AsyncGithubClient, since, page: int): Future[seq[Message[Username]]] {.async.} =
+proc getUsers*(client: AsyncGithubClient, since, page: int): Future[seq[Message[JsonNode]]] {.async.} =
   let resp = await client.listUsers(since, page)
-  var users: seq[Message[Username]]
+  var users: seq[Message[JsonNode]]
   for user in resp:
-    var doc = newUsername(user["login"].getStr(""), "github.com", user["url"].getStr(""))
-    doc.dataset = "Github Users"
+    let username = user["login"].getStr("")
+    var doc = newUsername(username, "github.com", fmt"https://github.com/{username}")
+    doc.dataset = "github-users"
+    doc.bio = user{"bio"}.getStr("")
     doc.timestamp
-    users.add(Message[Username](data: doc, topic: "Username", typ: EventType.newDocument))
+    var twitter = user{"twitter_username"}.getStr("")
+    if twitter.len != 0:
+      var twitterUser = newUsername(twitter, "twitter.com", fmt"https://twitter.com/{username}")
+      twitterUser.timestamp
+      twitterUser.dataset = "github-users"
+      # TODO relation should have a type attached with note for better ssearching
+      let relation = newRelation(doc.id, twitterUser.id, "controls", "github-users")
+      users.add(Message[JsonNode](data: %*twitterUser, topic: "Username", typ: EventType.newDocument))
+      users.add(Message[JsonNode](data: %*relation, topic: "Relation", typ: EventType.newDocument))
+    let email = user{"email"}.getStr("")
+    if email.len != 0:
+      var emailDoc = newEmail(email)
+      emailDoc.timestamp
+      emailDoc.dataset = "github-users"
+      let relation = newRelation(doc.id, emailDoc.id, "controls", "github-users")
+      users.add(Message[JsonNode](data: %*emailDoc, topic: "Email", typ: EventType.newDocument))
+      users.add(Message[JsonNode](data: %*relation, topic: "Relation", typ: EventType.newDocument))
+    let blog = user{"blog"}.getStr("")
+    if blog.len != 0:
+      var url = Url(url: blog, content: "")
+      url.makeMD5ID(blog)
+      url.timestamp
+      let relation = newRelation(doc.id, url.id, "controls", "github-users")
+      users.add(Message[JsonNode](data: %*url, topic: "Url", typ: EventType.newDocument))
+      users.add(Message[JsonNode](data: %*relation, topic: "Relation", typ: EventType.newDocument))
+    users.add(Message[JsonNode](data: %*doc, topic: "Username", typ: EventType.newDocument))
   result = users
 
 proc main() {.async.} =
