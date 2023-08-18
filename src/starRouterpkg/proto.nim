@@ -11,16 +11,7 @@ type
     deleteDocument = 4,
     getDocument = 5,
     updateDocument = 6,
-    newService = 7,
-    removeService = 8,
-    serviceRequest = 9,
 
-  ServiceMessage* = object
-    name*: string
-    actorName*: string
-
-
-  # TODO message id
   Message*[T] = object
     id*: string
     data*: T
