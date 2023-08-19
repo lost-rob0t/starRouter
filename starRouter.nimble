@@ -6,7 +6,7 @@ description   = "A new awesome nimble package"
 license       = "MIT"
 srcDir        = "src"
 installExt    = @["nim"]
-bin           = @["starRouter"]
+#bin           = @["starRouter"]
 
 
 # Dependencies
@@ -17,3 +17,4 @@ requires "mycouch >= 0.4.2"
 requires "https://github.com/lost-rob0t/redpool.git"
 requires "cligen"
 requires "ulid"
+requires "jsony"

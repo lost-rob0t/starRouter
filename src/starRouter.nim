@@ -11,7 +11,8 @@ export client, server, proto
 
 
 
-proc main(pubAddress: string = "tcp://*:6000", apiAddress: string = "tcp://*:6001")  =
+proc main(pubAddress: string = "tcp://*:6000",
+    apiAddress: string = "tcp://*:6001") =
   var router = newStarRouter(pubAddress, apiAddress)
   waitFor router.run()
 

@@ -13,6 +13,7 @@ type
     ## RPC Service
     name*: string
     callback*: proc ()
+    replySocket*: ZConnection
   Job* = ref object
     priority: int
     service: Service
