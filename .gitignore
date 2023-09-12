@@ -21,3 +21,5 @@ nimble/*
 /starServices.drawio.png
 /starServices.drawio
 /starRouter
+/.env
+/src/starRouter
