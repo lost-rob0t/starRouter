@@ -6,3 +6,18 @@ tmp/
 nimble/*
 *.out
 */.env
+/src/starRouterpkg/client
+/src/starRouterpkg/server
+/tests/sub_ex03_externals
+/tests/test1
+/tests/test2
+/tests/testSUb
+/tests/testJson
+/tests/testTarget
+/starSouter.drawio
+/starSouter.drawio.svg
+/tests/ex08_async_reqrep
+/starSouter (1).drawio
+/starServices.drawio.png
+/starServices.drawio
+/starRouter
