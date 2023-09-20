@@ -2,7 +2,11 @@ import jsony, json
 import times
 import strformat, strutils
 import ulid
+import utils
 type
+  Header* = enum
+    client = "SC01",
+    broker = "SR01"
   EventType* = enum
     heartbeat = 0
     ack = 1,
@@ -12,7 +16,7 @@ type
     getDocument = 5,
     updateDocument = 6,
 
-  Message*[T] = object
+  Message*[T] = ref object
     id*: string
     data*: T
     source*: string
@@ -20,13 +24,14 @@ type
     time*: int64
     topic*: string
   SlowMessageDefect* = object of Defect
-    timeAmount: int
+
 
 # NOTE: This is sorta bad
 # See status style guide
 converter toEvent*(s: string): EventType = parseEnum[EventType](s)
+converter toHeader*(s: string): Header = parseEnum[Header](s)
 # TODO This should be a string
-converter `$`*(x: EventType): int = x.ord
+converter `$`*(x: EventType): string = $int(x)
 
 
 
@@ -38,12 +43,15 @@ proc `$`*[T](message: Message[T], typ: typedesc[T] = T): string =
   result = fmt"""{topic}|{data}"""
 
 proc newMessage*[T](data: T, eventType: EventType, source, topic: string): Message[T] =
-  let time = now().toTime().toUnix()
-  result = Message[typeOf(data)](data: data, source: source, id: ulid(), topic: topic, time: time)
+  let time = unix()
+  result = Message[typeOf(data)](data: data, source: source, id: ulid(), topic: topic, time: time, typ: eventType)
 
 proc parseMessage*[T](typ: typedesc[T] = T, message: string): T =
   let message = message.split("|", maxsplit=1)
   result = message[1].fromJson(typ)
+
+
+
 
 proc isACK*(s: string): bool = s.parseInt == EventType.ack.ord
 
