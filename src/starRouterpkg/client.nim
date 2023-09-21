@@ -7,8 +7,10 @@ import deques
 import ulid
 import times
 import strformat
-import jsony
+import json
 import utils
+when defined(useStarIntel):
+  import starintel_doc except Message
 type
   Inbox*[T] = ref object
     ## New Documents inbox
@@ -90,7 +92,7 @@ proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
   c.apiSocket.send($data.time, SNDMORE)
   c.apiSocket.send($data.typ, SNDMORE)
   c.apiSocket.send(data.topic, SNDMORE)
-  c.apiSocket.send(data.data.toJson())
+  c.apiSocket.send($(%*data.data))
   let resp = await c.apiSocket.receiveAsync()
   #while not state and i < tries:
   #  client.apiSocket.send($eventType.ord, SNDMORE)
@@ -107,17 +109,40 @@ proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
 proc fetch*[T](typ: typedesc[T] = T, client: Client): Future[Message[T]] {.async.} =
   ## Fetch data from subscriptions
   var msg = Message[typ]()
-  msg.topic = await client.subSocket.receiveAsync()
-  msg.source = await client.subSocket.receiveAsync()
-  msg.id = await client.subSocket.receiveAsync()
-  let time = (await client.subSocket.receiveAsync()).parseInt()
-  if time.isOld(client.timeout): raise newException(SlowMessageDefect, fmt"MSG age older then the current timeout of {client.timeout}. DO NOT EXCEPT THIS.")
-  msg.time = time
-  let etyp = (await client.subSocket.receiveAsync()).parseInt()
-  msg.typ = EventType(etyp)
-  # TODO protobuffs man
-  msg.data = (await client.subSocket.receiveAsync()).fromjson(typ)
-  result = msg
+  try:
+    msg.topic = await client.subSocket.receiveAsync()
+    msg.source = await client.subSocket.receiveAsync()
+    msg.id = await client.subSocket.receiveAsync()
+    let time = (await client.subSocket.receiveAsync()).parseInt()
+    if time.isOld(client.timeout): raise newException(SlowMessageDefect, fmt"MSG age older then the current timeout of {client.timeout}. DO NOT EXCEPT THIS.")
+    msg.time = time
+    let etyp = (await client.subSocket.receiveAsync()).parseInt()
+    msg.typ = EventType(etyp)
+    # TODO protobuffs man
+    msg.data = (await client.subSocket.receiveAsync()).parseJson().to(typ)
+    result = msg
+  except KeyError:
+    result = msg
+    discard # wrong msg typ
+
+# proc fetch*(typ: typedesc[JsonNode], client: Client): Future[Message[JsonNode]] {.async.} =
+#   ## Fetch data from subscriptions
+#   var msg = Message[typ]()
+#   msg.topic = await client.subSocket.receiveAsync()
+#   msg.source = await client.subSocket.receiveAsync()
+#   msg.id = await client.subSocket.receiveAsync()
+#   let time = (await client.subSocket.receiveAsync()).parseInt()
+#   if time.isOld(client.timeout): raise newException(SlowMessageDefect, fmt"MSG age older then the current timeout of {client.timeout}. DO NOT EXCEPT THIS.")
+#   msg.time = time
+#   let etyp = (await client.subSocket.receiveAsync()).parseInt()
+#   msg.typ = EventType(etyp)
+#   # TODO protobuffs man
+#   msg.data = (await client.subSocket.receiveAsync()).pars
+#   result = msg
+
+
+
+
 proc newClient*(actorName: string, address: string, apiAddress: string,
     timeout: int = 10, subscriptions: seq[string]): Client =
   let id = ulid()
