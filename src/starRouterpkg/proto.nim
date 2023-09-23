@@ -15,7 +15,8 @@ type
     deleteDocument = 4,
     getDocument = 5,
     updateDocument = 6,
-
+    register = 7,
+    target = 8,
   Message*[T] = ref object
     id*: string
     data*: T
@@ -23,6 +24,9 @@ type
     typ*: EventType
     time*: int64
     topic*: string
+  RegistrationMessage = ref object
+    actor*: string
+
   SlowMessageDefect* = object of Defect
 
 
@@ -32,6 +36,12 @@ converter toEvent*(s: string): EventType = parseEnum[EventType](s)
 converter toHeader*(s: string): Header = parseEnum[Header](s)
 # TODO This should be a string
 converter `$`*(x: EventType): string = $int(x)
+
+proc echo*(s: Message[string]) =
+  echo fmt"FROM: {s.source}"
+  echo fmt"TOPIC: {s.topic}"
+  echo fmt"EVENT: {$s.typ.ord}"
+  echo fmt"data: {s.data}"
 
 
 
