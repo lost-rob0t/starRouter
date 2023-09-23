@@ -1,8 +1,8 @@
 # Package
 
-version       = "0.1.0"
+version       = "0.2.0"
 author        = "nsaspy"
-description   = "A new awesome nimble package"
+description   = "The Messaging Broker for starintel!"
 license       = "MIT"
 srcDir        = "src"
 installExt    = @["nim"]
@@ -12,9 +12,6 @@ installExt    = @["nim"]
 # Dependencies
 
 requires "nim >= 1.6.14"
-requires "zmq >= 1.4.0"
-requires "mycouch >= 0.4.2"
-requires "https://github.com/lost-rob0t/redpool.git"
+requires "zmq == 1.4.0"
 requires "cligen"
 requires "ulid"
-requires "jsony"
