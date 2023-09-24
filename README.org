@@ -24,7 +24,12 @@ nim c -d:release -o:./starRouter src/starRouter.nim
 
 then copy that to someplace into your path.
 
+There is optional jsony support for faster parsing of msgs, if you want that you should install jsony.
+compile with ~-d:useJsony~ to use it.
 
+** Compile options
+
++ useJsony: enable jsony support.
 
 
 ** Contribution

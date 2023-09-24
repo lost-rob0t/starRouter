@@ -33,9 +33,11 @@ type
 # NOTE: This is sorta bad
 # See status style guide
 converter toEvent*(s: string): EventType = parseEnum[EventType](s)
+
 converter toHeader*(s: string): Header = parseEnum[Header](s)
-# TODO This should be a string
-converter `$`*(x: EventType): string = $int(x)
+
+# Ok this is needed for json
+converter `$`*(x: EventType): int = x.ord
 
 proc echo*(s: Message[string]) =
   echo fmt"FROM: {s.source}"

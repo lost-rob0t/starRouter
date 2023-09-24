@@ -7,10 +7,17 @@ import deques
 import ulid
 import times
 import strformat
-import json
 import utils
+import strutils
 when defined(useStarIntel):
   import starintel_doc except Message
+
+when defined(useJsony):
+  import jsony
+else:
+  import json
+
+
 type
   Broker = ref object
 
@@ -43,9 +50,11 @@ type
     timeout*: int
     heartExpires*: int64
 
-proc newInbox*[T](typ: typedesc[T], n: int): Inbox[T] =
+proc newInbox*[T](typ: typedesc[T], n: int = 100): Inbox[T] =
   Inbox[typ](documents: initDeque[Message[typ]](n))
 
+proc newStringInbox*(n: int = 100): Inbox[string] =
+  string.newInbox(n)
 
 proc registerCB*[T](inbox: Inbox[T], callback: proc(doc: Message[T]): Future[void]) =
   ## Add a Callback to the inbox
@@ -77,6 +86,8 @@ proc newMessage*[T](client: Client, data: T, eventType: EventType, source,
 
 # TODO Fix this, make it reliable
 proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
+  ## Emit a `Message[T]` to the message broker.
+  ## By default it uses std json `%*` to serialize to json string, but if you compile with `-d:useJsony`, you can use `toJson()`
   var
     state = false
     i = 0
@@ -88,7 +99,10 @@ proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
   await c.apiSocket.sendAsync($data.time, SNDMORE)
   await c.apiSocket.sendAsync($data.typ, SNDMORE)
   await c.apiSocket.sendAsync(data.topic, SNDMORE)
-  await c.apiSocket.sendAsync($(%*data.data))
+  when defined(useJsony):
+    await c.apiSocket.sendAsync(data.data.toJson())
+  else:
+    await c.apiSocket.sendAsync($(%*data.data))
   let resp = await c.apiSocket.receiveAsync()
   #while not state and i < tries:
   #  client.apiSocket.send($eventType.ord, SNDMORE)
@@ -101,10 +115,9 @@ proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
   #  if not state:
   #    raise newException(IOError, "Server Failed to reply")
 
-# TODO Support Multipart
-proc fetch*[T](typ: typedesc[T] = T, client: Client): Future[Message[T]] {.async.} =
+proc fetch*(client: Client): Future[Message[string]] {.async.} =
   ## Fetch data from subscriptions
-  var msg = Message[typ]()
+  var msg = Message[string]()
   try:
     msg.topic = await client.subSocket.receiveAsync()
     msg.source = await client.subSocket.receiveAsync()
@@ -116,12 +129,21 @@ proc fetch*[T](typ: typedesc[T] = T, client: Client): Future[Message[T]] {.async
     let etyp = (await client.subSocket.receiveAsync()).parseInt()
     msg.typ = EventType(etyp)
     # TODO protobuffs man
-    msg.data = (await client.subSocket.receiveAsync()).parseJson().to(typ)
+    msg.data = await client.subSocket.receiveAsync()
     result = msg
   except KeyError:
     result = msg
     discard # wrong msg typ
 
+proc fetch*[T](typ: typedesc[T] = T, client: Client): Future[Message[T]] {.async.} =
+  ## Fetch messages from subscriptions, but return T
+  ## By default it uses std json `.to(T)` to parse to your type, but if you compile with `-d:useJsony`, you can use `fromJson(T)`
+  var msg = await client.fetch()
+  result = Message[typ](id: msg.id, source: msg.source, topic: msg.topic, time: msg.time, typ: msg.typ)
+  when defined(useJsony):
+    result.data = msg.data.fromJson()
+  else:
+    result.data = msg.data.parseJson().to(typ)
 
 
 
@@ -169,7 +191,7 @@ proc connect*(client: Client) {.async.} =
 proc close*(client: Client) =
   client.subsocket.close()
   client.apisocket.close()
-
+  # TODO Clients should send a disconnect msg to tell the broker to remove it.
 
 proc sendHeartbeat*(client: Client) {.async.} =
   ## Send a heartbeat to the broker.
@@ -211,6 +233,29 @@ proc runInbox*[T](typ: typedesc[T], client: Client, inbox: Inbox[T]) {.async.} =
 
     # sanity incase of real long queue
     await client.sendHeartbeat()
+
+proc runStringInbox*(client: Client, inbox: Inbox[string]) {.async.} =
+  ## Run a inbox without parsing the messages.
+  var poller: ZPoller
+  poller.register(client.subsocket, ZMQ_POLLIN)
+  var message: Message[string]
+  while true:
+    let res = poll(poller, client.timeout)
+    if res > 0:
+      if events(poller[0]):
+        message = await fetch(client)
+
+        when defined(debug):
+          echo message
+        if inbox.filter(message):
+          inbox.push(message)
+      else:
+        await client.sendHeartbeat()
+
+    while not inbox.isEmpty:
+      message = inbox.pop
+      await inbox.callback(message)
+
 
 
 template withInbox*[T](typ: typedesc[T], client: Client, inbox: Inbox[T],
