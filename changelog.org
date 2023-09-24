@@ -1,0 +1,6 @@
+* Changelog
+** [2023-09-24 Sun 03:25] 0.3.0
++ Added runStringInbox
++ added compile switch ~-d:UseJsony~
++ split fetch into parsing and fetching procs.
+[[file:~/Documents/Projects/starintel/starRouter/src]]
