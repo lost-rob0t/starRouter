@@ -1,12 +1,12 @@
 # Package
 
-version       = "0.3.0"
+version       = "0.3.1"
 author        = "nsaspy"
 description   = "The Messaging Broker for starintel!"
 license       = "MIT"
 srcDir        = "src"
 installExt    = @["nim"]
-#bin           = @["starRouter"]
+bin           = @["starRouter"]
 
 
 # Dependencies
