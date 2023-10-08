@@ -1,4 +1,4 @@
-import jsony, json
+import json
 import times
 import strformat, strutils
 import ulid
@@ -48,11 +48,11 @@ proc echo*(s: Message[string]) =
 
 
 
-proc `$`*[T](message: Message[T], typ: typedesc[T] = T): string =
-  var data: string
-  data = toJson(message)
-  let topic = message.topic
-  result = fmt"""{topic}|{data}"""
+# proc `$`*[T](message: Message[T], typ: typedesc[T] = T): string =
+#   var data: string
+#   data = toJson(message)
+#   let topic = message.topic
+#   result = fmt"""{topic}|{data}"""
 
 proc newMessage*[T](data: T, eventType: EventType, source, topic: string): Message[T] =
   let time = unix()

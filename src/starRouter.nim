@@ -3,7 +3,6 @@
 
 import zmq
 import std/strformat
-import mycouch
 import asyncdispatch
 import cligen
 import starRouterpkg/[client, server, proto]

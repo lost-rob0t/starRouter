@@ -164,7 +164,7 @@ proc publishClientMessage*(router: StarRouter, message: Message[string]) =
     echo message
 
 proc sendHeartbeat(router: StarRouter) =
-  let msg = Message[string](source: router.id, id: ulid(), data: $(%*{}),
+  let msg = Message[string](source: router.id, id: ulid(), data: "",
       typ: EventType.heartBeat, topic: "broker")
   router.publishClientMessage(msg)
   echo "sent hearts"

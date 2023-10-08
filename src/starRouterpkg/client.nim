@@ -97,7 +97,7 @@ proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
   await c.apiSocket.sendAsync(c.id, SNDMORE)
   await c.apiSocket.sendAsync(data.id, SNDMORE)
   await c.apiSocket.sendAsync($data.time, SNDMORE)
-  await c.apiSocket.sendAsync($data.typ, SNDMORE)
+  await c.apiSocket.sendAsync($data.typ.ord, SNDMORE)
   await c.apiSocket.sendAsync(data.topic, SNDMORE)
   when defined(useJsony):
     await c.apiSocket.sendAsync(data.data.toJson())
@@ -203,7 +203,7 @@ proc sendHeartbeat*(client: Client) {.async.} =
   if unix() > client.heartExpires:
     when defined(debug):
       echo "It is love time!"
-    let msg = Message[string](source: client.id, id: ulid(), data: "{}",
+    let msg = Message[string](source: client.id, id: ulid(), data: "",
         typ: EventType.heartBeat, topic: client.actorName)
     await client.emit(msg)
     client.heartExpires = unix() + client.timeout
