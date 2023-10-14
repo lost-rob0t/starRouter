@@ -152,7 +152,7 @@ proc newClient*(actorName: string, address: string, apiAddress: string,
   let id = ulid()
   result = Client(actorName: actorName, address: address,
       subscriptions: subscriptions, apiAddress: apiAddress,
-      id: fmt"{actorName}-{id}", timeout: timeout, heartExpires: 0)
+      id: toLowerAscii(fmt"{actorName}-{id}"), timeout: timeout, heartExpires: 0)
 
 
 proc subscribe*(client: Client, topic: string) =
@@ -192,6 +192,7 @@ proc close*(client: Client) =
   client.subsocket.close()
   client.apisocket.close()
   # TODO Clients should send a disconnect msg to tell the broker to remove it.
+
 
 proc sendHeartbeat*(client: Client) {.async.} =
   ## Send a heartbeat to the broker.
@@ -258,6 +259,10 @@ proc runStringInbox*(client: Client, inbox: Inbox[string]) {.async.} =
 
 
 
+
+
+
+
 template withInbox*[T](typ: typedesc[T], client: Client, inbox: Inbox[T],
     body: untyped): untyped =
   var poller: ZPoller
@@ -278,4 +283,6 @@ when isMainModule:
   const address = "tcp://localhost:6000"
   const api = "tcp://localhost:6001"
   var client = newClient("test", address, api, 10, @["test"])
+  var client1 = newClient("testERRRRR", address, api, 10, @["test"])
   echo client.id
+  echo client1.id
