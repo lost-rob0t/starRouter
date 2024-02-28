@@ -195,6 +195,31 @@ proc handleMessage*(router: StarRouter) {.async.} =
       let msg = await router.receiveClientMessage(source)
       when defined(debug):
         echo msg
+      try:
+        case msg.typ:
+          of newDocument:
+            router.bumpActor(msg.source)
+            router.publishClientMessage(msg)
+          of EventType.register:
+            router.registerActor(msg)
+            when defined(debug):
+              echo "Total actorsNames: ", $len(router.actors)
+          of heartbeat:
+            router.bumpActor(msg)
+            router.sendOK(source)
+          of target:
+            router.handleTarget(msg)
+          else:
+            when defined(debug):
+              echo "Invalid Command."
+            discard # not implemented
+      except KeyError:
+        # HACK Why doesnt the topic exist?
+        # The new api should allow you to create them, ensuring they exist from the start
+        router.registeractor(msg)
+
+      finally:
+        router.sendOK(source)
 
       case msg.typ:
         of newDocument:
