@@ -15,7 +15,7 @@
       pkgs.mkShell {
         buildInputs = with pkgs; [
           nim
-          # normally stuff goes in here
+          nimble
         ];
         shellHook = ''
 
