@@ -1,0 +1,288 @@
+#+title: StarRouter 007 - Performance and Backpressure
+#+options: toc:3
+
+* Objective
+
+Increase throughput only while preserving the declared delivery semantics and bounded-resource behavior.
+
+StarRouter's useful performance property is that ZeroMQ can move small messages cheaply. That advantage disappears if the system responds to load by duplicating work, silently dropping durable data, exhausting memory, or blocking one slow callback behind an unbounded queue.
+
+The optimization order is:
+
+1. correctness;
+2. boundedness/backpressure;
+3. measurement;
+4. batching/concurrency;
+5. serialization/copy optimization;
+6. lower-level tuning only when profiles justify it.
+
+* Separate performance classes
+
+Do not benchmark all traffic as one number.
+
+** Transient fanout
+
+Use cases:
+
+- live notifications;
+- telemetry-like events where loss is acceptable;
+- compatibility subscribers that can catch up from another source.
+
+Optimization target: very high throughput / low latency.
+
+Allowed overload behavior: configured loss or disconnect for slow subscribers, with metrics.
+
+** Durable forwarding
+
+Use cases:
+
+- StarIntel new/update documents;
+- evidence/results that must survive destination outage.
+
+Optimization target: sustained confirmed throughput with bounded latency and zero unexplained accepted-message loss.
+
+Allowed overload behavior: backpressure/reject-before-acceptance when durable capacity is full.
+
+Never compare transient PUB numbers directly to confirmed durable forwarding and call the latter a regression without noting the semantics.
+
+* Current backpressure gaps
+
+The current code does not establish an application-level policy for:
+
+- PUB/SUB HWM;
+- DEALER/ROUTER HWM;
+- inbox capacity;
+- broker ingress rate;
+- maximum payload;
+- per-actor queue depth;
+- durable spool capacity;
+- in-flight AMQP confirms.
+
+=Inbox.size= is not initialized by =newInbox= and the queue is not enforced as a bound.
+
+These must become explicit configuration and metrics.
+
+* ZeroMQ high-water marks
+
+libzmq maintains queues per connection and uses high-water marks to limit outstanding messages. Socket behavior differs by type: PUB can drop when subscribers cannot keep up, while other socket types can block or return errors according to options and state.
+
+Reference: https://zeromq.org/socket-api/
+Reference: https://libzmq.readthedocs.io/en/latest/zmq_setsockopt.html
+
+Design rules:
+
+- choose HWM per socket role;
+- document whether reaching it blocks, rejects, or drops;
+- expose drop/rejection counters;
+- do not set a huge HWM as a substitute for admission control;
+- test HWM behavior with a deliberately stalled consumer.
+
+* Bounded actor inboxes
+
+Each actor/inbox needs:
+
+#+begin_example
+capacity
+current_depth
+high_water_threshold
+full_policy
+processing_latency
+oldest_message_age
+#+end_example
+
+Full policies:
+
+- =BLOCK=: upstream stops until room exists;
+- =REJECT=: producer receives retryable busy/overloaded result before durable acceptance;
+- =SPILL=: durable work goes to an outbox/disk queue;
+- =DROP=: permitted only for explicitly transient traffic.
+
+Default durable policy should be spill/backpressure, never silent drop.
+
+* Fairness
+
+A single hot topic/actor must not starve every other actor.
+
+Potential scheduler choices:
+
+- bounded per-topic queues + round robin;
+- deficit/weighted round robin if priorities are later required;
+- partition durable forwarding by routing key/document class;
+- preserve an emergency/control lane for heartbeat/admin traffic.
+
+The current =ActorManager.nextActor= reconstructs a sequence from table values. Benchmark registry size before optimizing, but a stable explicit vector/ring of registered actor ids will provide clearer deterministic round-robin behavior and avoid allocation in the hot path.
+
+* Serialization
+
+Current payload handling mixes JSON serialization paths and has an optional =jsony= compile switch.
+
+Before choosing a faster serializer:
+
+1. establish payload fixture set;
+2. measure encode/decode CPU and allocation separately from socket IO;
+3. assert output semantic equivalence;
+4. measure end-to-end throughput impact.
+
+Potential optimizations:
+
+- keep payload bytes opaque in broker hot path when the broker does not need to inspect JSON;
+- parse JSON only in bridge classifier where dtype mapping requires it;
+- avoid parse -> object -> serialize cycles unless normalization is required;
+- reuse buffers where Nim/library ownership rules make it safe;
+- keep a maximum payload size to prevent pathological allocation.
+
+Do not switch wire format before compatibility and profile data justify it.
+
+* Durable outbox write path
+
+Optimize the acceptance transaction as a short append/index operation.
+
+Principles:
+
+- one writer actor/task initially;
+- prepared statements;
+- WAL mode if SQLite selected;
+- group commits/batching only after durability behavior is understood;
+- no network call inside the acceptance transaction;
+- publisher reads pending records independently.
+
+Measure:
+
+- fsync/commit latency;
+- accepted msgs/s;
+- database file growth;
+- checkpoint stalls;
+- recovery time with large pending queue.
+
+* Rabbit publisher confirms
+
+Synchronous "publish one, wait for one confirm" is easy to reason about but leaves throughput on the floor.
+
+After correctness tests pass, use a bounded asynchronous confirm window:
+
+#+begin_example
+max_inflight = configurable
+
+while inflight < max_inflight and due outbox rows exist:
+    publish row
+    remember delivery_seq -> message_id
+
+on ack/nack/return:
+    update outbox
+    free inflight slot
+#+end_example
+
+RabbitMQ recommends asynchronous confirms or batching for throughput because persistent-message confirms can have disk/replication latency.
+
+Reference: https://www.rabbitmq.com/docs/confirms
+
+Tune =max_inflight= from benchmark curves. Too small underutilizes Rabbit; too large increases duplicate replay set and memory after connection loss.
+
+* Batch boundaries
+
+Possible batches:
+
+- outbox claim/read batch;
+- database state-update batch;
+- Rabbit in-flight confirm window.
+
+Do not invent a StarIntel HTTP bulk batch for the primary path; the bridge is Rabbit-native.
+
+Preserve one logical AMQP message per StarIntel document unless StarIntel adds a documented batch message contract.
+
+* Parallelism
+
+Use concurrency where ordering is not required.
+
+Potential actor/task model:
+
+#+begin_example
+Ingress actor
+  -> Outbox writer actor
+  -> Publisher supervisor
+       +-- publish lane 0
+       +-- publish lane 1
+       +-- ...
+#+end_example
+
+Start with one publisher channel. Add lanes only if benchmarks show the confirmed publisher is the bottleneck and downstream routing/order constraints permit it.
+
+Partition consistently (for example by document id hash) if same-document ordering matters.
+
+* Slow subscribers
+
+PUB/SUB compatibility must treat slow subscribers as independent from durable bridge health.
+
+A stalled transient subscriber must not force durable ingress to run out of memory.
+
+Expose per-socket/aggregate drop information where the binding permits. If exact subscriber drop attribution is not available with PUB, document that limitation rather than infer it.
+
+* Payload limits
+
+Set a default maximum serialized payload based on observed StarIntel documents, with configuration override and an absolute safety cap.
+
+Reject oversize requests before copying/parsing repeatedly.
+
+Benchmark at:
+
+- normal p50 payload;
+- p95/p99 observed payload;
+- configured maximum;
+- maximum+1 rejection.
+
+* Latency budgets
+
+Measure phases independently:
+
+#+begin_example
+producer -> broker receive
+broker validation -> outbox commit
+outbox wait -> AMQP publish
+publish -> confirm
+confirm -> optional persistence observation
+#+end_example
+
+A single end-to-end number cannot identify whether the bottleneck is disk, ZeroMQ, Rabbit, StarIntel ingest, or CouchDB.
+
+* Overload tests
+
+For every bounded queue, deliberately exceed capacity.
+
+Assert:
+
+- RSS reaches a plateau rather than growing without bound;
+- durable requests receive =OVERLOADED/OUTBOX_FULL= before acceptance when capacity is exhausted;
+- accepted rows remain intact;
+- transient loss is counted;
+- recovery drains backlog without manual restart;
+- high-priority control/heartbeat path remains responsive if designed that way.
+
+* Performance tuning candidates after baseline
+
+Likely candidates, in order of evidence:
+
+- remove duplicate dispatch and unnecessary serialization first;
+- opaque payload forwarding in router;
+- allocation-free/stable actor rotation;
+- batching outbox reads/state updates;
+- async Rabbit confirm window;
+- prepared SQLite operations/checkpoint tuning;
+- jsony or alternative JSON only if profiling says JSON dominates;
+- multiple publisher lanes;
+- CPU affinity/advanced ZeroMQ tuning only as a late optimization.
+
+* Benchmark result format
+
+Every performance report should include a correctness footer:
+
+#+begin_example
+sent:              10,000,000
+rejected:                   0
+accepted:          10,000,000
+confirmed:         10,000,000
+pending at finish:          0
+unexplained lost:           0
+duplicate replays:          0  # or explained injected-failure count
+#+end_example
+
+A million messages per second with unexplained loss is not a successful benchmark.

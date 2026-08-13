@@ -1,0 +1,142 @@
+#+title: StarRouter Design and Stabilization Index
+#+options: toc:2
+
+* Purpose
+
+This directory is the design baseline for stabilizing StarRouter before new production integrations are added.
+
+The immediate integration target is a bridge from the legacy StarRouter ZeroMQ protocol into StarIntel Server's durable RabbitMQ document flow. The bridge is deliberately designed as a separate process and reliability boundary so legacy wire behavior can be preserved while correctness, durability, backpressure, observability, and recovery are upgraded independently.
+
+This is a design pass, not an assertion that the current broker is production ready. The current README explicitly describes StarRouter as pre-alpha. The source audit found correctness and delivery issues that must be fixed or contained before unattended operation.
+
+* Design documents
+
+1. [[file:001-current-state-code-audit.org][001 - Current-state code audit]]
+   - source-level audit of broker, client, protocol, tests, build, and operations
+   - verified defects separated from runtime hypotheses
+   - stabilization priorities
+
+2. [[file:002-delivery-contract-and-protocol.org][002 - Delivery contract and protocol]]
+   - explicit delivery semantics
+   - canonical envelope
+   - ACK/NACK correlation
+   - compatibility rules for SC01/SR01
+
+3. [[file:003-starintel-bridge-architecture.org][003 - StarIntel bridge architecture]]
+   - StarRouter to StarIntel mapping
+   - RabbitMQ-native bridge path
+   - event-type compatibility table
+   - bridge actor/process decomposition
+
+4. [[file:004-durable-outbox-and-recovery.org][004 - Durable outbox and recovery]]
+   - durable acceptance boundary
+   - retry/replay/deduplication
+   - publisher confirms
+   - crash and outage recovery
+
+5. [[file:005-testing-chaos-and-benchmark-plan.org][005 - Testing, chaos, and benchmark plan]]
+   - deterministic unit/integration tests
+   - protocol conformance tests
+   - crash/restart/network fault tests
+   - benchmark methodology and release gates
+
+6. [[file:006-observability-and-unattended-operations.org][006 - Observability and unattended operations]]
+   - metrics, structured events, health/readiness
+   - supervision and restart policy
+   - runbooks and SLOs
+
+7. [[file:007-performance-and-backpressure.org][007 - Performance and backpressure]]
+   - bounded queues and high-water marks
+   - batching, confirms, latency/throughput tradeoffs
+   - overload behavior
+
+8. [[file:008-security-compatibility-and-migration.org][008 - Security, compatibility, and migration]]
+   - network exposure and authentication
+   - staged compatibility plan
+   - migration slices and rollout gates
+
+* Architecture decision summary
+
+The recommended target is:
+
+#+begin_example
+StarRouter clients
+      |
+      | SC01 compatibility protocol
+      v
++-----------------+
+| StarRouter      |
+| validated input |
++--------+--------+
+         |
+         | durable accepted envelope
+         v
++---------------------------+
+| bridge / durable outbox    |
+| normalize + dedupe + retry |
++-------------+-------------+
+              |
+              | AMQP persistent publish
+              | publisher confirms + mandatory routing
+              v
++---------------------------+
+| RabbitMQ documents topic  |
++-------------+-------------+
+              |
+              | documents.ingest.<dtype>
+              | documents.updated.<dtype>
+              v
++---------------------------+
+| StarIntel Server          |
+| ingest/update consumers   |
++-------------+-------------+
+              |
+              v
+           CouchDB
+#+end_example
+
+The current PUB socket remains useful for transient fanout and compatibility, but it must not be the only path used for data whose loss would violate correctness. A PUB/SUB subscriber can miss messages during startup and can drop under high-water-mark pressure. Durable forwarding therefore requires a separate acceptance and replay mechanism.
+
+* Delivery objective
+
+The intended end-to-end contract is *at-least-once durable forwarding with idempotent effects*.
+
+Exactly-once delivery is not claimed. A crash can occur after RabbitMQ accepts a message but before the bridge records the confirmation. The bridge may therefore replay that message. StarIntel actors already document an at-least-once processing model and require idempotency, so bridge behavior should align with that model rather than hide it.
+
+* Source basis
+
+Repository sources reviewed on 2026-08-13:
+
+- =src/starRouterpkg/server.nim=
+- =src/starRouterpkg/client.nim=
+- =src/starRouterpkg/proto.nim=
+- =src/starRouterpkg/utils.nim=
+- =src/starRouter.nim=
+- =tests/=
+- =README.org=
+- =todo.org=
+- =flake.nix=
+- =Dockerfile=
+- =.github/workflows/docker-publish.yml=
+- StarIntel Server =docs/messaging.org=
+- StarIntel Server =docs/architecture.org=
+- StarIntel Server =docs/http-api-docs.org=
+- StarIntel Server =source/producers/producers.lisp=
+
+External primary references:
+
+- ZeroMQ RFC 40 / XRAP: https://rfc.zeromq.org/spec/40/
+- ZeroMQ Guide, reliable request-reply patterns: https://zguide.zeromq.org/docs/chapter4/
+- libzmq socket options: https://libzmq.readthedocs.io/en/latest/zmq_setsockopt.html
+- RabbitMQ reliability: https://www.rabbitmq.com/docs/reliability
+- RabbitMQ confirms: https://www.rabbitmq.com/docs/confirms
+- OpenTelemetry messaging semantic conventions: https://opentelemetry.io/docs/specs/semconv/messaging/
+
+* Audit status
+
+The source and repository behavior were audited through the repository contents and project documentation. The current repository does not provide a deterministic automated test suite or a CI test gate that can establish runtime behavior. Runtime claims in these documents are therefore marked as either:
+
+- *verified from code*: directly implied by current source; or
+- *runtime validation required*: plausible operational consequence that must be reproduced by the new harness before being considered closed.
+
+The first implementation slice should build that harness before changing protocol semantics.
