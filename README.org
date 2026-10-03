@@ -44,3 +44,6 @@ without a second JSON encoding. This also preserves payloads replayed by starRep
 Validation belongs at the producer/ingest boundary. Historical examples explicitly
 import the legacy model module and are not current canonical constructors.
 Run =nim c -r tests/test_payload.nim= for the schema-independent roundtrip gate.
+Nim 2 builds pin nim-zmq =a56af54f599337a8f5d4934fcff7554c74f77854=:
+the former 1.4.0 binding fails to compile string socket options under Nim 2.
+The full client module passes =nim check= with the pinned binding.

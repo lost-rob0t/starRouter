@@ -16,8 +16,6 @@ when defined(useStarIntel):
 
 when defined(useJsony):
   import jsony
-else:
-  import json
 
 
 type
