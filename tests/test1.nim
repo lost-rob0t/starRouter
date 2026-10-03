@@ -8,7 +8,7 @@
 import unittest
 
 import ../src/starRouter
-from starintel_doc import Username
+from starintel_doc/legacy import Username
 import asyncdispatch
 proc echoUsername*[T](doc: Message[T]) {.async.} =
   echo doc.data.username

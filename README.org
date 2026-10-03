@@ -36,3 +36,11 @@ compile with ~-d:useJsony~ to use it.
 Feel free to open PR or issues or donate
 
 + XMR: 8Bt75mjmyreavdkZoANJUVSUrPBvTLhESfeRd3QJYnh5dYh6HMJVtxg7SRCgZzzhFQYHpzqh4URKWLk2CvrcKhiJCCfGh8L
+
+* StarIntel 0.10.1 transport
+The router is an opaque multipart transport, not a document schema authority.
+Serialized string payloads and JsonNode payloads preserve flat canonical documents
+without a second JSON encoding. This also preserves payloads replayed by starReplay.
+Validation belongs at the producer/ingest boundary. Historical examples explicitly
+import the legacy model module and are not current canonical constructors.
+Run =nim c -r tests/test_payload.nim= for the schema-independent roundtrip gate.

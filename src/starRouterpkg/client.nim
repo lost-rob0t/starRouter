@@ -8,6 +8,8 @@ import ulid
 import times
 import strformat
 import utils
+import payload
+import std/json
 import strutils
 when defined(useStarIntel):
   import starintel_doc except Message
@@ -99,10 +101,12 @@ proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
   await c.apiSocket.sendAsync($data.time, SNDMORE)
   await c.apiSocket.sendAsync($data.typ.ord, SNDMORE)
   await c.apiSocket.sendAsync(data.topic, SNDMORE)
-  when defined(useJsony):
+  when data.data is string or data.data is JsonNode:
+    await c.apiSocket.sendAsync(encodePayload(data.data))
+  elif defined(useJsony):
     await c.apiSocket.sendAsync(data.data.toJson())
   else:
-    await c.apiSocket.sendAsync($(%*data.data))
+    await c.apiSocket.sendAsync(encodePayload(data.data))
   let resp = await c.apiSocket.receiveAsync()
   #while not state and i < tries:
   #  client.apiSocket.send($eventType.ord, SNDMORE)

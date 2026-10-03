@@ -87,7 +87,7 @@ proc isDeleteDocument*(s: string): bool = s.parseInt == EventType.deleteDocument
 proc isDeleteDocument*(x: int): bool = x == EventType.deleteDocument.ord
 
 when isMainModule:
-  import starintel_doc, typetraits
+  import starintel_doc/legacy, typetraits
   var
     username: Username
     relation: Relation
