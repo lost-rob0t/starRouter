@@ -1,0 +1,139 @@
+{
+  "compatibilityVersion": 1,
+  "authority": {
+    "library": "org.starintel/core@1",
+    "version": "0.10.1"
+  },
+  "acceptedSchemaVersions": [
+    "0.9.0",
+    "0.10.1"
+  ],
+  "emittedSchemaVersion": "0.10.1",
+  "canonicalKeyStyle": "lowerCamelCase",
+  "legacyInput": {
+        "keyStyles": [
+            "lowerCamelCase",
+            "snake_case"
+        ],
+        "keyNormalization": "snakeToLowerCamel",
+        "opaqueMapFields": [
+            "accessControl",
+            "extensions",
+            "externalIds",
+            "extractedMetadata",
+            "provenance",
+            "raw"
+        ],
+    "envelopeAliases": {
+      "_id": "id",
+      "_rev": "rev",
+      "schema_version": "schemaVersion"
+    },
+    "nestedData": {
+      "action": "mergeIntoDocument",
+      "collisionPolicy": "reject"
+    }
+  },
+  "dtypeAliases": {
+    "audio-recording": "audio",
+    "photo": "picture",
+    "transcription": "transcript"
+  },
+  "mediaClassification": {
+    "legacyDtype": "media",
+    "contentTypePrecedence": [
+      "sniffedMediaType",
+      "magicType",
+      "mediaType",
+      "contentType"
+    ],
+    "rules": [
+      {
+        "prefix": "image/",
+        "dtype": "image"
+      },
+      {
+        "prefix": "video/",
+        "dtype": "video"
+      },
+      {
+        "prefix": "audio/",
+        "dtype": "audio"
+      }
+    ],
+    "fallbackDtype": "file",
+    "filenameExtensionIsTrusted": false
+  },
+  "inlineTranscript": {
+    "sourceFields": [
+      "transcript",
+      "transcriptText"
+    ],
+        "emitsDtype": "transcript",
+        "sourceReferenceField": "sourceMedia",
+        "targetReferenceFields": {
+            "audio": "transcripts",
+            "default": "transcript"
+        },
+        "idAlgorithm": {
+            "digest": "sha256",
+            "input": "transcript-null-sourceId-null-language",
+            "output": "starintel:transcript:{hex}"
+        }
+  },
+  "personIdentifiers": {
+    "sourceField": "externalIds",
+    "emitsDtype": "person-identifier",
+    "targetReferenceField": "identifiers",
+    "preserveUnknownSchemes": true,
+        "idAlgorithm": {
+            "digest": "sha256",
+            "input": "personIdentifier-null-personId-null-scheme-null-normalizedValue",
+            "output": "starintel:person-identifier:{hex}"
+        }
+  },
+  "geo": {
+    "legacyDtype": "geo",
+    "canonicalDtype": "geo-point",
+    "requiredLegacyFields": [
+      "lat",
+      "long"
+    ],
+    "fieldAliases": {
+      "lat": "latitude",
+      "long": "longitude",
+      "alt": "altitudeMeters",
+      "coordinate_system": "coordinateReferenceSystem"
+    },
+    "defaults": {
+      "geometryType": "point",
+      "coordinateReferenceSystem": "EPSG:4326"
+    },
+    "coordinateOrder": "longitudeLatitude",
+    "longitudeRange": [
+      "-180",
+      "180"
+    ],
+    "latitudeRange": [
+      "-90",
+      "90"
+    ]
+  },
+  "unknownFields": {
+    "action": "preserve",
+    "target": "extensions.legacy",
+    "collisionPolicy": "reject"
+  },
+  "failurePolicy": {
+    "action": "quarantineDocument",
+    "continueBatch": true,
+    "reasonCodes": [
+      "decodeFailed",
+      "unsupportedSchemaVersion",
+      "ambiguousFieldCollision",
+      "migrationFailed",
+      "canonicalValidationFailed"
+    ]
+  },
+  "idempotent": true
+}

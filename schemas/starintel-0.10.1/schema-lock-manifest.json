@@ -1,0 +1,7 @@
+{
+  "release_version": "0.10.1",
+  "schema_version": "0.10.1",
+  "authority_library": "org.starintel/core@1",
+  "canonical_key_style": "lowerCamelCase",
+  "release_lock_path": "specs/starintel/0.10.1/release-lock.json"
+}

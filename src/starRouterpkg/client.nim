@@ -1,6 +1,7 @@
 import zmq
 import asyncdispatch
 import tables
+import std/[json, jsonutils]
 import sequtils
 import proto
 import deques
@@ -9,13 +10,12 @@ import times
 import strformat
 import utils
 import strutils
+import wire
 when defined(useStarIntel):
   import starintel_doc except Message
 
 when defined(useJsony):
   import jsony
-else:
-  import json
 
 
 type
@@ -81,7 +81,7 @@ proc newMessage*[T](client: Client, data: T, eventType: EventType, source,
   ## Create a new message using the source as the current client id.
   let time = now().toTime().toUnix()
   result = Message[typeOf(data)](data: data, source: client.id, id: ulid(),
-      topic: topic, time: time)
+      topic: topic, time: time, typ: eventType)
 
 
 # TODO Fix this, make it reliable
@@ -91,6 +91,8 @@ proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
   var
     state = false
     i = 0
+  # Validate the complete payload before sending any multipart frame.
+  let payload = encodePayload(data.data, data.typ)
   # nim bindings sends the identity for us?
   await c.apiSocket.sendAsync("", SNDMORE)
   await c.apiSocket.sendAsync("SC01", SNDMORE)
@@ -99,11 +101,10 @@ proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
   await c.apiSocket.sendAsync($data.time, SNDMORE)
   await c.apiSocket.sendAsync($data.typ.ord, SNDMORE)
   await c.apiSocket.sendAsync(data.topic, SNDMORE)
-  when defined(useJsony):
-    await c.apiSocket.sendAsync(data.data.toJson())
-  else:
-    await c.apiSocket.sendAsync($(%*data.data))
+  await c.apiSocket.sendAsync(payload)
   let resp = await c.apiSocket.receiveAsync()
+  if not resp.isACK:
+    raise newException(IOError, "Broker rejected message: " & resp)
   #while not state and i < tries:
   #  client.apiSocket.send($eventType.ord, SNDMORE)
   #  client.apiSocket.send($data)
@@ -130,6 +131,7 @@ proc fetch*(client: Client): Future[Message[string]] {.async.} =
     msg.typ = EventType(etyp)
     # TODO protobuffs man
     msg.data = await client.subSocket.receiveAsync()
+    validatePayload(msg.data, msg.typ)
     result = msg
   except KeyError:
     result = msg
@@ -137,13 +139,21 @@ proc fetch*(client: Client): Future[Message[string]] {.async.} =
 
 proc fetch*[T](typ: typedesc[T] = T, client: Client): Future[Message[T]] {.async.} =
   ## Fetch messages from subscriptions, but return T
-  ## By default it uses std json `.to(T)` to parse to your type, but if you compile with `-d:useJsony`, you can use `fromJson(T)`
+  ## Document bindings use jsonutils after strict wire validation.
+  ## -d:useJsony selects jsony for non-document payload decoding.
   var msg = await client.fetch()
   result = Message[typ](id: msg.id, source: msg.source, topic: msg.topic, time: msg.time, typ: msg.typ)
-  when defined(useJsony):
-    result.data = msg.data.fromJson()
+  when T is JsonNode:
+    result.data = msg.data.parseJson()
+  elif defined(useJsony):
+    # Generated document bindings use Option fields; decode them through the
+    # same jsonutils codec as the canonical runtime after strict validation.
+    if msg.typ in {newDocument, updateDocument, EventType.target}:
+      result.data = msg.data.parseJson().jsonTo(typ, Joptions(allowMissingKeys: true))
+    else:
+      result.data = msg.data.fromJson(typ)
   else:
-    result.data = msg.data.parseJson().to(typ)
+    result.data = msg.data.parseJson().jsonTo(typ, Joptions(allowMissingKeys: true))
 
 
 

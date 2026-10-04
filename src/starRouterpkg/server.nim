@@ -8,7 +8,7 @@ import utils
 import strformat
 import ulid
 import json
-import morelogging
+import wire
 
 
 type
@@ -156,6 +156,7 @@ proc receiveClientMessage*(router: StarRouter, source: string): Future[Message[
   return msg
 
 proc publishClientMessage*(router: StarRouter, message: Message[string]) =
+  validatePayload(message.data, message.typ)
   router.pubConn.send(message.topic, SNDMORE)
   router.pubConn.send(message.source, SNDMORE)
   router.pubConn.send(message.id, SNDMORE)
@@ -185,7 +186,7 @@ proc handletarget(router: StarRouter, msg: Message[string]) =
   let actor = router.nextActor(msg.topic)
   newMsg.topic = actor.id
   newMsg.typ = newDocument
-  router.publishClientMessage(msg)
+  router.publishClientMessage(newMsg)
 
 proc handleMessage*(router: StarRouter) {.async.} =
   let source = await router.apiConn.receiveAsync()
@@ -198,50 +199,27 @@ proc handleMessage*(router: StarRouter) {.async.} =
       when defined(debug):
         echo msg
       try:
+        validatePayload(msg.data, msg.typ)
+      except ValueError:
+        router.apiConn.send(source, SNDMORE)
+        router.apiConn.send($EventType.nack.ord)
+        return
+      try:
         case msg.typ:
-          of newDocument:
+          of newDocument, updateDocument:
             router.bumpActor(msg.source)
             router.publishClientMessage(msg)
           of EventType.register:
             router.registerActor(msg)
-            when defined(debug):
-              echo "Total actorsNames: ", $len(router.actors)
           of heartbeat:
             router.bumpActor(msg)
-            router.sendOK(source)
           of target:
             router.handleTarget(msg)
           else:
-            when defined(debug):
-              echo "Invalid Command."
-            discard # not implemented
+            discard
       except KeyError:
-        # HACK Why doesnt the topic exist?
-        # The new api should allow you to create them, ensuring they exist from the start
-        router.registeractor(msg)
-
-      finally:
-        router.sendOK(source)
-
-      case msg.typ:
-        of newDocument:
-          router.bumpActor(msg.source)
-          router.publishClientMessage(msg)
-          router.sendOK(source)
-        of EventType.register:
-          router.registerActor(msg)
-          router.sendOK(source)
-          when defined(debug):
-            echo "Total actorsNames: ", $len(router.actors)
-        of heartbeat:
-          router.bumpActor(msg)
-          router.sendOK(source)
-        of target:
-          router.handleTarget(msg)
-          router.sendOK(source)
-        else:
-          echo "No run!"
-          discard # not implemented
+        router.registerActor(msg)
+      router.sendOK(source)
     of "SR01":
       discard
       # TODO work on broker to broker messaging

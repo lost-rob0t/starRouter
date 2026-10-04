@@ -1,0 +1,57 @@
+{
+  "canonical_repository": "lost-rob0t/star-lang",
+  "canonical_commit": "765f1673851192bcaf1cdd2f35c47608f979b079",
+  "release_version": "0.10.1",
+  "schema_version": "0.10.1",
+  "authority_library": "org.starintel/core@1",
+  "canonical_key_style": "lowerCamelCase",
+  "release_lock_path": "specs/starintel/0.10.1/release-lock.json",
+  "schema_path": "specs/starintel/0.10.1/generated/schema.json",
+  "manifest_path": "specs/starintel/0.10.1/generated/portable-manifest.json",
+  "vendored_files": {
+    "schemas/starintel-0.10.1/compatibility-fixtures.json": {
+      "source": "specs/starintel/0.10.1/compatibility-fixtures.json",
+      "sha256": "9e57f62022ea66bdc3a861185c7a6aea9b0f9a1094dbc3032364f6ff96e8da6f"
+    },
+    "schemas/starintel-0.10.1/compatibility.json": {
+      "source": "specs/starintel/0.10.1/compatibility.json",
+      "sha256": "95b9af3c984912053b65d4df65b2db7b88d0d97c065dad9e211d751873ef7553"
+    },
+    "schemas/starintel-0.10.1/core.star": {
+      "source": "specs/starintel/0.10.1/core.star",
+      "sha256": "f0f2fe0aa759eab974e348b42c11615402bb52fba644cab455c069bb585440ef"
+    },
+    "schemas/starintel-0.10.1/generated/portable-manifest.json": {
+      "source": "specs/starintel/0.10.1/generated/portable-manifest.json",
+      "sha256": "790269e4b7bf902fb03c807fe82eb79e81e3b1ca4e5a97bf8ec411c477918709"
+    },
+    "schemas/starintel-0.10.1/generated/schema.json": {
+      "source": "specs/starintel/0.10.1/generated/schema.json",
+      "sha256": "a7e81d8ff3361cc8a331ee6c81c3c8d539059f037944b7c54a61323c7af1ec3c"
+    },
+    "schemas/starintel-0.10.1/generated/starintel.lisp": {
+      "source": "specs/starintel/0.10.1/generated/starintel.lisp",
+      "sha256": "13f969256b1da2636cede60fcfe0c15117f3a45da9dd03911dce8338c48c46c5"
+    },
+    "schemas/starintel-0.10.1/generated/starintel_types.nim": {
+      "source": "specs/starintel/0.10.1/generated/starintel_types.nim",
+      "sha256": "08c586ff8c1d3d07c68101943cfa4eb10681327c79e986998edffa7a1b96f5cb"
+    },
+    "schemas/starintel-0.10.1/generated/starintel_types.py": {
+      "source": "specs/starintel/0.10.1/generated/starintel_types.py",
+      "sha256": "4a2afc894ca4fb351cecb8deb13860e53a0f006312262a47fe857beb92bffc47"
+    },
+    "schemas/starintel-0.10.1/generated/starintel_types.ts": {
+      "source": "specs/starintel/0.10.1/generated/starintel_types.ts",
+      "sha256": "6ba298711e6422f0f1c2f77aa848820d7e4cd8969ad9e4c20385c1944bfd228f"
+    },
+    "schemas/starintel-0.10.1/release-lock.json": {
+      "source": "specs/starintel/0.10.1/release-lock.json",
+      "sha256": "f07357339465a564505c89e23264d2d7343a49a2e66b3386d0b14f17c214932e"
+    },
+    "schemas/starintel-0.10.1/schema-lock-manifest.json": {
+      "source": "specs/starintel/0.10.1/schema-lock-manifest.json",
+      "sha256": "c0b7fc34ed0c00814793789d32d9867c45e2e63963fd3ba09a720152cb94a7b5"
+    }
+  }
+}
