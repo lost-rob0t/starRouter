@@ -35,7 +35,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
       # Install the cosign tool except on PR
       # https://github.com/sigstore/cosign-installer
@@ -77,10 +77,24 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          load: ${{ github.event_name == 'pull_request' }}
+          tags: ${{ github.event_name == 'pull_request' && 'starrouter:validation' || steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Exercise the actual container wire contract
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          python3 -m pip install pyzmq
+          launcher="$RUNNER_TEMP/starrouter-container"
+          cat > "$launcher" <<'SH'
+          #!/bin/sh
+          exec docker run --init --rm --network=host starrouter:validation "$@"
+          SH
+          chmod +x "$launcher"
+          python3 tests/broker_wire.py "$launcher"
 
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker

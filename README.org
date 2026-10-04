@@ -62,3 +62,15 @@ build modes are exercised with real native clients by the full Nix gate.
 Feel free to open PR or issues or donate
 
 + XMR: 8Bt75mjmyreavdkZoANJUVSUrPBvTLhESfeRd3QJYnh5dYh6HMJVtxg7SRCgZzzhFQYHpzqh4URKWLk2CvrcKhiJCCfGh8L
+
+** Container build
+The container builds the same pinned Nix package and runs its complete tests.
+The final image contains only the executable and its runtime dependency closure.
+
+#+begin_src shell
+docker build -t starrouter .
+docker run --init --rm -p 6000:6000 -p 6001:6001 starrouter
+#+end_src
+
+Pull-request CI also exercises the actual container over all 60 generated
+StarIntel document types, including rejection without publication.
