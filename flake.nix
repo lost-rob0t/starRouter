@@ -2,7 +2,7 @@
   description = "StarIntel event router consuming the StarLang-generated document contract";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    starintel-doc.url = "github:lost-rob0t/starintel-doc.nim/827f2c072e9893561a1925c47f898458bafd6759";
+    starintel-doc.url = "github:lost-rob0t/starintel-doc.nim/0ba29aaa6fd0260a11d9d3a55067057ab4bdd6bc";
     starintel-doc.inputs.nixpkgs.follows = "nixpkgs";
     zmq = { url = "github:nim-lang/nim-zmq/a56af54f599337a8f5d4934fcff7554c74f77854"; flake = false; };
     jsony = { url = "github:treeform/jsony/bb647e1ca21af25ffdc423bcb96feeeeae963ca2"; flake = false; };
@@ -15,7 +15,7 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       python = pkgs.python3.withPackages (ps: [ ps.pyzmq ]);
-      paths = "--noNimblePath --path:src --path:${starintel-doc}/src --path:${zmq} --path:${ulid}/src --path:${random}/src --path:${cligen} --path:${jsony}/src";
+      paths = "--noNimblePath --path:src --path:${starintel-doc}/share/nimble/starintel_doc/src --path:${zmq} --path:${ulid}/src --path:${random}/src --path:${cligen} --path:${jsony}/src";
       libraries = pkgs.lib.makeLibraryPath [ pkgs.zeromq pkgs.pcre ];
       router = pkgs.stdenv.mkDerivation {
         pname = "starRouter";
