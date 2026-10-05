@@ -9,20 +9,24 @@ const CompatibilityText = staticRead("../../schemas/starintel-0.10.1/compatibili
 
 proc validatePayload*(payload: string, event: EventType) =
   if event notin {newDocument, updateDocument, target}: return
-  let document = parseJson(payload)
-  if document.kind != JObject:
+
+  let wireDocument = canonical.parseWireJson(payload)
+  if wireDocument.kind != JObject:
     raise newException(ValueError, "StarIntel document payload must be an object")
-  if document.hasKey("schemaVersion"):
-    let checked = canonical.validateDocument(document)
+
+  if wireDocument.hasKey("schemaVersion"):
+    let checked = canonical.validateDocument(wireDocument)
     if not checked.ok: raise newException(ValueError, checked.category & ": " & checked.message)
-  elif document.hasKey("schema_version") and document["schema_version"].kind == JString and
-      document["schema_version"].getStr == "0.9.0" and
+  elif wireDocument.hasKey("schema_version") and wireDocument["schema_version"].kind == JString and
+      wireDocument["schema_version"].getStr == "0.9.0" and
       %"0.9.0" in parseJson(CompatibilityText)["acceptedSchemaVersions"].getElems:
-    let checked = historical.validateDocument(document, parseJson(HistoricalSchemaText))
+    let historicalDocument = parseJson(payload)
+    let checked = historical.validateDocument(historicalDocument, parseJson(HistoricalSchemaText))
     if not checked.ok: raise newException(ValueError, checked.category & ": " & checked.message)
   else:
     raise newException(ValueError, "unsupported StarIntel schema version")
-  if event == target and document["dtype"].getStr != "target":
+
+  if event == target and wireDocument["dtype"].getStr != "target":
     raise newException(ValueError, "target event requires a target document")
 
 proc encodePayload*[T](data: T, event: EventType): string =
