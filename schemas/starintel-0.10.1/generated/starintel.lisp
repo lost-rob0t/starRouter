@@ -21,6 +21,34 @@
     #:email-address
     #:phone-number
     #:distance-meters
+    #:analysis-confidence
+    #:asset-identifier-records-item-confidence
+    #:asset-external-ids-item-confidence
+    #:campaign-finance-source-system-ids-item-confidence
+    #:claim-certainty
+    #:contract-source-system-ids-item-confidence
+    #:entity-identity-confidence
+    #:entity-identity-keys-item-confidence
+    #:entity-external-ids-item-confidence
+    #:evidence-record-confidence
+    #:procurement-source-system-ids-item-confidence
+    #:product-external-ids-item-confidence
+    #:research-node-limits-max-depth
+    #:research-node-limits-max-actor-runs
+    #:research-node-limits-max-requests
+    #:research-node-limits-max-elapsed-ms
+    #:research-node-limits-max-repeated-state
+    #:research-node-limits-max-cost
+    #:research-node-counters-depth
+    #:research-node-counters-actor-runs
+    #:research-node-counters-requests
+    #:research-node-counters-repeated-state
+    #:research-node-counters-elapsed-ms
+    #:research-node-counters-cost
+    #:source-credibility
+    #:source-reliability
+    #:source-authenticity
+    #:source-independence
     #:sensitivity
     #:visibility
     #:collection-status
@@ -36,6 +64,15 @@
     #:spatial-query-mode
     #:map-layer-kind
     #:geo-geometry-type
+    #:operation-role
+    #:operation-access
+    #:operation-category
+    #:operation-capability-status
+    #:operation-status
+    #:operation-assignment-status
+    #:operation-post-action-status
+    #:operation-state
+    #:research-node-status
     #:pcap-format
     #:network-layer
     #:wireless-security
@@ -3046,6 +3083,3451 @@
     #:socialmpost-publishedat
     #:socialmpost-editedat
     #:socialmpost-sensitive
+    #:operation-condition
+    #:MAKE-operation-condition
+    #:COPY-operation-condition
+    #:operation-condition-P
+    #:+operation-condition-WIRE-FIELDS+
+    #:operation-condition-conditionid
+    #:operation-condition-kind
+    #:operation-condition-predicate
+    #:operation-condition-subject
+    #:operation-condition-object
+    #:operation-condition-expression
+    #:operation-condition-required
+    #:operation-condition-metadata
+    #:operation-target-policy
+    #:MAKE-operation-target-policy
+    #:COPY-operation-target-policy
+    #:operation-target-policy-P
+    #:+operation-target-policy-WIRE-FIELDS+
+    #:operation-target-policy-alloweddtypes
+    #:operation-target-policy-allowedtargettypes
+    #:operation-target-policy-allowedroles
+    #:operation-target-policy-selectors
+    #:operation-target-bindings
+    #:MAKE-operation-target-bindings
+    #:COPY-operation-target-bindings
+    #:operation-target-bindings-P
+    #:+operation-target-bindings-WIRE-FIELDS+
+    #:operation-target-bindings-primary
+    #:operation-target-bindings-supporting
+    #:operation-target-bindings-derived
+    #:operation-target-bindings-excluded
+    #:operation-dataset-binding
+    #:MAKE-operation-dataset-binding
+    #:COPY-operation-dataset-binding
+    #:operation-dataset-binding-P
+    #:+operation-dataset-binding-WIRE-FIELDS+
+    #:operation-dataset-binding-bindingid
+    #:operation-dataset-binding-dataset
+    #:operation-dataset-binding-role
+    #:operation-dataset-binding-access
+    #:operation-dataset-binding-phases
+    #:operation-dataset-binding-purpose
+    #:operation-capability-gap
+    #:MAKE-operation-capability-gap
+    #:COPY-operation-capability-gap
+    #:operation-capability-gap-P
+    #:+operation-capability-gap-WIRE-FIELDS+
+    #:operation-capability-gap-capabilityid
+    #:operation-capability-gap-category
+    #:operation-capability-gap-description
+    #:operation-capability-gap-requiredby
+    #:operation-capability-gap-blocking
+    #:operation-capability-gap-status
+    #:operation-capability-gap-capabilityref
+    #:operation-capability-gap-resolutionref
+    #:operation-capability-gap-owner
+    #:operation-capability-gap-metadata
+    #:operation-assignment
+    #:MAKE-operation-assignment
+    #:COPY-operation-assignment
+    #:operation-assignment-P
+    #:+operation-assignment-WIRE-FIELDS+
+    #:operation-assignment-assignmentid
+    #:operation-assignment-agentid
+    #:operation-assignment-actorid
+    #:operation-assignment-phaseids
+    #:operation-assignment-role
+    #:operation-assignment-metadata
+    #:operation-post-action
+    #:MAKE-operation-post-action
+    #:COPY-operation-post-action
+    #:operation-post-action-P
+    #:+operation-post-action-WIRE-FIELDS+
+    #:operation-post-action-actionid
+    #:operation-post-action-actiontype
+    #:operation-post-action-condition
+    #:operation-post-action-targetids
+    #:operation-post-action-datasetbindingids
+    #:operation-post-action-config
+    #:operation-phase
+    #:MAKE-operation-phase
+    #:COPY-operation-phase
+    #:operation-phase-P
+    #:+operation-phase-WIRE-FIELDS+
+    #:operation-phase-phaseid
+    #:operation-phase-title
+    #:operation-phase-objective
+    #:operation-phase-state
+    #:operation-phase-dependson
+    #:operation-phase-entryconditions
+    #:operation-phase-exitconditions
+    #:operation-phase-inscope
+    #:operation-phase-outofscope
+    #:operation-phase-targetpolicy
+    #:operation-phase-targetids
+    #:operation-phase-datasetbindingids
+    #:operation-phase-requiredcapabilityids
+    #:operation-phase-deliverableids
+    #:operation-phase-completionevidence
+    #:operation
+    #:MAKE-operation
+    #:COPY-operation
+    #:operation-P
+    #:+operation-WIRE-FIELDS+
+    #:operation-id
+    #:operation-rev
+    #:operation-dataset
+    #:operation-dtype
+    #:operation-schemaversion
+    #:operation-externalids
+    #:operation-aliases
+    #:operation-sources
+    #:operation-sourceurls
+    #:operation-sourcerecordids
+    #:operation-sourcekinds
+    #:operation-sourcelicense
+    #:operation-sourceterms
+    #:operation-sourceretrievedat
+    #:operation-collectedat
+    #:operation-observedat
+    #:operation-firstseenat
+    #:operation-lastseenat
+    #:operation-createdat
+    #:operation-updatedat
+    #:operation-validfrom
+    #:operation-validuntil
+    #:operation-expiresat
+    #:operation-collector
+    #:operation-collectorversion
+    #:operation-collectionmethod
+    #:operation-collectionstatus
+    #:operation-runid
+    #:operation-correlationid
+    #:operation-causationid
+    #:operation-parentid
+    #:operation-rootid
+    #:operation-confidence
+    #:operation-confidencebasis
+    #:operation-qualityscore
+    #:operation-completenessscore
+    #:operation-verificationstatus
+    #:operation-verifiedat
+    #:operation-verifiedby
+    #:operation-provenance
+    #:operation-chainofcustody
+    #:operation-transformhistory
+    #:operation-labels
+    #:operation-tags
+    #:operation-topics
+    #:operation-language
+    #:operation-jurisdiction
+    #:operation-countrycode
+    #:operation-regioncode
+    #:operation-timezone
+    #:operation-sensitivity
+    #:operation-visibility
+    #:operation-owner
+    #:operation-accesscontrol
+    #:operation-legalbasis
+    #:operation-retentionpolicy
+    #:operation-contenttype
+    #:operation-encoding
+    #:operation-sizebytes
+    #:operation-contenthash
+    #:operation-hashalgorithm
+    #:operation-normalizedhash
+    #:operation-raw
+    #:operation-rawcontent
+    #:operation-notes
+    #:operation-deleted
+    #:operation-tombstonereason
+    #:operation-extensions
+    #:operation-mission
+    #:operation-objectives
+    #:operation-inscope
+    #:operation-outofscope
+    #:operation-targetpolicy
+    #:operation-targets
+    #:operation-phases
+    #:operation-datasets
+    #:operation-capabilitygaps
+    #:operation-assignments
+    #:operation-postactions
+    #:investigation-target
+    #:MAKE-investigation-target
+    #:COPY-investigation-target
+    #:investigation-target-P
+    #:+investigation-target-WIRE-FIELDS+
+    #:investigation-target-id
+    #:investigation-target-rev
+    #:investigation-target-dataset
+    #:investigation-target-dtype
+    #:investigation-target-schemaversion
+    #:investigation-target-externalids
+    #:investigation-target-aliases
+    #:investigation-target-sources
+    #:investigation-target-sourceurls
+    #:investigation-target-sourcerecordids
+    #:investigation-target-sourcekinds
+    #:investigation-target-sourcelicense
+    #:investigation-target-sourceterms
+    #:investigation-target-sourceretrievedat
+    #:investigation-target-collectedat
+    #:investigation-target-observedat
+    #:investigation-target-firstseenat
+    #:investigation-target-lastseenat
+    #:investigation-target-createdat
+    #:investigation-target-updatedat
+    #:investigation-target-validfrom
+    #:investigation-target-validuntil
+    #:investigation-target-expiresat
+    #:investigation-target-collector
+    #:investigation-target-collectorversion
+    #:investigation-target-collectionmethod
+    #:investigation-target-collectionstatus
+    #:investigation-target-runid
+    #:investigation-target-correlationid
+    #:investigation-target-causationid
+    #:investigation-target-parentid
+    #:investigation-target-rootid
+    #:investigation-target-confidence
+    #:investigation-target-confidencebasis
+    #:investigation-target-qualityscore
+    #:investigation-target-completenessscore
+    #:investigation-target-verificationstatus
+    #:investigation-target-verifiedat
+    #:investigation-target-verifiedby
+    #:investigation-target-provenance
+    #:investigation-target-chainofcustody
+    #:investigation-target-transformhistory
+    #:investigation-target-labels
+    #:investigation-target-tags
+    #:investigation-target-topics
+    #:investigation-target-language
+    #:investigation-target-jurisdiction
+    #:investigation-target-countrycode
+    #:investigation-target-regioncode
+    #:investigation-target-timezone
+    #:investigation-target-sensitivity
+    #:investigation-target-visibility
+    #:investigation-target-owner
+    #:investigation-target-accesscontrol
+    #:investigation-target-legalbasis
+    #:investigation-target-retentionpolicy
+    #:investigation-target-contenttype
+    #:investigation-target-encoding
+    #:investigation-target-sizebytes
+    #:investigation-target-contenthash
+    #:investigation-target-hashalgorithm
+    #:investigation-target-normalizedhash
+    #:investigation-target-raw
+    #:investigation-target-rawcontent
+    #:investigation-target-notes
+    #:investigation-target-deleted
+    #:investigation-target-tombstonereason
+    #:investigation-target-extensions
+    #:investigation-target-actor
+    #:investigation-target-target
+    #:investigation-target-targetid
+    #:investigation-target-targettype
+    #:investigation-target-query
+    #:investigation-target-researchquestion
+    #:investigation-target-hypotheses
+    #:investigation-target-objectives
+    #:investigation-target-inscope
+    #:investigation-target-outofscope
+    #:investigation-target-scopetype
+    #:investigation-target-seedids
+    #:investigation-target-sourceids
+    #:investigation-target-requireddtypes
+    #:investigation-target-preferredsources
+    #:investigation-target-excludedsources
+    #:investigation-target-delay
+    #:investigation-target-recurring
+    #:investigation-target-recurrence
+    #:investigation-target-options
+    #:investigation-target-depth
+    #:investigation-target-maxdepth
+    #:investigation-target-breadth
+    #:investigation-target-priority
+    #:investigation-target-score
+    #:investigation-target-selectionreason
+    #:investigation-target-status
+    #:investigation-target-nextrunat
+    #:asset-identifier-records-item
+    #:MAKE-asset-identifier-records-item
+    #:COPY-asset-identifier-records-item
+    #:asset-identifier-records-item-P
+    #:+asset-identifier-records-item-WIRE-FIELDS+
+    #:asset-identifier-records-item-scheme
+    #:asset-identifier-records-item-value
+    #:asset-identifier-records-item-issuer
+    #:asset-identifier-records-item-jurisdiction
+    #:asset-identifier-records-item-canonical
+    #:asset-identifier-records-item-validfrom
+    #:asset-identifier-records-item-validto
+    #:asset-identifier-records-item-url
+    #:asset-identifier-records-item-notes
+    #:asset-valuation-records-item
+    #:MAKE-asset-valuation-records-item
+    #:COPY-asset-valuation-records-item
+    #:asset-valuation-records-item-P
+    #:+asset-valuation-records-item-WIRE-FIELDS+
+    #:asset-valuation-records-item-amount
+    #:asset-valuation-records-item-currency
+    #:asset-valuation-records-item-basis
+    #:asset-valuation-records-item-asof
+    #:asset-valuation-records-item-notes
+    #:asset-external-ids-item
+    #:MAKE-asset-external-ids-item
+    #:COPY-asset-external-ids-item
+    #:asset-external-ids-item-P
+    #:+asset-external-ids-item-WIRE-FIELDS+
+    #:asset-external-ids-item-scheme
+    #:asset-external-ids-item-value
+    #:asset-external-ids-item-issuer
+    #:asset-external-ids-item-jurisdiction
+    #:asset-external-ids-item-canonical
+    #:asset-external-ids-item-validfrom
+    #:asset-external-ids-item-validto
+    #:asset-external-ids-item-url
+    #:asset-external-ids-item-notes
+    #:campaign-finance-amount-record
+    #:MAKE-campaign-finance-amount-record
+    #:COPY-campaign-finance-amount-record
+    #:campaign-finance-amount-record-P
+    #:+campaign-finance-amount-record-WIRE-FIELDS+
+    #:campaign-finance-amount-record-amount
+    #:campaign-finance-amount-record-currency
+    #:campaign-finance-amount-record-basis
+    #:campaign-finance-amount-record-asof
+    #:campaign-finance-amount-record-notes
+    #:campaign-finance-aggregate-amount
+    #:MAKE-campaign-finance-aggregate-amount
+    #:COPY-campaign-finance-aggregate-amount
+    #:campaign-finance-aggregate-amount-P
+    #:+campaign-finance-aggregate-amount-WIRE-FIELDS+
+    #:campaign-finance-aggregate-amount-amount
+    #:campaign-finance-aggregate-amount-currency
+    #:campaign-finance-aggregate-amount-basis
+    #:campaign-finance-aggregate-amount-asof
+    #:campaign-finance-aggregate-amount-notes
+    #:campaign-finance-source-system-ids-item
+    #:MAKE-campaign-finance-source-system-ids-item
+    #:COPY-campaign-finance-source-system-ids-item
+    #:campaign-finance-source-system-ids-item-P
+    #:+campaign-finance-source-system-ids-item-WIRE-FIELDS+
+    #:campaign-finance-source-system-ids-item-scheme
+    #:campaign-finance-source-system-ids-item-value
+    #:campaign-finance-source-system-ids-item-issuer
+    #:campaign-finance-source-system-ids-item-jurisdiction
+    #:campaign-finance-source-system-ids-item-canonical
+    #:campaign-finance-source-system-ids-item-validfrom
+    #:campaign-finance-source-system-ids-item-validto
+    #:campaign-finance-source-system-ids-item-url
+    #:campaign-finance-source-system-ids-item-notes
+    #:contract-funding-records-item
+    #:MAKE-contract-funding-records-item
+    #:COPY-contract-funding-records-item
+    #:contract-funding-records-item-P
+    #:+contract-funding-records-item-WIRE-FIELDS+
+    #:contract-funding-records-item-amount
+    #:contract-funding-records-item-currency
+    #:contract-funding-records-item-basis
+    #:contract-funding-records-item-asof
+    #:contract-funding-records-item-notes
+    #:contract-source-system-ids-item
+    #:MAKE-contract-source-system-ids-item
+    #:COPY-contract-source-system-ids-item
+    #:contract-source-system-ids-item-P
+    #:+contract-source-system-ids-item-WIRE-FIELDS+
+    #:contract-source-system-ids-item-scheme
+    #:contract-source-system-ids-item-value
+    #:contract-source-system-ids-item-issuer
+    #:contract-source-system-ids-item-jurisdiction
+    #:contract-source-system-ids-item-canonical
+    #:contract-source-system-ids-item-validfrom
+    #:contract-source-system-ids-item-validto
+    #:contract-source-system-ids-item-url
+    #:contract-source-system-ids-item-notes
+    #:employment-compensation-records-item
+    #:MAKE-employment-compensation-records-item
+    #:COPY-employment-compensation-records-item
+    #:employment-compensation-records-item-P
+    #:+employment-compensation-records-item-WIRE-FIELDS+
+    #:employment-compensation-records-item-amount
+    #:employment-compensation-records-item-currency
+    #:employment-compensation-records-item-basis
+    #:employment-compensation-records-item-asof
+    #:employment-compensation-records-item-notes
+    #:entity-identity-keys-item
+    #:MAKE-entity-identity-keys-item
+    #:COPY-entity-identity-keys-item
+    #:entity-identity-keys-item-P
+    #:+entity-identity-keys-item-WIRE-FIELDS+
+    #:entity-identity-keys-item-scheme
+    #:entity-identity-keys-item-value
+    #:entity-identity-keys-item-issuer
+    #:entity-identity-keys-item-jurisdiction
+    #:entity-identity-keys-item-canonical
+    #:entity-identity-keys-item-validfrom
+    #:entity-identity-keys-item-validto
+    #:entity-identity-keys-item-url
+    #:entity-identity-keys-item-notes
+    #:entity-external-ids-item
+    #:MAKE-entity-external-ids-item
+    #:COPY-entity-external-ids-item
+    #:entity-external-ids-item-P
+    #:+entity-external-ids-item-WIRE-FIELDS+
+    #:entity-external-ids-item-scheme
+    #:entity-external-ids-item-value
+    #:entity-external-ids-item-issuer
+    #:entity-external-ids-item-jurisdiction
+    #:entity-external-ids-item-canonical
+    #:entity-external-ids-item-validfrom
+    #:entity-external-ids-item-validto
+    #:entity-external-ids-item-url
+    #:entity-external-ids-item-notes
+    #:financial-observation-amount-record
+    #:MAKE-financial-observation-amount-record
+    #:COPY-financial-observation-amount-record
+    #:financial-observation-amount-record-P
+    #:+financial-observation-amount-record-WIRE-FIELDS+
+    #:financial-observation-amount-record-amount
+    #:financial-observation-amount-record-currency
+    #:financial-observation-amount-record-basis
+    #:financial-observation-amount-record-asof
+    #:financial-observation-amount-record-notes
+    #:grant-funding-records-item
+    #:MAKE-grant-funding-records-item
+    #:COPY-grant-funding-records-item
+    #:grant-funding-records-item-P
+    #:+grant-funding-records-item-WIRE-FIELDS+
+    #:grant-funding-records-item-amount
+    #:grant-funding-records-item-currency
+    #:grant-funding-records-item-basis
+    #:grant-funding-records-item-asof
+    #:grant-funding-records-item-notes
+    #:grant-matching-amount
+    #:MAKE-grant-matching-amount
+    #:COPY-grant-matching-amount
+    #:grant-matching-amount-P
+    #:+grant-matching-amount-WIRE-FIELDS+
+    #:grant-matching-amount-amount
+    #:grant-matching-amount-currency
+    #:grant-matching-amount-basis
+    #:grant-matching-amount-asof
+    #:grant-matching-amount-notes
+    #:lobbying-filing-amount-records-item
+    #:MAKE-lobbying-filing-amount-records-item
+    #:COPY-lobbying-filing-amount-records-item
+    #:lobbying-filing-amount-records-item-P
+    #:+lobbying-filing-amount-records-item-WIRE-FIELDS+
+    #:lobbying-filing-amount-records-item-amount
+    #:lobbying-filing-amount-records-item-currency
+    #:lobbying-filing-amount-records-item-basis
+    #:lobbying-filing-amount-records-item-asof
+    #:lobbying-filing-amount-records-item-notes
+    #:ownership-value-record
+    #:MAKE-ownership-value-record
+    #:COPY-ownership-value-record
+    #:ownership-value-record-P
+    #:+ownership-value-record-WIRE-FIELDS+
+    #:ownership-value-record-amount
+    #:ownership-value-record-currency
+    #:ownership-value-record-basis
+    #:ownership-value-record-asof
+    #:ownership-value-record-notes
+    #:procurement-funding-records-item
+    #:MAKE-procurement-funding-records-item
+    #:COPY-procurement-funding-records-item
+    #:procurement-funding-records-item-P
+    #:+procurement-funding-records-item-WIRE-FIELDS+
+    #:procurement-funding-records-item-amount
+    #:procurement-funding-records-item-currency
+    #:procurement-funding-records-item-basis
+    #:procurement-funding-records-item-asof
+    #:procurement-funding-records-item-notes
+    #:procurement-source-system-ids-item
+    #:MAKE-procurement-source-system-ids-item
+    #:COPY-procurement-source-system-ids-item
+    #:procurement-source-system-ids-item-P
+    #:+procurement-source-system-ids-item-WIRE-FIELDS+
+    #:procurement-source-system-ids-item-scheme
+    #:procurement-source-system-ids-item-value
+    #:procurement-source-system-ids-item-issuer
+    #:procurement-source-system-ids-item-jurisdiction
+    #:procurement-source-system-ids-item-canonical
+    #:procurement-source-system-ids-item-validfrom
+    #:procurement-source-system-ids-item-validto
+    #:procurement-source-system-ids-item-url
+    #:procurement-source-system-ids-item-notes
+    #:product-pricing-records-item
+    #:MAKE-product-pricing-records-item
+    #:COPY-product-pricing-records-item
+    #:product-pricing-records-item-P
+    #:+product-pricing-records-item-WIRE-FIELDS+
+    #:product-pricing-records-item-amount
+    #:product-pricing-records-item-currency
+    #:product-pricing-records-item-basis
+    #:product-pricing-records-item-asof
+    #:product-pricing-records-item-notes
+    #:product-external-ids-item
+    #:MAKE-product-external-ids-item
+    #:COPY-product-external-ids-item
+    #:product-external-ids-item-P
+    #:+product-external-ids-item-WIRE-FIELDS+
+    #:product-external-ids-item-scheme
+    #:product-external-ids-item-value
+    #:product-external-ids-item-issuer
+    #:product-external-ids-item-jurisdiction
+    #:product-external-ids-item-canonical
+    #:product-external-ids-item-validfrom
+    #:product-external-ids-item-validto
+    #:product-external-ids-item-url
+    #:product-external-ids-item-notes
+    #:research-node-limits
+    #:MAKE-research-node-limits
+    #:COPY-research-node-limits
+    #:research-node-limits-P
+    #:+research-node-limits-WIRE-FIELDS+
+    #:research-node-limits-maxdepth
+    #:research-node-limits-maxactorruns
+    #:research-node-limits-maxrequests
+    #:research-node-limits-maxelapsedms
+    #:research-node-limits-maxrepeatedstate
+    #:research-node-limits-maxcost
+    #:research-node-limits-currency
+    #:research-node-stop
+    #:MAKE-research-node-stop
+    #:COPY-research-node-stop
+    #:research-node-stop-P
+    #:+research-node-stop-WIRE-FIELDS+
+    #:research-node-stop-whenactorqueueempty
+    #:research-node-stop-whennonewdocuments
+    #:research-node-stop-whenobjectivesatisfied
+    #:research-node-stop-haltonactorfailure
+    #:research-node-counters
+    #:MAKE-research-node-counters
+    #:COPY-research-node-counters
+    #:research-node-counters-P
+    #:+research-node-counters-WIRE-FIELDS+
+    #:research-node-counters-actorruns
+    #:research-node-counters-repeatedstate
+    #:research-node-counters-elapsedms
+    #:research-node-history-item
+    #:MAKE-research-node-history-item
+    #:COPY-research-node-history-item
+    #:research-node-history-item-P
+    #:+research-node-history-item-WIRE-FIELDS+
+    #:research-node-history-item-from
+    #:research-node-history-item-to
+    #:research-node-history-item-at
+    #:research-node-history-item-message
+    #:research-node-history-item-error
+    #:research-node-history-item-actorid
+    #:research-node-history-item-runid
+    #:research-node-history-item-outputids
+    #:research-node-history-item-artifactids
+    #:alert
+    #:MAKE-alert
+    #:COPY-alert
+    #:alert-P
+    #:+alert-WIRE-FIELDS+
+    #:alert-id
+    #:alert-rev
+    #:alert-dataset
+    #:alert-dtype
+    #:alert-schemaversion
+    #:alert-externalids
+    #:alert-aliases
+    #:alert-sources
+    #:alert-sourceurls
+    #:alert-sourcerecordids
+    #:alert-sourcekinds
+    #:alert-sourcelicense
+    #:alert-sourceterms
+    #:alert-sourceretrievedat
+    #:alert-collectedat
+    #:alert-observedat
+    #:alert-firstseenat
+    #:alert-lastseenat
+    #:alert-createdat
+    #:alert-updatedat
+    #:alert-validfrom
+    #:alert-validuntil
+    #:alert-expiresat
+    #:alert-collector
+    #:alert-collectorversion
+    #:alert-collectionmethod
+    #:alert-collectionstatus
+    #:alert-runid
+    #:alert-correlationid
+    #:alert-causationid
+    #:alert-parentid
+    #:alert-rootid
+    #:alert-confidence
+    #:alert-confidencebasis
+    #:alert-qualityscore
+    #:alert-completenessscore
+    #:alert-verificationstatus
+    #:alert-verifiedat
+    #:alert-verifiedby
+    #:alert-provenance
+    #:alert-chainofcustody
+    #:alert-transformhistory
+    #:alert-labels
+    #:alert-tags
+    #:alert-topics
+    #:alert-language
+    #:alert-jurisdiction
+    #:alert-countrycode
+    #:alert-regioncode
+    #:alert-timezone
+    #:alert-sensitivity
+    #:alert-visibility
+    #:alert-owner
+    #:alert-accesscontrol
+    #:alert-legalbasis
+    #:alert-retentionpolicy
+    #:alert-contenttype
+    #:alert-encoding
+    #:alert-sizebytes
+    #:alert-contenthash
+    #:alert-hashalgorithm
+    #:alert-normalizedhash
+    #:alert-raw
+    #:alert-rawcontent
+    #:alert-notes
+    #:alert-deleted
+    #:alert-tombstonereason
+    #:alert-extensions
+    #:alert-description
+    #:alert-status
+    #:alert-contentvalidfrom
+    #:alert-contentvaliduntil
+    #:alert-ruleid
+    #:alert-triggereventid
+    #:alert-relatedalertids
+    #:alert-firsttriggeredat
+    #:alert-lasttriggeredat
+    #:alert-occurrencecount
+    #:alert-acknowledgementactions
+    #:alert-suppresseduntil
+    #:alert-resolvedat
+    #:alert-resolution
+    #:alert-alerttype
+    #:alert-subjectids
+    #:alert-condition
+    #:alert-threshold
+    #:alert-triggeredat
+    #:alert-severity
+    #:alert-acknowledgedby
+    #:analysis
+    #:MAKE-analysis
+    #:COPY-analysis
+    #:analysis-P
+    #:+analysis-WIRE-FIELDS+
+    #:analysis-id
+    #:analysis-rev
+    #:analysis-dataset
+    #:analysis-dtype
+    #:analysis-schemaversion
+    #:analysis-externalids
+    #:analysis-aliases
+    #:analysis-sources
+    #:analysis-sourceurls
+    #:analysis-sourcerecordids
+    #:analysis-sourcekinds
+    #:analysis-sourcelicense
+    #:analysis-sourceterms
+    #:analysis-sourceretrievedat
+    #:analysis-collectedat
+    #:analysis-observedat
+    #:analysis-firstseenat
+    #:analysis-lastseenat
+    #:analysis-createdat
+    #:analysis-updatedat
+    #:analysis-validfrom
+    #:analysis-validuntil
+    #:analysis-expiresat
+    #:analysis-collector
+    #:analysis-collectorversion
+    #:analysis-collectionmethod
+    #:analysis-collectionstatus
+    #:analysis-runid
+    #:analysis-correlationid
+    #:analysis-causationid
+    #:analysis-parentid
+    #:analysis-rootid
+    #:analysis-confidencebasis
+    #:analysis-qualityscore
+    #:analysis-completenessscore
+    #:analysis-verificationstatus
+    #:analysis-verifiedat
+    #:analysis-verifiedby
+    #:analysis-provenance
+    #:analysis-chainofcustody
+    #:analysis-transformhistory
+    #:analysis-labels
+    #:analysis-tags
+    #:analysis-topics
+    #:analysis-language
+    #:analysis-jurisdiction
+    #:analysis-countrycode
+    #:analysis-regioncode
+    #:analysis-timezone
+    #:analysis-sensitivity
+    #:analysis-visibility
+    #:analysis-owner
+    #:analysis-accesscontrol
+    #:analysis-legalbasis
+    #:analysis-retentionpolicy
+    #:analysis-contenttype
+    #:analysis-encoding
+    #:analysis-sizebytes
+    #:analysis-contenthash
+    #:analysis-hashalgorithm
+    #:analysis-normalizedhash
+    #:analysis-raw
+    #:analysis-rawcontent
+    #:analysis-notes
+    #:analysis-deleted
+    #:analysis-tombstonereason
+    #:analysis-extensions
+    #:analysis-description
+    #:analysis-status
+    #:analysis-contentvalidfrom
+    #:analysis-contentvaliduntil
+    #:analysis-hypotheses
+    #:analysis-methodids
+    #:analysis-claimids
+    #:analysis-logic
+    #:analysis-reasoningartifactids
+    #:analysis-uncertaintysources
+    #:analysis-dependencyids
+    #:analysis-reviewids
+    #:analysis-outputids
+    #:analysis-question
+    #:analysis-method
+    #:analysis-framework
+    #:analysis-scope
+    #:analysis-inputids
+    #:analysis-findingids
+    #:analysis-findings
+    #:analysis-conclusions
+    #:analysis-recommendations
+    #:analysis-counterarguments
+    #:analysis-limitations
+    #:analysis-unresolved
+    #:analysis-payloadconfidence
+    #:asset
+    #:MAKE-asset
+    #:COPY-asset
+    #:asset-P
+    #:+asset-WIRE-FIELDS+
+    #:asset-id
+    #:asset-rev
+    #:asset-dataset
+    #:asset-dtype
+    #:asset-schemaversion
+    #:asset-externalids
+    #:asset-aliases
+    #:asset-sources
+    #:asset-sourceurls
+    #:asset-sourcerecordids
+    #:asset-sourcekinds
+    #:asset-sourcelicense
+    #:asset-sourceterms
+    #:asset-sourceretrievedat
+    #:asset-collectedat
+    #:asset-observedat
+    #:asset-firstseenat
+    #:asset-lastseenat
+    #:asset-createdat
+    #:asset-updatedat
+    #:asset-validfrom
+    #:asset-validuntil
+    #:asset-expiresat
+    #:asset-collector
+    #:asset-collectorversion
+    #:asset-collectionmethod
+    #:asset-collectionstatus
+    #:asset-runid
+    #:asset-correlationid
+    #:asset-causationid
+    #:asset-parentid
+    #:asset-rootid
+    #:asset-confidence
+    #:asset-confidencebasis
+    #:asset-qualityscore
+    #:asset-completenessscore
+    #:asset-verificationstatus
+    #:asset-verifiedat
+    #:asset-verifiedby
+    #:asset-provenance
+    #:asset-chainofcustody
+    #:asset-transformhistory
+    #:asset-labels
+    #:asset-tags
+    #:asset-topics
+    #:asset-language
+    #:asset-jurisdiction
+    #:asset-countrycode
+    #:asset-regioncode
+    #:asset-timezone
+    #:asset-sensitivity
+    #:asset-visibility
+    #:asset-owner
+    #:asset-accesscontrol
+    #:asset-legalbasis
+    #:asset-retentionpolicy
+    #:asset-contenttype
+    #:asset-encoding
+    #:asset-sizebytes
+    #:asset-contenthash
+    #:asset-hashalgorithm
+    #:asset-normalizedhash
+    #:asset-raw
+    #:asset-rawcontent
+    #:asset-notes
+    #:asset-deleted
+    #:asset-tombstonereason
+    #:asset-extensions
+    #:asset-description
+    #:asset-status
+    #:asset-contentvalidfrom
+    #:asset-contentvaliduntil
+    #:asset-assetclass
+    #:asset-custodianids
+    #:asset-beneficialownerids
+    #:asset-identifierrecords
+    #:asset-valuationrecords
+    #:asset-acquiredat
+    #:asset-disposedat
+    #:asset-acquisitioneventid
+    #:asset-disposaleventid
+    #:asset-componentids
+    #:asset-etype
+    #:asset-eid
+    #:asset-name
+    #:asset-displayname
+    #:asset-legalname
+    #:asset-shortname
+    #:asset-formernames
+    #:asset-bio
+    #:asset-payloadjurisdiction
+    #:asset-country
+    #:asset-foundedat
+    #:asset-dissolvedat
+    #:asset-website
+    #:asset-imageurl
+    #:asset-logourl
+    #:asset-payloadexternalids
+    #:asset-contactids
+    #:asset-locationids
+    #:asset-assettype
+    #:asset-ownerids
+    #:asset-operatorids
+    #:asset-serialnumber
+    #:asset-registration
+    #:asset-value
+    #:asset-currency
+    #:asset-locationid
+    #:campaign-finance
+    #:MAKE-campaign-finance
+    #:COPY-campaign-finance
+    #:campaign-finance-P
+    #:+campaign-finance-WIRE-FIELDS+
+    #:campaign-finance-id
+    #:campaign-finance-rev
+    #:campaign-finance-dataset
+    #:campaign-finance-dtype
+    #:campaign-finance-schemaversion
+    #:campaign-finance-externalids
+    #:campaign-finance-aliases
+    #:campaign-finance-sources
+    #:campaign-finance-sourceurls
+    #:campaign-finance-sourcerecordids
+    #:campaign-finance-sourcekinds
+    #:campaign-finance-sourcelicense
+    #:campaign-finance-sourceterms
+    #:campaign-finance-sourceretrievedat
+    #:campaign-finance-collectedat
+    #:campaign-finance-observedat
+    #:campaign-finance-firstseenat
+    #:campaign-finance-lastseenat
+    #:campaign-finance-createdat
+    #:campaign-finance-updatedat
+    #:campaign-finance-validfrom
+    #:campaign-finance-validuntil
+    #:campaign-finance-expiresat
+    #:campaign-finance-collector
+    #:campaign-finance-collectorversion
+    #:campaign-finance-collectionmethod
+    #:campaign-finance-collectionstatus
+    #:campaign-finance-runid
+    #:campaign-finance-correlationid
+    #:campaign-finance-causationid
+    #:campaign-finance-parentid
+    #:campaign-finance-rootid
+    #:campaign-finance-confidence
+    #:campaign-finance-confidencebasis
+    #:campaign-finance-qualityscore
+    #:campaign-finance-completenessscore
+    #:campaign-finance-verificationstatus
+    #:campaign-finance-verifiedat
+    #:campaign-finance-verifiedby
+    #:campaign-finance-provenance
+    #:campaign-finance-chainofcustody
+    #:campaign-finance-transformhistory
+    #:campaign-finance-labels
+    #:campaign-finance-tags
+    #:campaign-finance-topics
+    #:campaign-finance-language
+    #:campaign-finance-jurisdiction
+    #:campaign-finance-countrycode
+    #:campaign-finance-regioncode
+    #:campaign-finance-timezone
+    #:campaign-finance-sensitivity
+    #:campaign-finance-visibility
+    #:campaign-finance-owner
+    #:campaign-finance-accesscontrol
+    #:campaign-finance-legalbasis
+    #:campaign-finance-retentionpolicy
+    #:campaign-finance-contenttype
+    #:campaign-finance-encoding
+    #:campaign-finance-sizebytes
+    #:campaign-finance-contenthash
+    #:campaign-finance-hashalgorithm
+    #:campaign-finance-normalizedhash
+    #:campaign-finance-raw
+    #:campaign-finance-rawcontent
+    #:campaign-finance-notes
+    #:campaign-finance-deleted
+    #:campaign-finance-tombstonereason
+    #:campaign-finance-extensions
+    #:campaign-finance-description
+    #:campaign-finance-status
+    #:campaign-finance-contentvalidfrom
+    #:campaign-finance-contentvaliduntil
+    #:campaign-finance-transactionid
+    #:campaign-finance-committeeids
+    #:campaign-finance-donorrefs
+    #:campaign-finance-recipientrefs
+    #:campaign-finance-amountrecord
+    #:campaign-finance-transactiondate
+    #:campaign-finance-memoed
+    #:campaign-finance-memotext
+    #:campaign-finance-refundofid
+    #:campaign-finance-aggregateamount
+    #:campaign-finance-employer
+    #:campaign-finance-occupation
+    #:campaign-finance-sourcesystemids
+    #:campaign-finance-entityid
+    #:campaign-finance-observationtype
+    #:campaign-finance-amount
+    #:campaign-finance-currency
+    #:campaign-finance-valuetype
+    #:campaign-finance-periodstart
+    #:campaign-finance-periodend
+    #:campaign-finance-fiscalyear
+    #:campaign-finance-fiscalquarter
+    #:campaign-finance-reportedat
+    #:campaign-finance-counterpartyids
+    #:campaign-finance-instrument
+    #:campaign-finance-units
+    #:campaign-finance-unitprice
+    #:campaign-finance-percentage
+    #:campaign-finance-methodology
+    #:campaign-finance-qualifications
+    #:campaign-finance-committeeid
+    #:campaign-finance-donorid
+    #:campaign-finance-recipientid
+    #:campaign-finance-filingid
+    #:campaign-finance-contributiontype
+    #:campaign-finance-electioncycle
+    #:claim
+    #:MAKE-claim
+    #:COPY-claim
+    #:claim-P
+    #:+claim-WIRE-FIELDS+
+    #:claim-id
+    #:claim-rev
+    #:claim-dataset
+    #:claim-dtype
+    #:claim-schemaversion
+    #:claim-externalids
+    #:claim-aliases
+    #:claim-sources
+    #:claim-sourceurls
+    #:claim-sourcerecordids
+    #:claim-sourcekinds
+    #:claim-sourcelicense
+    #:claim-sourceterms
+    #:claim-sourceretrievedat
+    #:claim-collectedat
+    #:claim-observedat
+    #:claim-firstseenat
+    #:claim-lastseenat
+    #:claim-createdat
+    #:claim-updatedat
+    #:claim-validfrom
+    #:claim-validuntil
+    #:claim-expiresat
+    #:claim-collector
+    #:claim-collectorversion
+    #:claim-collectionmethod
+    #:claim-collectionstatus
+    #:claim-runid
+    #:claim-correlationid
+    #:claim-causationid
+    #:claim-parentid
+    #:claim-rootid
+    #:claim-confidence
+    #:claim-confidencebasis
+    #:claim-qualityscore
+    #:claim-completenessscore
+    #:claim-verificationstatus
+    #:claim-verifiedat
+    #:claim-verifiedby
+    #:claim-provenance
+    #:claim-chainofcustody
+    #:claim-transformhistory
+    #:claim-labels
+    #:claim-tags
+    #:claim-topics
+    #:claim-language
+    #:claim-jurisdiction
+    #:claim-countrycode
+    #:claim-regioncode
+    #:claim-timezone
+    #:claim-sensitivity
+    #:claim-visibility
+    #:claim-owner
+    #:claim-accesscontrol
+    #:claim-legalbasis
+    #:claim-retentionpolicy
+    #:claim-contenttype
+    #:claim-encoding
+    #:claim-sizebytes
+    #:claim-contenthash
+    #:claim-hashalgorithm
+    #:claim-normalizedhash
+    #:claim-raw
+    #:claim-rawcontent
+    #:claim-notes
+    #:claim-deleted
+    #:claim-tombstonereason
+    #:claim-extensions
+    #:claim-description
+    #:claim-status
+    #:claim-contentvalidfrom
+    #:claim-contentvaliduntil
+    #:claim-proposition
+    #:claim-subjectrefs
+    #:claim-objectrefs
+    #:claim-supportingsourceids
+    #:claim-reviewids
+    #:claim-truthstatus
+    #:claim-verificationmethod
+    #:claim-derivedfromclaimids
+    #:claim-scope
+    #:claim-claim
+    #:claim-claimantid
+    #:claim-subjectids
+    #:claim-predicate
+    #:claim-object
+    #:claim-claimtype
+    #:claim-polarity
+    #:claim-supportingevidenceids
+    #:claim-contradictingevidenceids
+    #:claim-adjudication
+    #:concept
+    #:MAKE-concept
+    #:COPY-concept
+    #:concept-P
+    #:+concept-WIRE-FIELDS+
+    #:concept-id
+    #:concept-rev
+    #:concept-dataset
+    #:concept-dtype
+    #:concept-schemaversion
+    #:concept-externalids
+    #:concept-aliases
+    #:concept-sources
+    #:concept-sourceurls
+    #:concept-sourcerecordids
+    #:concept-sourcekinds
+    #:concept-sourcelicense
+    #:concept-sourceterms
+    #:concept-sourceretrievedat
+    #:concept-collectedat
+    #:concept-observedat
+    #:concept-firstseenat
+    #:concept-lastseenat
+    #:concept-createdat
+    #:concept-updatedat
+    #:concept-validfrom
+    #:concept-validuntil
+    #:concept-expiresat
+    #:concept-collector
+    #:concept-collectorversion
+    #:concept-collectionmethod
+    #:concept-collectionstatus
+    #:concept-runid
+    #:concept-correlationid
+    #:concept-causationid
+    #:concept-parentid
+    #:concept-rootid
+    #:concept-confidence
+    #:concept-confidencebasis
+    #:concept-qualityscore
+    #:concept-completenessscore
+    #:concept-verificationstatus
+    #:concept-verifiedat
+    #:concept-verifiedby
+    #:concept-provenance
+    #:concept-chainofcustody
+    #:concept-transformhistory
+    #:concept-labels
+    #:concept-tags
+    #:concept-topics
+    #:concept-language
+    #:concept-jurisdiction
+    #:concept-countrycode
+    #:concept-regioncode
+    #:concept-timezone
+    #:concept-sensitivity
+    #:concept-visibility
+    #:concept-owner
+    #:concept-accesscontrol
+    #:concept-legalbasis
+    #:concept-retentionpolicy
+    #:concept-contenttype
+    #:concept-encoding
+    #:concept-sizebytes
+    #:concept-contenthash
+    #:concept-hashalgorithm
+    #:concept-normalizedhash
+    #:concept-raw
+    #:concept-rawcontent
+    #:concept-notes
+    #:concept-deleted
+    #:concept-tombstonereason
+    #:concept-extensions
+    #:concept-description
+    #:concept-status
+    #:concept-contentvalidfrom
+    #:concept-contentvaliduntil
+    #:concept-conceptid
+    #:concept-vocabulary
+    #:concept-namespace
+    #:concept-version
+    #:concept-preferredlabel
+    #:concept-synonyms
+    #:concept-definitionsourceids
+    #:concept-mappingids
+    #:concept-term
+    #:concept-definition
+    #:concept-domain
+    #:concept-broaderids
+    #:concept-narrowerids
+    #:concept-relatedids
+    #:concept-examples
+    #:concept-criteria
+    #:contract
+    #:MAKE-contract
+    #:COPY-contract
+    #:contract-P
+    #:+contract-WIRE-FIELDS+
+    #:contract-id
+    #:contract-rev
+    #:contract-dataset
+    #:contract-dtype
+    #:contract-schemaversion
+    #:contract-externalids
+    #:contract-aliases
+    #:contract-sources
+    #:contract-sourceurls
+    #:contract-sourcerecordids
+    #:contract-sourcekinds
+    #:contract-sourcelicense
+    #:contract-sourceterms
+    #:contract-sourceretrievedat
+    #:contract-collectedat
+    #:contract-observedat
+    #:contract-firstseenat
+    #:contract-lastseenat
+    #:contract-createdat
+    #:contract-updatedat
+    #:contract-validfrom
+    #:contract-validuntil
+    #:contract-expiresat
+    #:contract-collector
+    #:contract-collectorversion
+    #:contract-collectionmethod
+    #:contract-collectionstatus
+    #:contract-runid
+    #:contract-correlationid
+    #:contract-causationid
+    #:contract-parentid
+    #:contract-rootid
+    #:contract-confidence
+    #:contract-confidencebasis
+    #:contract-qualityscore
+    #:contract-completenessscore
+    #:contract-verificationstatus
+    #:contract-verifiedat
+    #:contract-verifiedby
+    #:contract-provenance
+    #:contract-chainofcustody
+    #:contract-transformhistory
+    #:contract-labels
+    #:contract-tags
+    #:contract-topics
+    #:contract-language
+    #:contract-jurisdiction
+    #:contract-countrycode
+    #:contract-regioncode
+    #:contract-timezone
+    #:contract-sensitivity
+    #:contract-visibility
+    #:contract-owner
+    #:contract-accesscontrol
+    #:contract-legalbasis
+    #:contract-retentionpolicy
+    #:contract-contenttype
+    #:contract-encoding
+    #:contract-sizebytes
+    #:contract-contenthash
+    #:contract-hashalgorithm
+    #:contract-normalizedhash
+    #:contract-raw
+    #:contract-rawcontent
+    #:contract-notes
+    #:contract-deleted
+    #:contract-tombstonereason
+    #:contract-extensions
+    #:contract-description
+    #:contract-status
+    #:contract-contentvalidfrom
+    #:contract-contentvaliduntil
+    #:contract-parentawardid
+    #:contract-primeawardid
+    #:contract-partyroles
+    #:contract-fundingrecords
+    #:contract-lineitems
+    #:contract-clauseids
+    #:contract-deliverableids
+    #:contract-performancelocationids
+    #:contract-sourcesystemids
+    #:contract-contractid
+    #:contract-awardid
+    #:contract-solicitationid
+    #:contract-vehicleid
+    #:contract-buyerid
+    #:contract-sellerid
+    #:contract-agencyids
+    #:contract-vendorids
+    #:contract-subcontractorids
+    #:contract-scope
+    #:contract-awardtype
+    #:contract-competitiontype
+    #:contract-signedat
+    #:contract-startat
+    #:contract-endat
+    #:contract-ceilingamount
+    #:contract-potentialamount
+    #:contract-obligatedamount
+    #:contract-outlayamount
+    #:contract-recognizedrevenue
+    #:contract-currency
+    #:contract-naics
+    #:contract-psc
+    #:contract-placeofperformance
+    #:contract-modifications
+    #:dataset-manifest-count-entry
+    #:MAKE-dataset-manifest-count-entry
+    #:COPY-dataset-manifest-count-entry
+    #:dataset-manifest-count-entry-P
+    #:+dataset-manifest-count-entry-WIRE-FIELDS+
+    #:dataset-manifest-count-entry-key
+    #:dataset-manifest-count-entry-value
+    #:dataset-manifest
+    #:MAKE-dataset-manifest
+    #:COPY-dataset-manifest
+    #:dataset-manifest-P
+    #:+dataset-manifest-WIRE-FIELDS+
+    #:dataset-manifest-id
+    #:dataset-manifest-rev
+    #:dataset-manifest-dataset
+    #:dataset-manifest-dtype
+    #:dataset-manifest-schemaversion
+    #:dataset-manifest-externalids
+    #:dataset-manifest-aliases
+    #:dataset-manifest-sources
+    #:dataset-manifest-sourceurls
+    #:dataset-manifest-sourcerecordids
+    #:dataset-manifest-sourcekinds
+    #:dataset-manifest-sourcelicense
+    #:dataset-manifest-sourceterms
+    #:dataset-manifest-sourceretrievedat
+    #:dataset-manifest-collectedat
+    #:dataset-manifest-observedat
+    #:dataset-manifest-firstseenat
+    #:dataset-manifest-lastseenat
+    #:dataset-manifest-createdat
+    #:dataset-manifest-updatedat
+    #:dataset-manifest-validfrom
+    #:dataset-manifest-validuntil
+    #:dataset-manifest-expiresat
+    #:dataset-manifest-collector
+    #:dataset-manifest-collectorversion
+    #:dataset-manifest-collectionmethod
+    #:dataset-manifest-collectionstatus
+    #:dataset-manifest-runid
+    #:dataset-manifest-correlationid
+    #:dataset-manifest-causationid
+    #:dataset-manifest-parentid
+    #:dataset-manifest-rootid
+    #:dataset-manifest-confidence
+    #:dataset-manifest-confidencebasis
+    #:dataset-manifest-qualityscore
+    #:dataset-manifest-completenessscore
+    #:dataset-manifest-verificationstatus
+    #:dataset-manifest-verifiedat
+    #:dataset-manifest-verifiedby
+    #:dataset-manifest-provenance
+    #:dataset-manifest-chainofcustody
+    #:dataset-manifest-transformhistory
+    #:dataset-manifest-labels
+    #:dataset-manifest-tags
+    #:dataset-manifest-topics
+    #:dataset-manifest-language
+    #:dataset-manifest-jurisdiction
+    #:dataset-manifest-countrycode
+    #:dataset-manifest-regioncode
+    #:dataset-manifest-timezone
+    #:dataset-manifest-sensitivity
+    #:dataset-manifest-visibility
+    #:dataset-manifest-owner
+    #:dataset-manifest-accesscontrol
+    #:dataset-manifest-legalbasis
+    #:dataset-manifest-retentionpolicy
+    #:dataset-manifest-contenttype
+    #:dataset-manifest-encoding
+    #:dataset-manifest-sizebytes
+    #:dataset-manifest-contenthash
+    #:dataset-manifest-hashalgorithm
+    #:dataset-manifest-normalizedhash
+    #:dataset-manifest-raw
+    #:dataset-manifest-rawcontent
+    #:dataset-manifest-notes
+    #:dataset-manifest-deleted
+    #:dataset-manifest-tombstonereason
+    #:dataset-manifest-extensions
+    #:dataset-manifest-description
+    #:dataset-manifest-status
+    #:dataset-manifest-contentvalidfrom
+    #:dataset-manifest-contentvaliduntil
+    #:dataset-manifest-datasetid
+    #:dataset-manifest-datasetversion
+    #:dataset-manifest-profile
+    #:dataset-manifest-profileversion
+    #:dataset-manifest-schemarevision
+    #:dataset-manifest-documentversions
+    #:dataset-manifest-sourcedatasetids
+    #:dataset-manifest-synccursor
+    #:dataset-manifest-syncstatus
+    #:dataset-manifest-validatedat
+    #:dataset-manifest-manifesttype
+    #:dataset-manifest-name
+    #:dataset-manifest-actor
+    #:dataset-manifest-consumerpath
+    #:dataset-manifest-targetoptions
+    #:dataset-manifest-documentids
+    #:dataset-manifest-countsbydtype
+    #:dataset-manifest-recordcount
+    #:dataset-manifest-payloadhashalgorithm
+    #:dataset-manifest-payloadcontenthash
+    #:dataset-manifest-files
+    #:dataset-manifest-schemaversions
+    #:dataset-manifest-generatedat
+    #:education
+    #:MAKE-education
+    #:COPY-education
+    #:education-P
+    #:+education-WIRE-FIELDS+
+    #:education-id
+    #:education-rev
+    #:education-dataset
+    #:education-dtype
+    #:education-schemaversion
+    #:education-externalids
+    #:education-aliases
+    #:education-sources
+    #:education-sourceurls
+    #:education-sourcerecordids
+    #:education-sourcekinds
+    #:education-sourcelicense
+    #:education-sourceterms
+    #:education-sourceretrievedat
+    #:education-collectedat
+    #:education-observedat
+    #:education-firstseenat
+    #:education-lastseenat
+    #:education-createdat
+    #:education-updatedat
+    #:education-validfrom
+    #:education-validuntil
+    #:education-expiresat
+    #:education-collector
+    #:education-collectorversion
+    #:education-collectionmethod
+    #:education-collectionstatus
+    #:education-runid
+    #:education-correlationid
+    #:education-causationid
+    #:education-parentid
+    #:education-rootid
+    #:education-confidence
+    #:education-confidencebasis
+    #:education-qualityscore
+    #:education-completenessscore
+    #:education-verificationstatus
+    #:education-verifiedat
+    #:education-verifiedby
+    #:education-provenance
+    #:education-chainofcustody
+    #:education-transformhistory
+    #:education-labels
+    #:education-tags
+    #:education-topics
+    #:education-language
+    #:education-jurisdiction
+    #:education-countrycode
+    #:education-regioncode
+    #:education-timezone
+    #:education-sensitivity
+    #:education-visibility
+    #:education-owner
+    #:education-accesscontrol
+    #:education-legalbasis
+    #:education-retentionpolicy
+    #:education-contenttype
+    #:education-encoding
+    #:education-sizebytes
+    #:education-contenthash
+    #:education-hashalgorithm
+    #:education-normalizedhash
+    #:education-raw
+    #:education-rawcontent
+    #:education-notes
+    #:education-deleted
+    #:education-tombstonereason
+    #:education-extensions
+    #:education-description
+    #:education-status
+    #:education-contentvalidfrom
+    #:education-contentvaliduntil
+    #:education-educationtype
+    #:education-credentialid
+    #:education-programid
+    #:education-attendancestatus
+    #:education-awardedat
+    #:education-thesistitle
+    #:education-advisorids
+    #:education-personid
+    #:education-institutionid
+    #:education-degree
+    #:education-field
+    #:education-startat
+    #:education-endat
+    #:education-graduated
+    #:education-honors
+    #:employment
+    #:MAKE-employment
+    #:COPY-employment
+    #:employment-P
+    #:+employment-WIRE-FIELDS+
+    #:employment-id
+    #:employment-rev
+    #:employment-dataset
+    #:employment-dtype
+    #:employment-schemaversion
+    #:employment-externalids
+    #:employment-aliases
+    #:employment-sources
+    #:employment-sourceurls
+    #:employment-sourcerecordids
+    #:employment-sourcekinds
+    #:employment-sourcelicense
+    #:employment-sourceterms
+    #:employment-sourceretrievedat
+    #:employment-collectedat
+    #:employment-observedat
+    #:employment-firstseenat
+    #:employment-lastseenat
+    #:employment-createdat
+    #:employment-updatedat
+    #:employment-validfrom
+    #:employment-validuntil
+    #:employment-expiresat
+    #:employment-collector
+    #:employment-collectorversion
+    #:employment-collectionmethod
+    #:employment-collectionstatus
+    #:employment-runid
+    #:employment-correlationid
+    #:employment-causationid
+    #:employment-parentid
+    #:employment-rootid
+    #:employment-confidence
+    #:employment-confidencebasis
+    #:employment-qualityscore
+    #:employment-completenessscore
+    #:employment-verificationstatus
+    #:employment-verifiedat
+    #:employment-verifiedby
+    #:employment-provenance
+    #:employment-chainofcustody
+    #:employment-transformhistory
+    #:employment-labels
+    #:employment-tags
+    #:employment-topics
+    #:employment-language
+    #:employment-jurisdiction
+    #:employment-countrycode
+    #:employment-regioncode
+    #:employment-timezone
+    #:employment-sensitivity
+    #:employment-visibility
+    #:employment-owner
+    #:employment-accesscontrol
+    #:employment-legalbasis
+    #:employment-retentionpolicy
+    #:employment-contenttype
+    #:employment-encoding
+    #:employment-sizebytes
+    #:employment-contenthash
+    #:employment-hashalgorithm
+    #:employment-normalizedhash
+    #:employment-raw
+    #:employment-rawcontent
+    #:employment-notes
+    #:employment-deleted
+    #:employment-tombstonereason
+    #:employment-extensions
+    #:employment-description
+    #:employment-status
+    #:employment-contentvalidfrom
+    #:employment-contentvaliduntil
+    #:employment-roleids
+    #:employment-reportstoids
+    #:employment-appointmenttype
+    #:employment-appointedbyids
+    #:employment-compensationrecords
+    #:employment-responsibilities
+    #:employment-terminationreason
+    #:employment-personid
+    #:employment-organizationid
+    #:employment-title
+    #:employment-department
+    #:employment-startat
+    #:employment-endat
+    #:employment-current
+    #:employment-employmenttype
+    #:employment-locationid
+    #:entity
+    #:MAKE-entity
+    #:COPY-entity
+    #:entity-P
+    #:+entity-WIRE-FIELDS+
+    #:entity-id
+    #:entity-rev
+    #:entity-dataset
+    #:entity-dtype
+    #:entity-schemaversion
+    #:entity-externalids
+    #:entity-aliases
+    #:entity-sources
+    #:entity-sourceurls
+    #:entity-sourcerecordids
+    #:entity-sourcekinds
+    #:entity-sourcelicense
+    #:entity-sourceterms
+    #:entity-sourceretrievedat
+    #:entity-collectedat
+    #:entity-observedat
+    #:entity-firstseenat
+    #:entity-lastseenat
+    #:entity-createdat
+    #:entity-updatedat
+    #:entity-validfrom
+    #:entity-validuntil
+    #:entity-expiresat
+    #:entity-collector
+    #:entity-collectorversion
+    #:entity-collectionmethod
+    #:entity-collectionstatus
+    #:entity-runid
+    #:entity-correlationid
+    #:entity-causationid
+    #:entity-parentid
+    #:entity-rootid
+    #:entity-confidence
+    #:entity-confidencebasis
+    #:entity-qualityscore
+    #:entity-completenessscore
+    #:entity-verificationstatus
+    #:entity-verifiedat
+    #:entity-verifiedby
+    #:entity-provenance
+    #:entity-chainofcustody
+    #:entity-transformhistory
+    #:entity-labels
+    #:entity-tags
+    #:entity-topics
+    #:entity-language
+    #:entity-jurisdiction
+    #:entity-countrycode
+    #:entity-regioncode
+    #:entity-timezone
+    #:entity-sensitivity
+    #:entity-visibility
+    #:entity-owner
+    #:entity-accesscontrol
+    #:entity-legalbasis
+    #:entity-retentionpolicy
+    #:entity-contenttype
+    #:entity-encoding
+    #:entity-sizebytes
+    #:entity-contenthash
+    #:entity-hashalgorithm
+    #:entity-normalizedhash
+    #:entity-raw
+    #:entity-rawcontent
+    #:entity-notes
+    #:entity-deleted
+    #:entity-tombstonereason
+    #:entity-extensions
+    #:entity-description
+    #:entity-status
+    #:entity-contentvalidfrom
+    #:entity-contentvaliduntil
+    #:entity-entityclass
+    #:entity-canonicalname
+    #:entity-sameasids
+    #:entity-duplicatecandidateids
+    #:entity-identityconfidence
+    #:entity-identitykeys
+    #:entity-etype
+    #:entity-eid
+    #:entity-name
+    #:entity-displayname
+    #:entity-legalname
+    #:entity-shortname
+    #:entity-formernames
+    #:entity-bio
+    #:entity-payloadjurisdiction
+    #:entity-country
+    #:entity-foundedat
+    #:entity-dissolvedat
+    #:entity-website
+    #:entity-imageurl
+    #:entity-logourl
+    #:entity-payloadexternalids
+    #:entity-contactids
+    #:entity-locationids
+    #:event
+    #:MAKE-event
+    #:COPY-event
+    #:event-P
+    #:+event-WIRE-FIELDS+
+    #:event-id
+    #:event-rev
+    #:event-dataset
+    #:event-dtype
+    #:event-schemaversion
+    #:event-externalids
+    #:event-aliases
+    #:event-sources
+    #:event-sourceurls
+    #:event-sourcerecordids
+    #:event-sourcekinds
+    #:event-sourcelicense
+    #:event-sourceterms
+    #:event-sourceretrievedat
+    #:event-collectedat
+    #:event-observedat
+    #:event-firstseenat
+    #:event-lastseenat
+    #:event-createdat
+    #:event-updatedat
+    #:event-validfrom
+    #:event-validuntil
+    #:event-expiresat
+    #:event-collector
+    #:event-collectorversion
+    #:event-collectionmethod
+    #:event-collectionstatus
+    #:event-runid
+    #:event-correlationid
+    #:event-causationid
+    #:event-parentid
+    #:event-rootid
+    #:event-confidence
+    #:event-confidencebasis
+    #:event-qualityscore
+    #:event-completenessscore
+    #:event-verificationstatus
+    #:event-verifiedat
+    #:event-verifiedby
+    #:event-provenance
+    #:event-chainofcustody
+    #:event-transformhistory
+    #:event-labels
+    #:event-tags
+    #:event-topics
+    #:event-language
+    #:event-jurisdiction
+    #:event-countrycode
+    #:event-regioncode
+    #:event-timezone
+    #:event-sensitivity
+    #:event-visibility
+    #:event-owner
+    #:event-accesscontrol
+    #:event-legalbasis
+    #:event-retentionpolicy
+    #:event-contenttype
+    #:event-encoding
+    #:event-sizebytes
+    #:event-contenthash
+    #:event-hashalgorithm
+    #:event-normalizedhash
+    #:event-raw
+    #:event-rawcontent
+    #:event-notes
+    #:event-deleted
+    #:event-tombstonereason
+    #:event-extensions
+    #:event-description
+    #:event-status
+    #:event-contentvalidfrom
+    #:event-contentvaliduntil
+    #:event-eventtypeid
+    #:event-parenteventid
+    #:event-childeventids
+    #:event-participantroles
+    #:event-actionrecords
+    #:event-sourceeventids
+    #:event-recurrencerule
+    #:event-resultids
+    #:event-claimids
+    #:event-eventkind
+    #:event-name
+    #:event-participantids
+    #:event-participants
+    #:event-organizerids
+    #:event-sponsorids
+    #:event-locationids
+    #:event-startat
+    #:event-endat
+    #:event-outcome
+    #:event-agenda
+    #:event-decisions
+    #:event-actions
+    #:event-amount
+    #:event-currency
+    #:event-payloadjurisdiction
+    #:event-caseid
+    #:event-contractid
+    #:event-meetingid
+    #:evidence-record
+    #:MAKE-evidence-record
+    #:COPY-evidence-record
+    #:evidence-record-P
+    #:+evidence-record-WIRE-FIELDS+
+    #:evidence-record-id
+    #:evidence-record-rev
+    #:evidence-record-dataset
+    #:evidence-record-dtype
+    #:evidence-record-schemaversion
+    #:evidence-record-externalids
+    #:evidence-record-aliases
+    #:evidence-record-sources
+    #:evidence-record-sourceurls
+    #:evidence-record-sourcerecordids
+    #:evidence-record-sourcekinds
+    #:evidence-record-sourcelicense
+    #:evidence-record-sourceterms
+    #:evidence-record-sourceretrievedat
+    #:evidence-record-collectedat
+    #:evidence-record-observedat
+    #:evidence-record-firstseenat
+    #:evidence-record-lastseenat
+    #:evidence-record-createdat
+    #:evidence-record-updatedat
+    #:evidence-record-validfrom
+    #:evidence-record-validuntil
+    #:evidence-record-expiresat
+    #:evidence-record-collector
+    #:evidence-record-collectorversion
+    #:evidence-record-collectionmethod
+    #:evidence-record-collectionstatus
+    #:evidence-record-runid
+    #:evidence-record-correlationid
+    #:evidence-record-causationid
+    #:evidence-record-parentid
+    #:evidence-record-rootid
+    #:evidence-record-confidencebasis
+    #:evidence-record-qualityscore
+    #:evidence-record-completenessscore
+    #:evidence-record-verificationstatus
+    #:evidence-record-verifiedat
+    #:evidence-record-verifiedby
+    #:evidence-record-provenance
+    #:evidence-record-chainofcustody
+    #:evidence-record-transformhistory
+    #:evidence-record-labels
+    #:evidence-record-tags
+    #:evidence-record-topics
+    #:evidence-record-language
+    #:evidence-record-jurisdiction
+    #:evidence-record-countrycode
+    #:evidence-record-regioncode
+    #:evidence-record-timezone
+    #:evidence-record-sensitivity
+    #:evidence-record-visibility
+    #:evidence-record-owner
+    #:evidence-record-accesscontrol
+    #:evidence-record-legalbasis
+    #:evidence-record-retentionpolicy
+    #:evidence-record-contenttype
+    #:evidence-record-encoding
+    #:evidence-record-sizebytes
+    #:evidence-record-contenthash
+    #:evidence-record-hashalgorithm
+    #:evidence-record-normalizedhash
+    #:evidence-record-raw
+    #:evidence-record-rawcontent
+    #:evidence-record-notes
+    #:evidence-record-deleted
+    #:evidence-record-tombstonereason
+    #:evidence-record-extensions
+    #:evidence-record-description
+    #:evidence-record-status
+    #:evidence-record-contentvalidfrom
+    #:evidence-record-contentvaliduntil
+    #:evidence-record-subjectids
+    #:evidence-record-claimids
+    #:evidence-record-exactcontent
+    #:evidence-record-normalizedcontent
+    #:evidence-record-extractionmethod
+    #:evidence-record-captureactionid
+    #:evidence-record-custodyactions
+    #:evidence-record-hashes
+    #:evidence-record-admissibilitystatus
+    #:evidence-record-evidenceid
+    #:evidence-record-sourceid
+    #:evidence-record-sourceurl
+    #:evidence-record-kind
+    #:evidence-record-role
+    #:evidence-record-claim
+    #:evidence-record-observation
+    #:evidence-record-excerpt
+    #:evidence-record-locator
+    #:evidence-record-page
+    #:evidence-record-section
+    #:evidence-record-payloadcollectedat
+    #:evidence-record-payloadobservedat
+    #:evidence-record-payloadcontenthash
+    #:evidence-record-payloadhashalgorithm
+    #:evidence-record-payloadconfidence
+    #:evidence-record-corroborates
+    #:evidence-record-contradicts
+    #:evidence-record-payloadchainofcustody
+    #:evidence-record-attachments
+    #:evidence-record-payloadnotes
+    #:evidence-record-metadata
+    #:financial-observation
+    #:MAKE-financial-observation
+    #:COPY-financial-observation
+    #:financial-observation-P
+    #:+financial-observation-WIRE-FIELDS+
+    #:financial-observation-id
+    #:financial-observation-rev
+    #:financial-observation-dataset
+    #:financial-observation-dtype
+    #:financial-observation-schemaversion
+    #:financial-observation-externalids
+    #:financial-observation-aliases
+    #:financial-observation-sources
+    #:financial-observation-sourceurls
+    #:financial-observation-sourcerecordids
+    #:financial-observation-sourcekinds
+    #:financial-observation-sourcelicense
+    #:financial-observation-sourceterms
+    #:financial-observation-sourceretrievedat
+    #:financial-observation-collectedat
+    #:financial-observation-observedat
+    #:financial-observation-firstseenat
+    #:financial-observation-lastseenat
+    #:financial-observation-createdat
+    #:financial-observation-updatedat
+    #:financial-observation-validfrom
+    #:financial-observation-validuntil
+    #:financial-observation-expiresat
+    #:financial-observation-collector
+    #:financial-observation-collectorversion
+    #:financial-observation-collectionmethod
+    #:financial-observation-collectionstatus
+    #:financial-observation-runid
+    #:financial-observation-correlationid
+    #:financial-observation-causationid
+    #:financial-observation-parentid
+    #:financial-observation-rootid
+    #:financial-observation-confidence
+    #:financial-observation-confidencebasis
+    #:financial-observation-qualityscore
+    #:financial-observation-completenessscore
+    #:financial-observation-verificationstatus
+    #:financial-observation-verifiedat
+    #:financial-observation-verifiedby
+    #:financial-observation-provenance
+    #:financial-observation-chainofcustody
+    #:financial-observation-transformhistory
+    #:financial-observation-labels
+    #:financial-observation-tags
+    #:financial-observation-topics
+    #:financial-observation-language
+    #:financial-observation-jurisdiction
+    #:financial-observation-countrycode
+    #:financial-observation-regioncode
+    #:financial-observation-timezone
+    #:financial-observation-sensitivity
+    #:financial-observation-visibility
+    #:financial-observation-owner
+    #:financial-observation-accesscontrol
+    #:financial-observation-legalbasis
+    #:financial-observation-retentionpolicy
+    #:financial-observation-contenttype
+    #:financial-observation-encoding
+    #:financial-observation-sizebytes
+    #:financial-observation-contenthash
+    #:financial-observation-hashalgorithm
+    #:financial-observation-normalizedhash
+    #:financial-observation-raw
+    #:financial-observation-rawcontent
+    #:financial-observation-notes
+    #:financial-observation-deleted
+    #:financial-observation-tombstonereason
+    #:financial-observation-extensions
+    #:financial-observation-description
+    #:financial-observation-status
+    #:financial-observation-contentvalidfrom
+    #:financial-observation-contentvaliduntil
+    #:financial-observation-transactionid
+    #:financial-observation-payerids
+    #:financial-observation-payeeids
+    #:financial-observation-accountids
+    #:financial-observation-amountrecord
+    #:financial-observation-amountbasis
+    #:financial-observation-reportingstandard
+    #:financial-observation-filingids
+    #:financial-observation-sourcetransactionids
+    #:financial-observation-memoed
+    #:financial-observation-refunded
+    #:financial-observation-entityid
+    #:financial-observation-observationtype
+    #:financial-observation-amount
+    #:financial-observation-currency
+    #:financial-observation-valuetype
+    #:financial-observation-periodstart
+    #:financial-observation-periodend
+    #:financial-observation-fiscalyear
+    #:financial-observation-fiscalquarter
+    #:financial-observation-reportedat
+    #:financial-observation-counterpartyids
+    #:financial-observation-instrument
+    #:financial-observation-units
+    #:financial-observation-unitprice
+    #:financial-observation-percentage
+    #:financial-observation-methodology
+    #:financial-observation-qualifications
+    #:grant
+    #:MAKE-grant
+    #:COPY-grant
+    #:grant-P
+    #:+grant-WIRE-FIELDS+
+    #:grant-id
+    #:grant-rev
+    #:grant-dataset
+    #:grant-dtype
+    #:grant-schemaversion
+    #:grant-externalids
+    #:grant-aliases
+    #:grant-sources
+    #:grant-sourceurls
+    #:grant-sourcerecordids
+    #:grant-sourcekinds
+    #:grant-sourcelicense
+    #:grant-sourceterms
+    #:grant-sourceretrievedat
+    #:grant-collectedat
+    #:grant-observedat
+    #:grant-firstseenat
+    #:grant-lastseenat
+    #:grant-createdat
+    #:grant-updatedat
+    #:grant-validfrom
+    #:grant-validuntil
+    #:grant-expiresat
+    #:grant-collector
+    #:grant-collectorversion
+    #:grant-collectionmethod
+    #:grant-collectionstatus
+    #:grant-runid
+    #:grant-correlationid
+    #:grant-causationid
+    #:grant-parentid
+    #:grant-rootid
+    #:grant-confidence
+    #:grant-confidencebasis
+    #:grant-qualityscore
+    #:grant-completenessscore
+    #:grant-verificationstatus
+    #:grant-verifiedat
+    #:grant-verifiedby
+    #:grant-provenance
+    #:grant-chainofcustody
+    #:grant-transformhistory
+    #:grant-labels
+    #:grant-tags
+    #:grant-topics
+    #:grant-language
+    #:grant-jurisdiction
+    #:grant-countrycode
+    #:grant-regioncode
+    #:grant-timezone
+    #:grant-sensitivity
+    #:grant-visibility
+    #:grant-owner
+    #:grant-accesscontrol
+    #:grant-legalbasis
+    #:grant-retentionpolicy
+    #:grant-contenttype
+    #:grant-encoding
+    #:grant-sizebytes
+    #:grant-contenthash
+    #:grant-hashalgorithm
+    #:grant-normalizedhash
+    #:grant-raw
+    #:grant-rawcontent
+    #:grant-notes
+    #:grant-deleted
+    #:grant-tombstonereason
+    #:grant-extensions
+    #:grant-description
+    #:grant-status
+    #:grant-contentvalidfrom
+    #:grant-contentvaliduntil
+    #:grant-awardnumber
+    #:grant-primerecipientid
+    #:grant-subrecipientids
+    #:grant-programid
+    #:grant-fundingrecords
+    #:grant-assistancelistingids
+    #:grant-matchingamount
+    #:grant-performancelocationids
+    #:grant-objectiveids
+    #:grant-reportids
+    #:grant-contractid
+    #:grant-awardid
+    #:grant-solicitationid
+    #:grant-vehicleid
+    #:grant-buyerid
+    #:grant-sellerid
+    #:grant-agencyids
+    #:grant-vendorids
+    #:grant-subcontractorids
+    #:grant-scope
+    #:grant-awardtype
+    #:grant-competitiontype
+    #:grant-signedat
+    #:grant-startat
+    #:grant-endat
+    #:grant-ceilingamount
+    #:grant-potentialamount
+    #:grant-obligatedamount
+    #:grant-outlayamount
+    #:grant-recognizedrevenue
+    #:grant-currency
+    #:grant-naics
+    #:grant-psc
+    #:grant-placeofperformance
+    #:grant-modifications
+    #:grant-grantorid
+    #:grant-recipientids
+    #:grant-program
+    #:grant-assistancelisting
+    #:grant-matchingrequired
+    #:legal-case
+    #:MAKE-legal-case
+    #:COPY-legal-case
+    #:legal-case-P
+    #:+legal-case-WIRE-FIELDS+
+    #:legal-case-id
+    #:legal-case-rev
+    #:legal-case-dataset
+    #:legal-case-dtype
+    #:legal-case-schemaversion
+    #:legal-case-externalids
+    #:legal-case-aliases
+    #:legal-case-sources
+    #:legal-case-sourceurls
+    #:legal-case-sourcerecordids
+    #:legal-case-sourcekinds
+    #:legal-case-sourcelicense
+    #:legal-case-sourceterms
+    #:legal-case-sourceretrievedat
+    #:legal-case-collectedat
+    #:legal-case-observedat
+    #:legal-case-firstseenat
+    #:legal-case-lastseenat
+    #:legal-case-createdat
+    #:legal-case-updatedat
+    #:legal-case-validfrom
+    #:legal-case-validuntil
+    #:legal-case-expiresat
+    #:legal-case-collector
+    #:legal-case-collectorversion
+    #:legal-case-collectionmethod
+    #:legal-case-collectionstatus
+    #:legal-case-runid
+    #:legal-case-correlationid
+    #:legal-case-causationid
+    #:legal-case-parentid
+    #:legal-case-rootid
+    #:legal-case-confidence
+    #:legal-case-confidencebasis
+    #:legal-case-qualityscore
+    #:legal-case-completenessscore
+    #:legal-case-verificationstatus
+    #:legal-case-verifiedat
+    #:legal-case-verifiedby
+    #:legal-case-provenance
+    #:legal-case-chainofcustody
+    #:legal-case-transformhistory
+    #:legal-case-labels
+    #:legal-case-tags
+    #:legal-case-topics
+    #:legal-case-language
+    #:legal-case-jurisdiction
+    #:legal-case-countrycode
+    #:legal-case-regioncode
+    #:legal-case-timezone
+    #:legal-case-sensitivity
+    #:legal-case-visibility
+    #:legal-case-owner
+    #:legal-case-accesscontrol
+    #:legal-case-legalbasis
+    #:legal-case-retentionpolicy
+    #:legal-case-contenttype
+    #:legal-case-encoding
+    #:legal-case-sizebytes
+    #:legal-case-contenthash
+    #:legal-case-hashalgorithm
+    #:legal-case-normalizedhash
+    #:legal-case-raw
+    #:legal-case-rawcontent
+    #:legal-case-notes
+    #:legal-case-deleted
+    #:legal-case-tombstonereason
+    #:legal-case-extensions
+    #:legal-case-description
+    #:legal-case-status
+    #:legal-case-contentvalidfrom
+    #:legal-case-contentvaliduntil
+    #:legal-case-courtid
+    #:legal-case-docketid
+    #:legal-case-partyroles
+    #:legal-case-relatedcaseids
+    #:legal-case-motionids
+    #:legal-case-orderids
+    #:legal-case-opinionids
+    #:legal-case-appealcaseids
+    #:legal-case-disposition
+    #:legal-case-precedentialstatus
+    #:legal-case-casenumber
+    #:legal-case-casename
+    #:legal-case-court
+    #:legal-case-payloadjurisdiction
+    #:legal-case-judgeids
+    #:legal-case-partyids
+    #:legal-case-plaintiffids
+    #:legal-case-defendantids
+    #:legal-case-attorneyids
+    #:legal-case-casetype
+    #:legal-case-claims
+    #:legal-case-filedat
+    #:legal-case-closedat
+    #:legal-case-docketentries
+    #:legal-case-outcome
+    #:legal-case-citation
+    #:lobbying-filing
+    #:MAKE-lobbying-filing
+    #:COPY-lobbying-filing
+    #:lobbying-filing-P
+    #:+lobbying-filing-WIRE-FIELDS+
+    #:lobbying-filing-id
+    #:lobbying-filing-rev
+    #:lobbying-filing-dataset
+    #:lobbying-filing-dtype
+    #:lobbying-filing-schemaversion
+    #:lobbying-filing-externalids
+    #:lobbying-filing-aliases
+    #:lobbying-filing-sources
+    #:lobbying-filing-sourceurls
+    #:lobbying-filing-sourcerecordids
+    #:lobbying-filing-sourcekinds
+    #:lobbying-filing-sourcelicense
+    #:lobbying-filing-sourceterms
+    #:lobbying-filing-sourceretrievedat
+    #:lobbying-filing-collectedat
+    #:lobbying-filing-observedat
+    #:lobbying-filing-firstseenat
+    #:lobbying-filing-lastseenat
+    #:lobbying-filing-createdat
+    #:lobbying-filing-updatedat
+    #:lobbying-filing-validfrom
+    #:lobbying-filing-validuntil
+    #:lobbying-filing-expiresat
+    #:lobbying-filing-collector
+    #:lobbying-filing-collectorversion
+    #:lobbying-filing-collectionmethod
+    #:lobbying-filing-collectionstatus
+    #:lobbying-filing-runid
+    #:lobbying-filing-correlationid
+    #:lobbying-filing-causationid
+    #:lobbying-filing-parentid
+    #:lobbying-filing-rootid
+    #:lobbying-filing-confidence
+    #:lobbying-filing-confidencebasis
+    #:lobbying-filing-qualityscore
+    #:lobbying-filing-completenessscore
+    #:lobbying-filing-verificationstatus
+    #:lobbying-filing-verifiedat
+    #:lobbying-filing-verifiedby
+    #:lobbying-filing-provenance
+    #:lobbying-filing-chainofcustody
+    #:lobbying-filing-transformhistory
+    #:lobbying-filing-labels
+    #:lobbying-filing-tags
+    #:lobbying-filing-topics
+    #:lobbying-filing-language
+    #:lobbying-filing-jurisdiction
+    #:lobbying-filing-countrycode
+    #:lobbying-filing-regioncode
+    #:lobbying-filing-timezone
+    #:lobbying-filing-sensitivity
+    #:lobbying-filing-visibility
+    #:lobbying-filing-owner
+    #:lobbying-filing-accesscontrol
+    #:lobbying-filing-legalbasis
+    #:lobbying-filing-retentionpolicy
+    #:lobbying-filing-contenttype
+    #:lobbying-filing-encoding
+    #:lobbying-filing-sizebytes
+    #:lobbying-filing-contenthash
+    #:lobbying-filing-hashalgorithm
+    #:lobbying-filing-normalizedhash
+    #:lobbying-filing-raw
+    #:lobbying-filing-rawcontent
+    #:lobbying-filing-notes
+    #:lobbying-filing-deleted
+    #:lobbying-filing-tombstonereason
+    #:lobbying-filing-extensions
+    #:lobbying-filing-description
+    #:lobbying-filing-status
+    #:lobbying-filing-contentvalidfrom
+    #:lobbying-filing-contentvaliduntil
+    #:lobbying-filing-filingsystem
+    #:lobbying-filing-registrantrefs
+    #:lobbying-filing-clientrefs
+    #:lobbying-filing-lobbyistrefs
+    #:lobbying-filing-coveredofficialids
+    #:lobbying-filing-issuecodes
+    #:lobbying-filing-amountrecords
+    #:lobbying-filing-foreignentityids
+    #:lobbying-filing-priorfilingid
+    #:lobbying-filing-amendsfilingid
+    #:lobbying-filing-sourcefilingurl
+    #:lobbying-filing-filingid
+    #:lobbying-filing-registrantid
+    #:lobbying-filing-clientid
+    #:lobbying-filing-lobbyistids
+    #:lobbying-filing-governmententities
+    #:lobbying-filing-issues
+    #:lobbying-filing-specificissues
+    #:lobbying-filing-income
+    #:lobbying-filing-expenses
+    #:lobbying-filing-currency
+    #:lobbying-filing-periodstart
+    #:lobbying-filing-periodend
+    #:lobbying-filing-filedat
+    #:lobbying-filing-filingtype
+    #:lobbying-filing-amendment
+    #:lobbying-filing-termination
+    #:meeting
+    #:MAKE-meeting
+    #:COPY-meeting
+    #:meeting-P
+    #:+meeting-WIRE-FIELDS+
+    #:meeting-id
+    #:meeting-rev
+    #:meeting-dataset
+    #:meeting-dtype
+    #:meeting-schemaversion
+    #:meeting-externalids
+    #:meeting-aliases
+    #:meeting-sources
+    #:meeting-sourceurls
+    #:meeting-sourcerecordids
+    #:meeting-sourcekinds
+    #:meeting-sourcelicense
+    #:meeting-sourceterms
+    #:meeting-sourceretrievedat
+    #:meeting-collectedat
+    #:meeting-observedat
+    #:meeting-firstseenat
+    #:meeting-lastseenat
+    #:meeting-createdat
+    #:meeting-updatedat
+    #:meeting-validfrom
+    #:meeting-validuntil
+    #:meeting-expiresat
+    #:meeting-collector
+    #:meeting-collectorversion
+    #:meeting-collectionmethod
+    #:meeting-collectionstatus
+    #:meeting-runid
+    #:meeting-correlationid
+    #:meeting-causationid
+    #:meeting-parentid
+    #:meeting-rootid
+    #:meeting-confidence
+    #:meeting-confidencebasis
+    #:meeting-qualityscore
+    #:meeting-completenessscore
+    #:meeting-verificationstatus
+    #:meeting-verifiedat
+    #:meeting-verifiedby
+    #:meeting-provenance
+    #:meeting-chainofcustody
+    #:meeting-transformhistory
+    #:meeting-labels
+    #:meeting-tags
+    #:meeting-topics
+    #:meeting-language
+    #:meeting-jurisdiction
+    #:meeting-countrycode
+    #:meeting-regioncode
+    #:meeting-timezone
+    #:meeting-sensitivity
+    #:meeting-visibility
+    #:meeting-owner
+    #:meeting-accesscontrol
+    #:meeting-legalbasis
+    #:meeting-retentionpolicy
+    #:meeting-contenttype
+    #:meeting-encoding
+    #:meeting-sizebytes
+    #:meeting-contenthash
+    #:meeting-hashalgorithm
+    #:meeting-normalizedhash
+    #:meeting-raw
+    #:meeting-rawcontent
+    #:meeting-notes
+    #:meeting-deleted
+    #:meeting-tombstonereason
+    #:meeting-extensions
+    #:meeting-description
+    #:meeting-status
+    #:meeting-contentvalidfrom
+    #:meeting-contentvaliduntil
+    #:meeting-meetingtype
+    #:meeting-chairids
+    #:meeting-attendeeroles
+    #:meeting-agendaitemids
+    #:meeting-minutefileids
+    #:meeting-decisionids
+    #:meeting-actionitemids
+    #:meeting-parentmeetingid
+    #:meeting-recurrencerule
+    #:meeting-eventkind
+    #:meeting-name
+    #:meeting-participantids
+    #:meeting-participants
+    #:meeting-organizerids
+    #:meeting-sponsorids
+    #:meeting-locationids
+    #:meeting-startat
+    #:meeting-endat
+    #:meeting-outcome
+    #:meeting-agenda
+    #:meeting-decisions
+    #:meeting-actions
+    #:meeting-amount
+    #:meeting-currency
+    #:meeting-payloadjurisdiction
+    #:meeting-caseid
+    #:meeting-contractid
+    #:meeting-meetingid
+    #:observation
+    #:MAKE-observation
+    #:COPY-observation
+    #:observation-P
+    #:+observation-WIRE-FIELDS+
+    #:observation-id
+    #:observation-rev
+    #:observation-dataset
+    #:observation-dtype
+    #:observation-schemaversion
+    #:observation-externalids
+    #:observation-aliases
+    #:observation-sources
+    #:observation-sourceurls
+    #:observation-sourcerecordids
+    #:observation-sourcekinds
+    #:observation-sourcelicense
+    #:observation-sourceterms
+    #:observation-sourceretrievedat
+    #:observation-collectedat
+    #:observation-observedat
+    #:observation-firstseenat
+    #:observation-lastseenat
+    #:observation-createdat
+    #:observation-updatedat
+    #:observation-validfrom
+    #:observation-validuntil
+    #:observation-expiresat
+    #:observation-collector
+    #:observation-collectorversion
+    #:observation-collectionmethod
+    #:observation-collectionstatus
+    #:observation-runid
+    #:observation-correlationid
+    #:observation-causationid
+    #:observation-parentid
+    #:observation-rootid
+    #:observation-confidence
+    #:observation-confidencebasis
+    #:observation-qualityscore
+    #:observation-completenessscore
+    #:observation-verificationstatus
+    #:observation-verifiedat
+    #:observation-verifiedby
+    #:observation-provenance
+    #:observation-chainofcustody
+    #:observation-transformhistory
+    #:observation-labels
+    #:observation-tags
+    #:observation-topics
+    #:observation-language
+    #:observation-jurisdiction
+    #:observation-countrycode
+    #:observation-regioncode
+    #:observation-timezone
+    #:observation-sensitivity
+    #:observation-visibility
+    #:observation-owner
+    #:observation-accesscontrol
+    #:observation-legalbasis
+    #:observation-retentionpolicy
+    #:observation-contenttype
+    #:observation-encoding
+    #:observation-sizebytes
+    #:observation-contenthash
+    #:observation-hashalgorithm
+    #:observation-normalizedhash
+    #:observation-raw
+    #:observation-rawcontent
+    #:observation-notes
+    #:observation-deleted
+    #:observation-tombstonereason
+    #:observation-extensions
+    #:observation-description
+    #:observation-status
+    #:observation-contentvalidfrom
+    #:observation-contentvaliduntil
+    #:observation-subjectrefs
+    #:observation-observedproperty
+    #:observation-rawvalue
+    #:observation-actionid
+    #:observation-observerrefs
+    #:observation-uncertainty
+    #:observation-observerid
+    #:observation-subjectid
+    #:observation-observationtype
+    #:observation-value
+    #:observation-unit
+    #:observation-method
+    #:observation-instrument
+    #:observation-payloadobservedat
+    #:ownership
+    #:MAKE-ownership
+    #:COPY-ownership
+    #:ownership-P
+    #:+ownership-WIRE-FIELDS+
+    #:ownership-id
+    #:ownership-rev
+    #:ownership-dataset
+    #:ownership-dtype
+    #:ownership-schemaversion
+    #:ownership-externalids
+    #:ownership-aliases
+    #:ownership-sources
+    #:ownership-sourceurls
+    #:ownership-sourcerecordids
+    #:ownership-sourcekinds
+    #:ownership-sourcelicense
+    #:ownership-sourceterms
+    #:ownership-sourceretrievedat
+    #:ownership-collectedat
+    #:ownership-observedat
+    #:ownership-firstseenat
+    #:ownership-lastseenat
+    #:ownership-createdat
+    #:ownership-updatedat
+    #:ownership-validfrom
+    #:ownership-validuntil
+    #:ownership-expiresat
+    #:ownership-collector
+    #:ownership-collectorversion
+    #:ownership-collectionmethod
+    #:ownership-collectionstatus
+    #:ownership-runid
+    #:ownership-correlationid
+    #:ownership-causationid
+    #:ownership-parentid
+    #:ownership-rootid
+    #:ownership-confidence
+    #:ownership-confidencebasis
+    #:ownership-qualityscore
+    #:ownership-completenessscore
+    #:ownership-verificationstatus
+    #:ownership-verifiedat
+    #:ownership-verifiedby
+    #:ownership-provenance
+    #:ownership-chainofcustody
+    #:ownership-transformhistory
+    #:ownership-labels
+    #:ownership-tags
+    #:ownership-topics
+    #:ownership-language
+    #:ownership-jurisdiction
+    #:ownership-countrycode
+    #:ownership-regioncode
+    #:ownership-timezone
+    #:ownership-sensitivity
+    #:ownership-visibility
+    #:ownership-owner
+    #:ownership-accesscontrol
+    #:ownership-legalbasis
+    #:ownership-retentionpolicy
+    #:ownership-contenttype
+    #:ownership-encoding
+    #:ownership-sizebytes
+    #:ownership-contenthash
+    #:ownership-hashalgorithm
+    #:ownership-normalizedhash
+    #:ownership-raw
+    #:ownership-rawcontent
+    #:ownership-notes
+    #:ownership-deleted
+    #:ownership-tombstonereason
+    #:ownership-extensions
+    #:ownership-description
+    #:ownership-status
+    #:ownership-contentvalidfrom
+    #:ownership-contentvaliduntil
+    #:ownership-ownerrefs
+    #:ownership-ownedrefs
+    #:ownership-ownershipinstrument
+    #:ownership-percentagebasis
+    #:ownership-votingpercentage
+    #:ownership-economicpercentage
+    #:ownership-valuerecord
+    #:ownership-acquisitioneventid
+    #:ownership-disposaleventid
+    #:ownership-ownerid
+    #:ownership-assetid
+    #:ownership-ownershiptype
+    #:ownership-percentage
+    #:ownership-units
+    #:ownership-startat
+    #:ownership-endat
+    #:ownership-beneficial
+    #:ownership-direct
+    #:policy
+    #:MAKE-policy
+    #:COPY-policy
+    #:policy-P
+    #:+policy-WIRE-FIELDS+
+    #:policy-id
+    #:policy-rev
+    #:policy-dataset
+    #:policy-dtype
+    #:policy-schemaversion
+    #:policy-externalids
+    #:policy-aliases
+    #:policy-sources
+    #:policy-sourceurls
+    #:policy-sourcerecordids
+    #:policy-sourcekinds
+    #:policy-sourcelicense
+    #:policy-sourceterms
+    #:policy-sourceretrievedat
+    #:policy-collectedat
+    #:policy-observedat
+    #:policy-firstseenat
+    #:policy-lastseenat
+    #:policy-createdat
+    #:policy-updatedat
+    #:policy-validfrom
+    #:policy-validuntil
+    #:policy-expiresat
+    #:policy-collector
+    #:policy-collectorversion
+    #:policy-collectionmethod
+    #:policy-collectionstatus
+    #:policy-runid
+    #:policy-correlationid
+    #:policy-causationid
+    #:policy-parentid
+    #:policy-rootid
+    #:policy-confidence
+    #:policy-confidencebasis
+    #:policy-qualityscore
+    #:policy-completenessscore
+    #:policy-verificationstatus
+    #:policy-verifiedat
+    #:policy-verifiedby
+    #:policy-provenance
+    #:policy-chainofcustody
+    #:policy-transformhistory
+    #:policy-labels
+    #:policy-tags
+    #:policy-topics
+    #:policy-language
+    #:policy-jurisdiction
+    #:policy-countrycode
+    #:policy-regioncode
+    #:policy-timezone
+    #:policy-sensitivity
+    #:policy-visibility
+    #:policy-owner
+    #:policy-accesscontrol
+    #:policy-legalbasis
+    #:policy-retentionpolicy
+    #:policy-contenttype
+    #:policy-encoding
+    #:policy-sizebytes
+    #:policy-contenthash
+    #:policy-hashalgorithm
+    #:policy-normalizedhash
+    #:policy-raw
+    #:policy-rawcontent
+    #:policy-notes
+    #:policy-deleted
+    #:policy-tombstonereason
+    #:policy-extensions
+    #:policy-description
+    #:policy-status
+    #:policy-contentvalidfrom
+    #:policy-contentvaliduntil
+    #:policy-policyversion
+    #:policy-parentpolicyid
+    #:policy-authorityids
+    #:policy-implementationids
+    #:policy-textfileids
+    #:policy-sectionids
+    #:policy-adoptedat
+    #:policy-repealedat
+    #:policy-supersededbyid
+    #:policy-compliancerequirementids
+    #:policy-policyid
+    #:policy-name
+    #:policy-issuerid
+    #:policy-payloadjurisdiction
+    #:policy-policytype
+    #:policy-text
+    #:policy-effectiveat
+    #:policy-payloadexpiresat
+    #:policy-affectedids
+    #:procurement
+    #:MAKE-procurement
+    #:COPY-procurement
+    #:procurement-P
+    #:+procurement-WIRE-FIELDS+
+    #:procurement-id
+    #:procurement-rev
+    #:procurement-dataset
+    #:procurement-dtype
+    #:procurement-schemaversion
+    #:procurement-externalids
+    #:procurement-aliases
+    #:procurement-sources
+    #:procurement-sourceurls
+    #:procurement-sourcerecordids
+    #:procurement-sourcekinds
+    #:procurement-sourcelicense
+    #:procurement-sourceterms
+    #:procurement-sourceretrievedat
+    #:procurement-collectedat
+    #:procurement-observedat
+    #:procurement-firstseenat
+    #:procurement-lastseenat
+    #:procurement-createdat
+    #:procurement-updatedat
+    #:procurement-validfrom
+    #:procurement-validuntil
+    #:procurement-expiresat
+    #:procurement-collector
+    #:procurement-collectorversion
+    #:procurement-collectionmethod
+    #:procurement-collectionstatus
+    #:procurement-runid
+    #:procurement-correlationid
+    #:procurement-causationid
+    #:procurement-parentid
+    #:procurement-rootid
+    #:procurement-confidence
+    #:procurement-confidencebasis
+    #:procurement-qualityscore
+    #:procurement-completenessscore
+    #:procurement-verificationstatus
+    #:procurement-verifiedat
+    #:procurement-verifiedby
+    #:procurement-provenance
+    #:procurement-chainofcustody
+    #:procurement-transformhistory
+    #:procurement-labels
+    #:procurement-tags
+    #:procurement-topics
+    #:procurement-language
+    #:procurement-jurisdiction
+    #:procurement-countrycode
+    #:procurement-regioncode
+    #:procurement-timezone
+    #:procurement-sensitivity
+    #:procurement-visibility
+    #:procurement-owner
+    #:procurement-accesscontrol
+    #:procurement-legalbasis
+    #:procurement-retentionpolicy
+    #:procurement-contenttype
+    #:procurement-encoding
+    #:procurement-sizebytes
+    #:procurement-contenthash
+    #:procurement-hashalgorithm
+    #:procurement-normalizedhash
+    #:procurement-raw
+    #:procurement-rawcontent
+    #:procurement-notes
+    #:procurement-deleted
+    #:procurement-tombstonereason
+    #:procurement-extensions
+    #:procurement-description
+    #:procurement-status
+    #:procurement-contentvalidfrom
+    #:procurement-contentvaliduntil
+    #:procurement-procurementstage
+    #:procurement-noticeid
+    #:procurement-parentawardid
+    #:procurement-partyroles
+    #:procurement-fundingrecords
+    #:procurement-lineitems
+    #:procurement-competitionexceptions
+    #:procurement-evaluationcriteria
+    #:procurement-sourcesystemids
+    #:procurement-contractid
+    #:procurement-awardid
+    #:procurement-solicitationid
+    #:procurement-vehicleid
+    #:procurement-buyerid
+    #:procurement-sellerid
+    #:procurement-agencyids
+    #:procurement-vendorids
+    #:procurement-subcontractorids
+    #:procurement-scope
+    #:procurement-awardtype
+    #:procurement-competitiontype
+    #:procurement-signedat
+    #:procurement-startat
+    #:procurement-endat
+    #:procurement-ceilingamount
+    #:procurement-potentialamount
+    #:procurement-obligatedamount
+    #:procurement-outlayamount
+    #:procurement-recognizedrevenue
+    #:procurement-currency
+    #:procurement-naics
+    #:procurement-psc
+    #:procurement-placeofperformance
+    #:procurement-modifications
+    #:product
+    #:MAKE-product
+    #:COPY-product
+    #:product-P
+    #:+product-WIRE-FIELDS+
+    #:product-id
+    #:product-rev
+    #:product-dataset
+    #:product-dtype
+    #:product-schemaversion
+    #:product-externalids
+    #:product-aliases
+    #:product-sources
+    #:product-sourceurls
+    #:product-sourcerecordids
+    #:product-sourcekinds
+    #:product-sourcelicense
+    #:product-sourceterms
+    #:product-sourceretrievedat
+    #:product-collectedat
+    #:product-observedat
+    #:product-firstseenat
+    #:product-lastseenat
+    #:product-createdat
+    #:product-updatedat
+    #:product-validfrom
+    #:product-validuntil
+    #:product-expiresat
+    #:product-collector
+    #:product-collectorversion
+    #:product-collectionmethod
+    #:product-collectionstatus
+    #:product-runid
+    #:product-correlationid
+    #:product-causationid
+    #:product-parentid
+    #:product-rootid
+    #:product-confidence
+    #:product-confidencebasis
+    #:product-qualityscore
+    #:product-completenessscore
+    #:product-verificationstatus
+    #:product-verifiedat
+    #:product-verifiedby
+    #:product-provenance
+    #:product-chainofcustody
+    #:product-transformhistory
+    #:product-labels
+    #:product-tags
+    #:product-topics
+    #:product-language
+    #:product-jurisdiction
+    #:product-countrycode
+    #:product-regioncode
+    #:product-timezone
+    #:product-sensitivity
+    #:product-visibility
+    #:product-owner
+    #:product-accesscontrol
+    #:product-legalbasis
+    #:product-retentionpolicy
+    #:product-contenttype
+    #:product-encoding
+    #:product-sizebytes
+    #:product-contenthash
+    #:product-hashalgorithm
+    #:product-normalizedhash
+    #:product-raw
+    #:product-rawcontent
+    #:product-notes
+    #:product-deleted
+    #:product-tombstonereason
+    #:product-extensions
+    #:product-description
+    #:product-status
+    #:product-contentvalidfrom
+    #:product-contentvaliduntil
+    #:product-supplierids
+    #:product-versionids
+    #:product-componentids
+    #:product-dependencyids
+    #:product-deploymentids
+    #:product-sbomfileids
+    #:product-supportendat
+    #:product-pricingrecords
+    #:product-securityadvisoryids
+    #:product-etype
+    #:product-eid
+    #:product-name
+    #:product-displayname
+    #:product-legalname
+    #:product-shortname
+    #:product-formernames
+    #:product-bio
+    #:product-payloadjurisdiction
+    #:product-country
+    #:product-foundedat
+    #:product-dissolvedat
+    #:product-website
+    #:product-imageurl
+    #:product-logourl
+    #:product-payloadexternalids
+    #:product-contactids
+    #:product-locationids
+    #:product-manufacturerid
+    #:product-vendorids
+    #:product-producttype
+    #:product-model
+    #:product-versionname
+    #:product-releasedate
+    #:product-endoflife
+    #:product-features
+    #:product-capabilities
+    #:product-integrations
+    #:product-customers
+    #:product-license
+    #:product-pricing
+    #:product-technical
+    #:research-node
+    #:MAKE-research-node
+    #:COPY-research-node
+    #:research-node-P
+    #:+research-node-WIRE-FIELDS+
+    #:research-node-id
+    #:research-node-rev
+    #:research-node-dataset
+    #:research-node-dtype
+    #:research-node-schemaversion
+    #:research-node-externalids
+    #:research-node-aliases
+    #:research-node-sources
+    #:research-node-sourceurls
+    #:research-node-sourcerecordids
+    #:research-node-sourcekinds
+    #:research-node-sourcelicense
+    #:research-node-sourceterms
+    #:research-node-sourceretrievedat
+    #:research-node-collectedat
+    #:research-node-observedat
+    #:research-node-firstseenat
+    #:research-node-lastseenat
+    #:research-node-createdat
+    #:research-node-updatedat
+    #:research-node-validfrom
+    #:research-node-validuntil
+    #:research-node-expiresat
+    #:research-node-collector
+    #:research-node-collectorversion
+    #:research-node-collectionmethod
+    #:research-node-collectionstatus
+    #:research-node-runid
+    #:research-node-correlationid
+    #:research-node-causationid
+    #:research-node-parentid
+    #:research-node-rootid
+    #:research-node-confidence
+    #:research-node-confidencebasis
+    #:research-node-qualityscore
+    #:research-node-completenessscore
+    #:research-node-verificationstatus
+    #:research-node-verifiedat
+    #:research-node-verifiedby
+    #:research-node-provenance
+    #:research-node-chainofcustody
+    #:research-node-transformhistory
+    #:research-node-labels
+    #:research-node-tags
+    #:research-node-topics
+    #:research-node-language
+    #:research-node-jurisdiction
+    #:research-node-countrycode
+    #:research-node-regioncode
+    #:research-node-timezone
+    #:research-node-sensitivity
+    #:research-node-visibility
+    #:research-node-owner
+    #:research-node-accesscontrol
+    #:research-node-legalbasis
+    #:research-node-retentionpolicy
+    #:research-node-contenttype
+    #:research-node-encoding
+    #:research-node-sizebytes
+    #:research-node-contenthash
+    #:research-node-hashalgorithm
+    #:research-node-normalizedhash
+    #:research-node-raw
+    #:research-node-rawcontent
+    #:research-node-notes
+    #:research-node-deleted
+    #:research-node-tombstonereason
+    #:research-node-extensions
+    #:research-node-description
+    #:research-node-contentvalidfrom
+    #:research-node-contentvaliduntil
+    #:research-node-objective
+    #:research-node-instructions
+    #:research-node-inputids
+    #:research-node-targetids
+    #:research-node-actorids
+    #:research-node-actorselectionrules
+    #:research-node-outputids
+    #:research-node-artifactids
+    #:research-node-childids
+    #:research-node-dependencyids
+    #:research-node-runids
+    #:research-node-currentactorid
+    #:research-node-currentrunid
+    #:research-node-history
+    #:research-node-nodecreatedat
+    #:research-node-startedat
+    #:research-node-completedat
+    #:research-node-lasterror
+    #:research-node-pausedreason
+    #:research-pass
+    #:MAKE-research-pass
+    #:COPY-research-pass
+    #:research-pass-P
+    #:+research-pass-WIRE-FIELDS+
+    #:research-pass-id
+    #:research-pass-rev
+    #:research-pass-dataset
+    #:research-pass-dtype
+    #:research-pass-schemaversion
+    #:research-pass-externalids
+    #:research-pass-aliases
+    #:research-pass-sources
+    #:research-pass-sourceurls
+    #:research-pass-sourcerecordids
+    #:research-pass-sourcekinds
+    #:research-pass-sourcelicense
+    #:research-pass-sourceterms
+    #:research-pass-sourceretrievedat
+    #:research-pass-collectedat
+    #:research-pass-observedat
+    #:research-pass-firstseenat
+    #:research-pass-lastseenat
+    #:research-pass-createdat
+    #:research-pass-updatedat
+    #:research-pass-validfrom
+    #:research-pass-validuntil
+    #:research-pass-expiresat
+    #:research-pass-collector
+    #:research-pass-collectorversion
+    #:research-pass-collectionmethod
+    #:research-pass-collectionstatus
+    #:research-pass-runid
+    #:research-pass-correlationid
+    #:research-pass-causationid
+    #:research-pass-parentid
+    #:research-pass-rootid
+    #:research-pass-confidence
+    #:research-pass-confidencebasis
+    #:research-pass-qualityscore
+    #:research-pass-completenessscore
+    #:research-pass-verificationstatus
+    #:research-pass-verifiedat
+    #:research-pass-verifiedby
+    #:research-pass-provenance
+    #:research-pass-chainofcustody
+    #:research-pass-transformhistory
+    #:research-pass-labels
+    #:research-pass-tags
+    #:research-pass-topics
+    #:research-pass-language
+    #:research-pass-jurisdiction
+    #:research-pass-countrycode
+    #:research-pass-regioncode
+    #:research-pass-timezone
+    #:research-pass-sensitivity
+    #:research-pass-visibility
+    #:research-pass-owner
+    #:research-pass-accesscontrol
+    #:research-pass-legalbasis
+    #:research-pass-retentionpolicy
+    #:research-pass-contenttype
+    #:research-pass-encoding
+    #:research-pass-sizebytes
+    #:research-pass-contenthash
+    #:research-pass-hashalgorithm
+    #:research-pass-normalizedhash
+    #:research-pass-raw
+    #:research-pass-rawcontent
+    #:research-pass-notes
+    #:research-pass-deleted
+    #:research-pass-tombstonereason
+    #:research-pass-extensions
+    #:research-pass-description
+    #:research-pass-status
+    #:research-pass-contentvalidfrom
+    #:research-pass-contentvaliduntil
+    #:research-pass-parentpassid
+    #:research-pass-childpassids
+    #:research-pass-targetids
+    #:research-pass-actionrecords
+    #:research-pass-claimids
+    #:research-pass-outputids
+    #:research-pass-metrics
+    #:research-pass-terminationreason
+    #:research-pass-schemarevision
+    #:research-pass-researchquestion
+    #:research-pass-method
+    #:research-pass-classificationrules
+    #:research-pass-findingids
+    #:research-pass-findings
+    #:research-pass-supportingrecordids
+    #:research-pass-counterevidenceids
+    #:research-pass-unresolvedtargetids
+    #:research-pass-sourceids
+    #:research-pass-agentidentity
+    #:research-pass-narrativerole
+    #:research-pass-startedat
+    #:research-pass-completedat
+    #:research-pass-iteration
+    #:social-media-post
+    #:MAKE-social-media-post
+    #:COPY-social-media-post
+    #:social-media-post-P
+    #:+social-media-post-WIRE-FIELDS+
+    #:social-media-post-id
+    #:social-media-post-rev
+    #:social-media-post-dataset
+    #:social-media-post-dtype
+    #:social-media-post-schemaversion
+    #:social-media-post-externalids
+    #:social-media-post-aliases
+    #:social-media-post-sources
+    #:social-media-post-sourceurls
+    #:social-media-post-sourcerecordids
+    #:social-media-post-sourcekinds
+    #:social-media-post-sourcelicense
+    #:social-media-post-sourceterms
+    #:social-media-post-sourceretrievedat
+    #:social-media-post-collectedat
+    #:social-media-post-observedat
+    #:social-media-post-firstseenat
+    #:social-media-post-lastseenat
+    #:social-media-post-createdat
+    #:social-media-post-updatedat
+    #:social-media-post-validfrom
+    #:social-media-post-validuntil
+    #:social-media-post-expiresat
+    #:social-media-post-collector
+    #:social-media-post-collectorversion
+    #:social-media-post-collectionmethod
+    #:social-media-post-collectionstatus
+    #:social-media-post-runid
+    #:social-media-post-correlationid
+    #:social-media-post-causationid
+    #:social-media-post-parentid
+    #:social-media-post-rootid
+    #:social-media-post-confidence
+    #:social-media-post-confidencebasis
+    #:social-media-post-qualityscore
+    #:social-media-post-completenessscore
+    #:social-media-post-verificationstatus
+    #:social-media-post-verifiedat
+    #:social-media-post-verifiedby
+    #:social-media-post-provenance
+    #:social-media-post-chainofcustody
+    #:social-media-post-transformhistory
+    #:social-media-post-labels
+    #:social-media-post-tags
+    #:social-media-post-topics
+    #:social-media-post-language
+    #:social-media-post-jurisdiction
+    #:social-media-post-countrycode
+    #:social-media-post-regioncode
+    #:social-media-post-timezone
+    #:social-media-post-sensitivity
+    #:social-media-post-visibility
+    #:social-media-post-owner
+    #:social-media-post-accesscontrol
+    #:social-media-post-legalbasis
+    #:social-media-post-retentionpolicy
+    #:social-media-post-contenttype
+    #:social-media-post-encoding
+    #:social-media-post-sizebytes
+    #:social-media-post-contenthash
+    #:social-media-post-hashalgorithm
+    #:social-media-post-normalizedhash
+    #:social-media-post-raw
+    #:social-media-post-rawcontent
+    #:social-media-post-notes
+    #:social-media-post-deleted
+    #:social-media-post-tombstonereason
+    #:social-media-post-extensions
+    #:social-media-post-description
+    #:social-media-post-status
+    #:social-media-post-contentvalidfrom
+    #:social-media-post-contentvaliduntil
+    #:social-media-post-authorrefs
+    #:social-media-post-conversationid
+    #:social-media-post-parentpostid
+    #:social-media-post-attachmentids
+    #:social-media-post-captureids
+    #:social-media-post-engagementobservationids
+    #:social-media-post-payloadcontenthash
+    #:social-media-post-content
+    #:social-media-post-platform
+    #:social-media-post-user
+    #:social-media-post-userid
+    #:social-media-post-isreply
+    #:social-media-post-media
+    #:social-media-post-messageid
+    #:social-media-post-replyto
+    #:social-media-post-group
+    #:social-media-post-channel
+    #:social-media-post-threadid
+    #:social-media-post-mentions
+    #:social-media-post-reactions
+    #:social-media-post-links
+    #:social-media-post-postedat
+    #:social-media-post-editedat
+    #:social-media-post-payloaddeleted
+    #:social-media-post-payloadvisibility
+    #:social-media-post-replies
+    #:social-media-post-replycount
+    #:social-media-post-repostcount
+    #:social-media-post-likecount
+    #:social-media-post-viewcount
+    #:social-media-post-url
+    #:social-media-post-payloadtags
+    #:social-media-post-title
+    #:social-media-post-quotepostid
+    #:source
+    #:MAKE-source
+    #:COPY-source
+    #:source-P
+    #:+source-WIRE-FIELDS+
+    #:source-id
+    #:source-rev
+    #:source-dataset
+    #:source-dtype
+    #:source-schemaversion
+    #:source-externalids
+    #:source-aliases
+    #:source-sources
+    #:source-sourceurls
+    #:source-sourcerecordids
+    #:source-sourcekinds
+    #:source-sourcelicense
+    #:source-sourceterms
+    #:source-sourceretrievedat
+    #:source-collectedat
+    #:source-observedat
+    #:source-firstseenat
+    #:source-lastseenat
+    #:source-createdat
+    #:source-updatedat
+    #:source-validfrom
+    #:source-validuntil
+    #:source-expiresat
+    #:source-collector
+    #:source-collectorversion
+    #:source-collectionmethod
+    #:source-collectionstatus
+    #:source-runid
+    #:source-correlationid
+    #:source-causationid
+    #:source-parentid
+    #:source-rootid
+    #:source-confidence
+    #:source-confidencebasis
+    #:source-qualityscore
+    #:source-completenessscore
+    #:source-verificationstatus
+    #:source-verifiedat
+    #:source-verifiedby
+    #:source-provenance
+    #:source-chainofcustody
+    #:source-transformhistory
+    #:source-labels
+    #:source-tags
+    #:source-topics
+    #:source-language
+    #:source-jurisdiction
+    #:source-countrycode
+    #:source-regioncode
+    #:source-timezone
+    #:source-sensitivity
+    #:source-visibility
+    #:source-owner
+    #:source-accesscontrol
+    #:source-legalbasis
+    #:source-retentionpolicy
+    #:source-contenttype
+    #:source-encoding
+    #:source-sizebytes
+    #:source-contenthash
+    #:source-hashalgorithm
+    #:source-normalizedhash
+    #:source-raw
+    #:source-rawcontent
+    #:source-notes
+    #:source-deleted
+    #:source-tombstonereason
+    #:source-extensions
+    #:source-description
+    #:source-status
+    #:source-contentvalidfrom
+    #:source-contentvaliduntil
+    #:source-sourcetypeid
+    #:source-publisherid
+    #:source-authorids
+    #:source-captureactionid
+    #:source-originalfileids
+    #:source-archiveids
+    #:source-termsofuse
+    #:source-accessrestrictions
+    #:source-supersedessourceids
+    #:source-sourceid
+    #:source-type
+    #:source-sensor
+    #:source-name
+    #:source-title
+    #:source-publisher
+    #:source-author
+    #:source-organization
+    #:source-uri
+    #:source-url
+    #:source-archiveurl
+    #:source-publishedat
+    #:source-retrievedat
+    #:source-accessedat
+    #:source-payloadlanguage
+    #:source-payloadjurisdiction
+    #:source-medium
+    #:source-accessmethod
+    #:source-query
+    #:source-requestid
+    #:source-responsestatus
+    #:source-payloadcontenthash
+    #:source-payloadhashalgorithm
+    #:source-license
+    #:source-quote
+    #:source-locator
+    #:source-page
+    #:source-section
+    #:source-payloadnotes
+    #:source-metadata
+    #:task
+    #:MAKE-task
+    #:COPY-task
+    #:task-P
+    #:+task-WIRE-FIELDS+
+    #:task-id
+    #:task-rev
+    #:task-dataset
+    #:task-dtype
+    #:task-schemaversion
+    #:task-externalids
+    #:task-aliases
+    #:task-sources
+    #:task-sourceurls
+    #:task-sourcerecordids
+    #:task-sourcekinds
+    #:task-sourcelicense
+    #:task-sourceterms
+    #:task-sourceretrievedat
+    #:task-collectedat
+    #:task-observedat
+    #:task-firstseenat
+    #:task-lastseenat
+    #:task-createdat
+    #:task-updatedat
+    #:task-validfrom
+    #:task-validuntil
+    #:task-expiresat
+    #:task-collector
+    #:task-collectorversion
+    #:task-collectionmethod
+    #:task-collectionstatus
+    #:task-runid
+    #:task-correlationid
+    #:task-causationid
+    #:task-parentid
+    #:task-rootid
+    #:task-confidence
+    #:task-confidencebasis
+    #:task-qualityscore
+    #:task-completenessscore
+    #:task-verificationstatus
+    #:task-verifiedat
+    #:task-verifiedby
+    #:task-provenance
+    #:task-chainofcustody
+    #:task-transformhistory
+    #:task-labels
+    #:task-tags
+    #:task-topics
+    #:task-language
+    #:task-jurisdiction
+    #:task-countrycode
+    #:task-regioncode
+    #:task-timezone
+    #:task-sensitivity
+    #:task-visibility
+    #:task-owner
+    #:task-accesscontrol
+    #:task-legalbasis
+    #:task-retentionpolicy
+    #:task-contenttype
+    #:task-encoding
+    #:task-sizebytes
+    #:task-contenthash
+    #:task-hashalgorithm
+    #:task-normalizedhash
+    #:task-raw
+    #:task-rawcontent
+    #:task-notes
+    #:task-deleted
+    #:task-tombstonereason
+    #:task-extensions
+    #:task-description
+    #:task-status
+    #:task-contentvalidfrom
+    #:task-contentvaliduntil
+    #:task-parenttaskid
+    #:task-dependencytaskids
+    #:task-actorids
+    #:task-skillids
+    #:task-toolids
+    #:task-inputids
+    #:task-attemptids
+    #:task-schedule
+    #:task-startedat
+    #:task-resultsummary
+    #:task-errorids
+    #:task-tasktype
+    #:task-subjectids
+    #:task-assigneeids
+    #:task-priority
+    #:task-dueat
+    #:task-completedat
+    #:task-instructions
+    #:task-resultids
     #:target
     #:MAKE-target
     #:COPY-target
@@ -5499,6 +8981,62 @@
 
 (deftype distance-meters () 'string)
 
+(deftype analysis-confidence () 'string)
+
+(deftype asset-identifier-records-item-confidence () 'string)
+
+(deftype asset-external-ids-item-confidence () 'string)
+
+(deftype campaign-finance-source-system-ids-item-confidence () 'string)
+
+(deftype claim-certainty () 'string)
+
+(deftype contract-source-system-ids-item-confidence () 'string)
+
+(deftype entity-identity-confidence () 'string)
+
+(deftype entity-identity-keys-item-confidence () 'string)
+
+(deftype entity-external-ids-item-confidence () 'string)
+
+(deftype evidence-record-confidence () 'string)
+
+(deftype procurement-source-system-ids-item-confidence () 'string)
+
+(deftype product-external-ids-item-confidence () 'string)
+
+(deftype research-node-limits-max-depth () 'integer)
+
+(deftype research-node-limits-max-actor-runs () 'integer)
+
+(deftype research-node-limits-max-requests () 'integer)
+
+(deftype research-node-limits-max-elapsed-ms () 'integer)
+
+(deftype research-node-limits-max-repeated-state () 'integer)
+
+(deftype research-node-limits-max-cost () 'string)
+
+(deftype research-node-counters-depth () 'integer)
+
+(deftype research-node-counters-actor-runs () 'integer)
+
+(deftype research-node-counters-requests () 'integer)
+
+(deftype research-node-counters-repeated-state () 'integer)
+
+(deftype research-node-counters-elapsed-ms () 'integer)
+
+(deftype research-node-counters-cost () 'string)
+
+(deftype source-credibility () 'string)
+
+(deftype source-reliability () 'string)
+
+(deftype source-authenticity () 'string)
+
+(deftype source-independence () 'string)
+
 (deftype sensitivity () '(member "public" "internal" "confidential" "restricted" "secret" "unknown"))
 
 (deftype visibility () '(member "public" "private" "shared" "inherited" "unknown"))
@@ -5528,6 +9066,24 @@
 (deftype map-layer-kind () '(member "documents" "heatmap" "route" "geofence" "encounters" "custom" "unknown"))
 
 (deftype geo-geometry-type () '(member "point" "line-string" "polygon" "multi-point" "multi-line-string" "multi-polygon" "geometry-collection"))
+
+(deftype operation-role () '(member "collection" "working" "derived" "publication" "reference" "archive"))
+
+(deftype operation-access () '(member "read" "append" "write" "read-write"))
+
+(deftype operation-category () '(member "actor" "software" "hardware" "device" "source" "dataset" "schema" "protocol" "infrastructure" "research"))
+
+(deftype operation-capability-status () '(member "required" "missing" "planned" "in-progress" "available" "resolved" "waived"))
+
+(deftype operation-status () '(member "draft" "planned" "active" "blocked" "suspended" "completed" "aborted" "archived"))
+
+(deftype operation-assignment-status () '(member "planned" "assigned" "active" "completed" "blocked" "released"))
+
+(deftype operation-post-action-status () '(member "planned" "ready" "running" "completed" "failed" "skipped"))
+
+(deftype operation-state () '(member "planned" "ready" "active" "blocked" "awaiting-review" "completed" "skipped" "failed" "aborted"))
+
+(deftype research-node-status () '(member "draft" "queued" "running" "paused" "blocked" "completed" "failed" "killed"))
 
 (deftype pcap-format () '(member "pcap" "pcapng" "unknown"))
 
@@ -11429,6 +14985,6696 @@
     ("publishedAt" . publishedat)
     ("editedAt" . editedat)
     ("sensitive" . sensitive)
+  ))
+
+(defstruct operation-condition
+  (conditionid nil)
+  (kind nil)
+  (predicate nil)
+  (subject nil)
+  (object nil)
+  (expression nil)
+  (required nil)
+  (metadata nil)
+)
+(defparameter +operation-condition-wire-fields+
+  '(
+    ("conditionId" . conditionid)
+    ("kind" . kind)
+    ("predicate" . predicate)
+    ("subject" . subject)
+    ("object" . object)
+    ("expression" . expression)
+    ("required" . required)
+    ("metadata" . metadata)
+  ))
+
+(defstruct operation-target-policy
+  (alloweddtypes nil)
+  (allowedtargettypes nil)
+  (allowedroles nil)
+  (selectors nil)
+)
+(defparameter +operation-target-policy-wire-fields+
+  '(
+    ("allowedDtypes" . alloweddtypes)
+    ("allowedTargetTypes" . allowedtargettypes)
+    ("allowedRoles" . allowedroles)
+    ("selectors" . selectors)
+  ))
+
+(defstruct operation-target-bindings
+  (primary nil)
+  (supporting nil)
+  (derived nil)
+  (excluded nil)
+)
+(defparameter +operation-target-bindings-wire-fields+
+  '(
+    ("primary" . primary)
+    ("supporting" . supporting)
+    ("derived" . derived)
+    ("excluded" . excluded)
+  ))
+
+(defstruct operation-dataset-binding
+  (bindingid nil)
+  (dataset nil)
+  (role nil)
+  (access nil)
+  (phases nil)
+  (purpose nil)
+)
+(defparameter +operation-dataset-binding-wire-fields+
+  '(
+    ("bindingId" . bindingid)
+    ("dataset" . dataset)
+    ("role" . role)
+    ("access" . access)
+    ("phases" . phases)
+    ("purpose" . purpose)
+  ))
+
+(defstruct operation-capability-gap
+  (capabilityid nil)
+  (category nil)
+  (description nil)
+  (requiredby nil)
+  (blocking nil)
+  (status nil)
+  (capabilityref nil)
+  (resolutionref nil)
+  (owner nil)
+  (metadata nil)
+)
+(defparameter +operation-capability-gap-wire-fields+
+  '(
+    ("capabilityId" . capabilityid)
+    ("category" . category)
+    ("description" . description)
+    ("requiredBy" . requiredby)
+    ("blocking" . blocking)
+    ("status" . status)
+    ("capabilityRef" . capabilityref)
+    ("resolutionRef" . resolutionref)
+    ("owner" . owner)
+    ("metadata" . metadata)
+  ))
+
+(defstruct operation-assignment
+  (assignmentid nil)
+  (agentid nil)
+  (actorid nil)
+  (phaseids nil)
+  (role nil)
+  (status nil)
+  (metadata nil)
+)
+(defparameter +operation-assignment-wire-fields+
+  '(
+    ("assignmentId" . assignmentid)
+    ("agentId" . agentid)
+    ("actorId" . actorid)
+    ("phaseIds" . phaseids)
+    ("role" . role)
+    ("status" . status)
+    ("metadata" . metadata)
+  ))
+
+(defstruct operation-post-action
+  (actionid nil)
+  (actiontype nil)
+  (condition nil)
+  (targetids nil)
+  (datasetbindingids nil)
+  (status nil)
+  (config nil)
+)
+(defparameter +operation-post-action-wire-fields+
+  '(
+    ("actionId" . actionid)
+    ("actionType" . actiontype)
+    ("condition" . condition)
+    ("targetIds" . targetids)
+    ("datasetBindingIds" . datasetbindingids)
+    ("status" . status)
+    ("config" . config)
+  ))
+
+(defstruct operation-phase
+  (phaseid nil)
+  (title nil)
+  (objective nil)
+  (state nil)
+  (dependson nil)
+  (entryconditions nil)
+  (exitconditions nil)
+  (inscope nil)
+  (outofscope nil)
+  (targetpolicy nil)
+  (targetids nil)
+  (datasetbindingids nil)
+  (requiredcapabilityids nil)
+  (deliverableids nil)
+  (completionevidence nil)
+)
+(defparameter +operation-phase-wire-fields+
+  '(
+    ("phaseId" . phaseid)
+    ("title" . title)
+    ("objective" . objective)
+    ("state" . state)
+    ("dependsOn" . dependson)
+    ("entryConditions" . entryconditions)
+    ("exitConditions" . exitconditions)
+    ("inScope" . inscope)
+    ("outOfScope" . outofscope)
+    ("targetPolicy" . targetpolicy)
+    ("targetIds" . targetids)
+    ("datasetBindingIds" . datasetbindingids)
+    ("requiredCapabilityIds" . requiredcapabilityids)
+    ("deliverableIds" . deliverableids)
+    ("completionEvidence" . completionevidence)
+  ))
+
+(defstruct operation
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (mission nil)
+  (objectives nil)
+  (status nil)
+  (inscope nil)
+  (outofscope nil)
+  (targetpolicy nil)
+  (targets nil)
+  (phases nil)
+  (datasets nil)
+  (capabilitygaps nil)
+  (assignments nil)
+  (postactions nil)
+)
+(defparameter +operation-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("mission" . mission)
+    ("objectives" . objectives)
+    ("status" . status)
+    ("inScope" . inscope)
+    ("outOfScope" . outofscope)
+    ("targetPolicy" . targetpolicy)
+    ("targets" . targets)
+    ("phases" . phases)
+    ("datasets" . datasets)
+    ("capabilityGaps" . capabilitygaps)
+    ("assignments" . assignments)
+    ("postActions" . postactions)
+  ))
+
+(defstruct investigation-target
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (actor nil)
+  (target nil)
+  (targetid nil)
+  (targettype nil)
+  (query nil)
+  (researchquestion nil)
+  (hypotheses nil)
+  (objectives nil)
+  (inscope nil)
+  (outofscope nil)
+  (scopetype nil)
+  (seedids nil)
+  (sourceids nil)
+  (requireddtypes nil)
+  (preferredsources nil)
+  (excludedsources nil)
+  (delay nil)
+  (recurring nil)
+  (recurrence nil)
+  (options nil)
+  (depth nil)
+  (maxdepth nil)
+  (breadth nil)
+  (priority nil)
+  (score nil)
+  (selectionreason nil)
+  (status nil)
+  (nextrunat nil)
+)
+(defparameter +investigation-target-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("actor" . actor)
+    ("target" . target)
+    ("targetId" . targetid)
+    ("targetType" . targettype)
+    ("query" . query)
+    ("researchQuestion" . researchquestion)
+    ("hypotheses" . hypotheses)
+    ("objectives" . objectives)
+    ("inScope" . inscope)
+    ("outOfScope" . outofscope)
+    ("scopeType" . scopetype)
+    ("seedIds" . seedids)
+    ("sourceIds" . sourceids)
+    ("requiredDtypes" . requireddtypes)
+    ("preferredSources" . preferredsources)
+    ("excludedSources" . excludedsources)
+    ("delay" . delay)
+    ("recurring" . recurring)
+    ("recurrence" . recurrence)
+    ("options" . options)
+    ("depth" . depth)
+    ("maxDepth" . maxdepth)
+    ("breadth" . breadth)
+    ("priority" . priority)
+    ("score" . score)
+    ("selectionReason" . selectionreason)
+    ("status" . status)
+    ("nextRunAt" . nextrunat)
+  ))
+
+(defstruct asset-identifier-records-item
+  (scheme nil)
+  (value nil)
+  (issuer nil)
+  (jurisdiction nil)
+  (canonical nil)
+  (confidence nil)
+  (validfrom nil)
+  (validto nil)
+  (url nil)
+  (notes nil)
+)
+(defparameter +asset-identifier-records-item-wire-fields+
+  '(
+    ("scheme" . scheme)
+    ("value" . value)
+    ("issuer" . issuer)
+    ("jurisdiction" . jurisdiction)
+    ("canonical" . canonical)
+    ("confidence" . confidence)
+    ("validFrom" . validfrom)
+    ("validTo" . validto)
+    ("url" . url)
+    ("notes" . notes)
+  ))
+
+(defstruct asset-valuation-records-item
+  (amount nil)
+  (currency nil)
+  (basis nil)
+  (asof nil)
+  (notes nil)
+)
+(defparameter +asset-valuation-records-item-wire-fields+
+  '(
+    ("amount" . amount)
+    ("currency" . currency)
+    ("basis" . basis)
+    ("asOf" . asof)
+    ("notes" . notes)
+  ))
+
+(defstruct asset-external-ids-item
+  (scheme nil)
+  (value nil)
+  (issuer nil)
+  (jurisdiction nil)
+  (canonical nil)
+  (confidence nil)
+  (validfrom nil)
+  (validto nil)
+  (url nil)
+  (notes nil)
+)
+(defparameter +asset-external-ids-item-wire-fields+
+  '(
+    ("scheme" . scheme)
+    ("value" . value)
+    ("issuer" . issuer)
+    ("jurisdiction" . jurisdiction)
+    ("canonical" . canonical)
+    ("confidence" . confidence)
+    ("validFrom" . validfrom)
+    ("validTo" . validto)
+    ("url" . url)
+    ("notes" . notes)
+  ))
+
+(defstruct campaign-finance-amount-record
+  (amount nil)
+  (currency nil)
+  (basis nil)
+  (asof nil)
+  (notes nil)
+)
+(defparameter +campaign-finance-amount-record-wire-fields+
+  '(
+    ("amount" . amount)
+    ("currency" . currency)
+    ("basis" . basis)
+    ("asOf" . asof)
+    ("notes" . notes)
+  ))
+
+(defstruct campaign-finance-aggregate-amount
+  (amount nil)
+  (currency nil)
+  (basis nil)
+  (asof nil)
+  (notes nil)
+)
+(defparameter +campaign-finance-aggregate-amount-wire-fields+
+  '(
+    ("amount" . amount)
+    ("currency" . currency)
+    ("basis" . basis)
+    ("asOf" . asof)
+    ("notes" . notes)
+  ))
+
+(defstruct campaign-finance-source-system-ids-item
+  (scheme nil)
+  (value nil)
+  (issuer nil)
+  (jurisdiction nil)
+  (canonical nil)
+  (confidence nil)
+  (validfrom nil)
+  (validto nil)
+  (url nil)
+  (notes nil)
+)
+(defparameter +campaign-finance-source-system-ids-item-wire-fields+
+  '(
+    ("scheme" . scheme)
+    ("value" . value)
+    ("issuer" . issuer)
+    ("jurisdiction" . jurisdiction)
+    ("canonical" . canonical)
+    ("confidence" . confidence)
+    ("validFrom" . validfrom)
+    ("validTo" . validto)
+    ("url" . url)
+    ("notes" . notes)
+  ))
+
+(defstruct contract-funding-records-item
+  (amount nil)
+  (currency nil)
+  (basis nil)
+  (asof nil)
+  (notes nil)
+)
+(defparameter +contract-funding-records-item-wire-fields+
+  '(
+    ("amount" . amount)
+    ("currency" . currency)
+    ("basis" . basis)
+    ("asOf" . asof)
+    ("notes" . notes)
+  ))
+
+(defstruct contract-source-system-ids-item
+  (scheme nil)
+  (value nil)
+  (issuer nil)
+  (jurisdiction nil)
+  (canonical nil)
+  (confidence nil)
+  (validfrom nil)
+  (validto nil)
+  (url nil)
+  (notes nil)
+)
+(defparameter +contract-source-system-ids-item-wire-fields+
+  '(
+    ("scheme" . scheme)
+    ("value" . value)
+    ("issuer" . issuer)
+    ("jurisdiction" . jurisdiction)
+    ("canonical" . canonical)
+    ("confidence" . confidence)
+    ("validFrom" . validfrom)
+    ("validTo" . validto)
+    ("url" . url)
+    ("notes" . notes)
+  ))
+
+(defstruct employment-compensation-records-item
+  (amount nil)
+  (currency nil)
+  (basis nil)
+  (asof nil)
+  (notes nil)
+)
+(defparameter +employment-compensation-records-item-wire-fields+
+  '(
+    ("amount" . amount)
+    ("currency" . currency)
+    ("basis" . basis)
+    ("asOf" . asof)
+    ("notes" . notes)
+  ))
+
+(defstruct entity-identity-keys-item
+  (scheme nil)
+  (value nil)
+  (issuer nil)
+  (jurisdiction nil)
+  (canonical nil)
+  (confidence nil)
+  (validfrom nil)
+  (validto nil)
+  (url nil)
+  (notes nil)
+)
+(defparameter +entity-identity-keys-item-wire-fields+
+  '(
+    ("scheme" . scheme)
+    ("value" . value)
+    ("issuer" . issuer)
+    ("jurisdiction" . jurisdiction)
+    ("canonical" . canonical)
+    ("confidence" . confidence)
+    ("validFrom" . validfrom)
+    ("validTo" . validto)
+    ("url" . url)
+    ("notes" . notes)
+  ))
+
+(defstruct entity-external-ids-item
+  (scheme nil)
+  (value nil)
+  (issuer nil)
+  (jurisdiction nil)
+  (canonical nil)
+  (confidence nil)
+  (validfrom nil)
+  (validto nil)
+  (url nil)
+  (notes nil)
+)
+(defparameter +entity-external-ids-item-wire-fields+
+  '(
+    ("scheme" . scheme)
+    ("value" . value)
+    ("issuer" . issuer)
+    ("jurisdiction" . jurisdiction)
+    ("canonical" . canonical)
+    ("confidence" . confidence)
+    ("validFrom" . validfrom)
+    ("validTo" . validto)
+    ("url" . url)
+    ("notes" . notes)
+  ))
+
+(defstruct financial-observation-amount-record
+  (amount nil)
+  (currency nil)
+  (basis nil)
+  (asof nil)
+  (notes nil)
+)
+(defparameter +financial-observation-amount-record-wire-fields+
+  '(
+    ("amount" . amount)
+    ("currency" . currency)
+    ("basis" . basis)
+    ("asOf" . asof)
+    ("notes" . notes)
+  ))
+
+(defstruct grant-funding-records-item
+  (amount nil)
+  (currency nil)
+  (basis nil)
+  (asof nil)
+  (notes nil)
+)
+(defparameter +grant-funding-records-item-wire-fields+
+  '(
+    ("amount" . amount)
+    ("currency" . currency)
+    ("basis" . basis)
+    ("asOf" . asof)
+    ("notes" . notes)
+  ))
+
+(defstruct grant-matching-amount
+  (amount nil)
+  (currency nil)
+  (basis nil)
+  (asof nil)
+  (notes nil)
+)
+(defparameter +grant-matching-amount-wire-fields+
+  '(
+    ("amount" . amount)
+    ("currency" . currency)
+    ("basis" . basis)
+    ("asOf" . asof)
+    ("notes" . notes)
+  ))
+
+(defstruct lobbying-filing-amount-records-item
+  (amount nil)
+  (currency nil)
+  (basis nil)
+  (asof nil)
+  (notes nil)
+)
+(defparameter +lobbying-filing-amount-records-item-wire-fields+
+  '(
+    ("amount" . amount)
+    ("currency" . currency)
+    ("basis" . basis)
+    ("asOf" . asof)
+    ("notes" . notes)
+  ))
+
+(defstruct ownership-value-record
+  (amount nil)
+  (currency nil)
+  (basis nil)
+  (asof nil)
+  (notes nil)
+)
+(defparameter +ownership-value-record-wire-fields+
+  '(
+    ("amount" . amount)
+    ("currency" . currency)
+    ("basis" . basis)
+    ("asOf" . asof)
+    ("notes" . notes)
+  ))
+
+(defstruct procurement-funding-records-item
+  (amount nil)
+  (currency nil)
+  (basis nil)
+  (asof nil)
+  (notes nil)
+)
+(defparameter +procurement-funding-records-item-wire-fields+
+  '(
+    ("amount" . amount)
+    ("currency" . currency)
+    ("basis" . basis)
+    ("asOf" . asof)
+    ("notes" . notes)
+  ))
+
+(defstruct procurement-source-system-ids-item
+  (scheme nil)
+  (value nil)
+  (issuer nil)
+  (jurisdiction nil)
+  (canonical nil)
+  (confidence nil)
+  (validfrom nil)
+  (validto nil)
+  (url nil)
+  (notes nil)
+)
+(defparameter +procurement-source-system-ids-item-wire-fields+
+  '(
+    ("scheme" . scheme)
+    ("value" . value)
+    ("issuer" . issuer)
+    ("jurisdiction" . jurisdiction)
+    ("canonical" . canonical)
+    ("confidence" . confidence)
+    ("validFrom" . validfrom)
+    ("validTo" . validto)
+    ("url" . url)
+    ("notes" . notes)
+  ))
+
+(defstruct product-pricing-records-item
+  (amount nil)
+  (currency nil)
+  (basis nil)
+  (asof nil)
+  (notes nil)
+)
+(defparameter +product-pricing-records-item-wire-fields+
+  '(
+    ("amount" . amount)
+    ("currency" . currency)
+    ("basis" . basis)
+    ("asOf" . asof)
+    ("notes" . notes)
+  ))
+
+(defstruct product-external-ids-item
+  (scheme nil)
+  (value nil)
+  (issuer nil)
+  (jurisdiction nil)
+  (canonical nil)
+  (confidence nil)
+  (validfrom nil)
+  (validto nil)
+  (url nil)
+  (notes nil)
+)
+(defparameter +product-external-ids-item-wire-fields+
+  '(
+    ("scheme" . scheme)
+    ("value" . value)
+    ("issuer" . issuer)
+    ("jurisdiction" . jurisdiction)
+    ("canonical" . canonical)
+    ("confidence" . confidence)
+    ("validFrom" . validfrom)
+    ("validTo" . validto)
+    ("url" . url)
+    ("notes" . notes)
+  ))
+
+(defstruct research-node-limits
+  (maxdepth nil)
+  (maxactorruns nil)
+  (maxrequests nil)
+  (maxelapsedms nil)
+  (maxrepeatedstate nil)
+  (maxcost nil)
+  (currency nil)
+)
+(defparameter +research-node-limits-wire-fields+
+  '(
+    ("maxDepth" . maxdepth)
+    ("maxActorRuns" . maxactorruns)
+    ("maxRequests" . maxrequests)
+    ("maxElapsedMs" . maxelapsedms)
+    ("maxRepeatedState" . maxrepeatedstate)
+    ("maxCost" . maxcost)
+    ("currency" . currency)
+  ))
+
+(defstruct research-node-stop
+  (whenactorqueueempty nil)
+  (whennonewdocuments nil)
+  (whenobjectivesatisfied nil)
+  (haltonactorfailure nil)
+)
+(defparameter +research-node-stop-wire-fields+
+  '(
+    ("whenActorQueueEmpty" . whenactorqueueempty)
+    ("whenNoNewDocuments" . whennonewdocuments)
+    ("whenObjectiveSatisfied" . whenobjectivesatisfied)
+    ("haltOnActorFailure" . haltonactorfailure)
+  ))
+
+(defstruct research-node-counters
+  (depth nil)
+  (actorruns nil)
+  (requests nil)
+  (repeatedstate nil)
+  (elapsedms nil)
+  (cost nil)
+)
+(defparameter +research-node-counters-wire-fields+
+  '(
+    ("depth" . depth)
+    ("actorRuns" . actorruns)
+    ("requests" . requests)
+    ("repeatedState" . repeatedstate)
+    ("elapsedMs" . elapsedms)
+    ("cost" . cost)
+  ))
+
+(defstruct research-node-history-item
+  (from nil)
+  (to nil)
+  (at nil)
+  (message nil)
+  (error nil)
+  (actorid nil)
+  (runid nil)
+  (outputids nil)
+  (artifactids nil)
+)
+(defparameter +research-node-history-item-wire-fields+
+  '(
+    ("from" . from)
+    ("to" . to)
+    ("at" . at)
+    ("message" . message)
+    ("error" . error)
+    ("actorId" . actorid)
+    ("runId" . runid)
+    ("outputIds" . outputids)
+    ("artifactIds" . artifactids)
+  ))
+
+(defstruct alert
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (ruleid nil)
+  (triggereventid nil)
+  (relatedalertids nil)
+  (firsttriggeredat nil)
+  (lasttriggeredat nil)
+  (occurrencecount nil)
+  (acknowledgementactions nil)
+  (suppresseduntil nil)
+  (resolvedat nil)
+  (resolution nil)
+  (alerttype nil)
+  (subjectids nil)
+  (condition nil)
+  (threshold nil)
+  (triggeredat nil)
+  (severity nil)
+  (acknowledgedby nil)
+)
+(defparameter +alert-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("ruleId" . ruleid)
+    ("triggerEventId" . triggereventid)
+    ("relatedAlertIds" . relatedalertids)
+    ("firstTriggeredAt" . firsttriggeredat)
+    ("lastTriggeredAt" . lasttriggeredat)
+    ("occurrenceCount" . occurrencecount)
+    ("acknowledgementActions" . acknowledgementactions)
+    ("suppressedUntil" . suppresseduntil)
+    ("resolvedAt" . resolvedat)
+    ("resolution" . resolution)
+    ("alertType" . alerttype)
+    ("subjectIds" . subjectids)
+    ("condition" . condition)
+    ("threshold" . threshold)
+    ("triggeredAt" . triggeredat)
+    ("severity" . severity)
+    ("acknowledgedBy" . acknowledgedby)
+  ))
+
+(defstruct analysis
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (hypotheses nil)
+  (methodids nil)
+  (claimids nil)
+  (logic nil)
+  (reasoningartifactids nil)
+  (uncertaintysources nil)
+  (dependencyids nil)
+  (reviewids nil)
+  (outputids nil)
+  (question nil)
+  (method nil)
+  (framework nil)
+  (scope nil)
+  (inputids nil)
+  (findingids nil)
+  (findings nil)
+  (conclusions nil)
+  (recommendations nil)
+  (counterarguments nil)
+  (limitations nil)
+  (unresolved nil)
+  (payloadconfidence nil)
+)
+(defparameter +analysis-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("hypotheses" . hypotheses)
+    ("methodIds" . methodids)
+    ("claimIds" . claimids)
+    ("logic" . logic)
+    ("reasoningArtifactIds" . reasoningartifactids)
+    ("uncertaintySources" . uncertaintysources)
+    ("dependencyIds" . dependencyids)
+    ("reviewIds" . reviewids)
+    ("outputIds" . outputids)
+    ("question" . question)
+    ("method" . method)
+    ("framework" . framework)
+    ("scope" . scope)
+    ("inputIds" . inputids)
+    ("findingIds" . findingids)
+    ("findings" . findings)
+    ("conclusions" . conclusions)
+    ("recommendations" . recommendations)
+    ("counterarguments" . counterarguments)
+    ("limitations" . limitations)
+    ("unresolved" . unresolved)
+    ("payloadConfidence" . payloadconfidence)
+  ))
+
+(defstruct asset
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (assetclass nil)
+  (custodianids nil)
+  (beneficialownerids nil)
+  (identifierrecords nil)
+  (valuationrecords nil)
+  (acquiredat nil)
+  (disposedat nil)
+  (acquisitioneventid nil)
+  (disposaleventid nil)
+  (componentids nil)
+  (etype nil)
+  (eid nil)
+  (name nil)
+  (displayname nil)
+  (legalname nil)
+  (shortname nil)
+  (formernames nil)
+  (bio nil)
+  (payloadjurisdiction nil)
+  (country nil)
+  (foundedat nil)
+  (dissolvedat nil)
+  (website nil)
+  (imageurl nil)
+  (logourl nil)
+  (payloadexternalids nil)
+  (contactids nil)
+  (locationids nil)
+  (assettype nil)
+  (ownerids nil)
+  (operatorids nil)
+  (serialnumber nil)
+  (registration nil)
+  (value nil)
+  (currency nil)
+  (locationid nil)
+)
+(defparameter +asset-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("assetClass" . assetclass)
+    ("custodianIds" . custodianids)
+    ("beneficialOwnerIds" . beneficialownerids)
+    ("identifierRecords" . identifierrecords)
+    ("valuationRecords" . valuationrecords)
+    ("acquiredAt" . acquiredat)
+    ("disposedAt" . disposedat)
+    ("acquisitionEventId" . acquisitioneventid)
+    ("disposalEventId" . disposaleventid)
+    ("componentIds" . componentids)
+    ("etype" . etype)
+    ("eid" . eid)
+    ("name" . name)
+    ("displayName" . displayname)
+    ("legalName" . legalname)
+    ("shortName" . shortname)
+    ("formerNames" . formernames)
+    ("bio" . bio)
+    ("payloadJurisdiction" . payloadjurisdiction)
+    ("country" . country)
+    ("foundedAt" . foundedat)
+    ("dissolvedAt" . dissolvedat)
+    ("website" . website)
+    ("imageUrl" . imageurl)
+    ("logoUrl" . logourl)
+    ("payloadExternalIds" . payloadexternalids)
+    ("contactIds" . contactids)
+    ("locationIds" . locationids)
+    ("assetType" . assettype)
+    ("ownerIds" . ownerids)
+    ("operatorIds" . operatorids)
+    ("serialNumber" . serialnumber)
+    ("registration" . registration)
+    ("value" . value)
+    ("currency" . currency)
+    ("locationId" . locationid)
+  ))
+
+(defstruct campaign-finance
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (transactionid nil)
+  (committeeids nil)
+  (donorrefs nil)
+  (recipientrefs nil)
+  (amountrecord nil)
+  (transactiondate nil)
+  (memoed nil)
+  (memotext nil)
+  (refundofid nil)
+  (aggregateamount nil)
+  (employer nil)
+  (occupation nil)
+  (sourcesystemids nil)
+  (entityid nil)
+  (observationtype nil)
+  (amount nil)
+  (currency nil)
+  (valuetype nil)
+  (periodstart nil)
+  (periodend nil)
+  (fiscalyear nil)
+  (fiscalquarter nil)
+  (reportedat nil)
+  (counterpartyids nil)
+  (instrument nil)
+  (units nil)
+  (unitprice nil)
+  (percentage nil)
+  (methodology nil)
+  (qualifications nil)
+  (committeeid nil)
+  (donorid nil)
+  (recipientid nil)
+  (filingid nil)
+  (contributiontype nil)
+  (electioncycle nil)
+)
+(defparameter +campaign-finance-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("transactionId" . transactionid)
+    ("committeeIds" . committeeids)
+    ("donorRefs" . donorrefs)
+    ("recipientRefs" . recipientrefs)
+    ("amountRecord" . amountrecord)
+    ("transactionDate" . transactiondate)
+    ("memoed" . memoed)
+    ("memoText" . memotext)
+    ("refundOfId" . refundofid)
+    ("aggregateAmount" . aggregateamount)
+    ("employer" . employer)
+    ("occupation" . occupation)
+    ("sourceSystemIds" . sourcesystemids)
+    ("entityId" . entityid)
+    ("observationType" . observationtype)
+    ("amount" . amount)
+    ("currency" . currency)
+    ("valueType" . valuetype)
+    ("periodStart" . periodstart)
+    ("periodEnd" . periodend)
+    ("fiscalYear" . fiscalyear)
+    ("fiscalQuarter" . fiscalquarter)
+    ("reportedAt" . reportedat)
+    ("counterpartyIds" . counterpartyids)
+    ("instrument" . instrument)
+    ("units" . units)
+    ("unitPrice" . unitprice)
+    ("percentage" . percentage)
+    ("methodology" . methodology)
+    ("qualifications" . qualifications)
+    ("committeeId" . committeeid)
+    ("donorId" . donorid)
+    ("recipientId" . recipientid)
+    ("filingId" . filingid)
+    ("contributionType" . contributiontype)
+    ("electionCycle" . electioncycle)
+  ))
+
+(defstruct claim
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (proposition nil)
+  (subjectrefs nil)
+  (objectrefs nil)
+  (supportingsourceids nil)
+  (reviewids nil)
+  (truthstatus nil)
+  (verificationmethod nil)
+  (derivedfromclaimids nil)
+  (scope nil)
+  (claim nil)
+  (claimantid nil)
+  (subjectids nil)
+  (predicate nil)
+  (object nil)
+  (claimtype nil)
+  (polarity nil)
+  (certainty nil)
+  (supportingevidenceids nil)
+  (contradictingevidenceids nil)
+  (adjudication nil)
+)
+(defparameter +claim-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("proposition" . proposition)
+    ("subjectRefs" . subjectrefs)
+    ("objectRefs" . objectrefs)
+    ("supportingSourceIds" . supportingsourceids)
+    ("reviewIds" . reviewids)
+    ("truthStatus" . truthstatus)
+    ("verificationMethod" . verificationmethod)
+    ("derivedFromClaimIds" . derivedfromclaimids)
+    ("scope" . scope)
+    ("claim" . claim)
+    ("claimantId" . claimantid)
+    ("subjectIds" . subjectids)
+    ("predicate" . predicate)
+    ("object" . object)
+    ("claimType" . claimtype)
+    ("polarity" . polarity)
+    ("certainty" . certainty)
+    ("supportingEvidenceIds" . supportingevidenceids)
+    ("contradictingEvidenceIds" . contradictingevidenceids)
+    ("adjudication" . adjudication)
+  ))
+
+(defstruct concept
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (conceptid nil)
+  (vocabulary nil)
+  (namespace nil)
+  (version nil)
+  (preferredlabel nil)
+  (synonyms nil)
+  (definitionsourceids nil)
+  (mappingids nil)
+  (term nil)
+  (definition nil)
+  (domain nil)
+  (broaderids nil)
+  (narrowerids nil)
+  (relatedids nil)
+  (examples nil)
+  (criteria nil)
+)
+(defparameter +concept-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("conceptId" . conceptid)
+    ("vocabulary" . vocabulary)
+    ("namespace" . namespace)
+    ("version" . version)
+    ("preferredLabel" . preferredlabel)
+    ("synonyms" . synonyms)
+    ("definitionSourceIds" . definitionsourceids)
+    ("mappingIds" . mappingids)
+    ("term" . term)
+    ("definition" . definition)
+    ("domain" . domain)
+    ("broaderIds" . broaderids)
+    ("narrowerIds" . narrowerids)
+    ("relatedIds" . relatedids)
+    ("examples" . examples)
+    ("criteria" . criteria)
+  ))
+
+(defstruct contract
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (parentawardid nil)
+  (primeawardid nil)
+  (partyroles nil)
+  (fundingrecords nil)
+  (lineitems nil)
+  (clauseids nil)
+  (deliverableids nil)
+  (performancelocationids nil)
+  (sourcesystemids nil)
+  (contractid nil)
+  (awardid nil)
+  (solicitationid nil)
+  (vehicleid nil)
+  (buyerid nil)
+  (sellerid nil)
+  (agencyids nil)
+  (vendorids nil)
+  (subcontractorids nil)
+  (scope nil)
+  (awardtype nil)
+  (competitiontype nil)
+  (signedat nil)
+  (startat nil)
+  (endat nil)
+  (ceilingamount nil)
+  (potentialamount nil)
+  (obligatedamount nil)
+  (outlayamount nil)
+  (recognizedrevenue nil)
+  (currency nil)
+  (naics nil)
+  (psc nil)
+  (placeofperformance nil)
+  (modifications nil)
+)
+(defparameter +contract-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("parentAwardId" . parentawardid)
+    ("primeAwardId" . primeawardid)
+    ("partyRoles" . partyroles)
+    ("fundingRecords" . fundingrecords)
+    ("lineItems" . lineitems)
+    ("clauseIds" . clauseids)
+    ("deliverableIds" . deliverableids)
+    ("performanceLocationIds" . performancelocationids)
+    ("sourceSystemIds" . sourcesystemids)
+    ("contractId" . contractid)
+    ("awardId" . awardid)
+    ("solicitationId" . solicitationid)
+    ("vehicleId" . vehicleid)
+    ("buyerId" . buyerid)
+    ("sellerId" . sellerid)
+    ("agencyIds" . agencyids)
+    ("vendorIds" . vendorids)
+    ("subcontractorIds" . subcontractorids)
+    ("scope" . scope)
+    ("awardType" . awardtype)
+    ("competitionType" . competitiontype)
+    ("signedAt" . signedat)
+    ("startAt" . startat)
+    ("endAt" . endat)
+    ("ceilingAmount" . ceilingamount)
+    ("potentialAmount" . potentialamount)
+    ("obligatedAmount" . obligatedamount)
+    ("outlayAmount" . outlayamount)
+    ("recognizedRevenue" . recognizedrevenue)
+    ("currency" . currency)
+    ("naics" . naics)
+    ("psc" . psc)
+    ("placeOfPerformance" . placeofperformance)
+    ("modifications" . modifications)
+  ))
+
+(defstruct dataset-manifest-count-entry
+  (key nil)
+  (value nil)
+)
+(defparameter +dataset-manifest-count-entry-wire-fields+
+  '(
+    ("key" . key)
+    ("value" . value)
+  ))
+
+(defstruct dataset-manifest
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (datasetid nil)
+  (datasetversion nil)
+  (profile nil)
+  (profileversion nil)
+  (schemarevision nil)
+  (documentversions nil)
+  (sourcedatasetids nil)
+  (synccursor nil)
+  (syncstatus nil)
+  (validatedat nil)
+  (manifesttype nil)
+  (name nil)
+  (actor nil)
+  (consumerpath nil)
+  (targetoptions nil)
+  (documentids nil)
+  (countsbydtype nil)
+  (recordcount nil)
+  (payloadhashalgorithm nil)
+  (payloadcontenthash nil)
+  (files nil)
+  (schemaversions nil)
+  (generatedat nil)
+)
+(defparameter +dataset-manifest-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("datasetId" . datasetid)
+    ("datasetVersion" . datasetversion)
+    ("profile" . profile)
+    ("profileVersion" . profileversion)
+    ("schemaRevision" . schemarevision)
+    ("documentVersions" . documentversions)
+    ("sourceDatasetIds" . sourcedatasetids)
+    ("syncCursor" . synccursor)
+    ("syncStatus" . syncstatus)
+    ("validatedAt" . validatedat)
+    ("manifestType" . manifesttype)
+    ("name" . name)
+    ("actor" . actor)
+    ("consumerPath" . consumerpath)
+    ("targetOptions" . targetoptions)
+    ("documentIds" . documentids)
+    ("countsByDtype" . countsbydtype)
+    ("recordCount" . recordcount)
+    ("payloadHashAlgorithm" . payloadhashalgorithm)
+    ("payloadContentHash" . payloadcontenthash)
+    ("files" . files)
+    ("schemaVersions" . schemaversions)
+    ("generatedAt" . generatedat)
+  ))
+
+(defstruct education
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (educationtype nil)
+  (credentialid nil)
+  (programid nil)
+  (attendancestatus nil)
+  (awardedat nil)
+  (thesistitle nil)
+  (advisorids nil)
+  (personid nil)
+  (institutionid nil)
+  (degree nil)
+  (field nil)
+  (startat nil)
+  (endat nil)
+  (graduated nil)
+  (honors nil)
+)
+(defparameter +education-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("educationType" . educationtype)
+    ("credentialId" . credentialid)
+    ("programId" . programid)
+    ("attendanceStatus" . attendancestatus)
+    ("awardedAt" . awardedat)
+    ("thesisTitle" . thesistitle)
+    ("advisorIds" . advisorids)
+    ("personId" . personid)
+    ("institutionId" . institutionid)
+    ("degree" . degree)
+    ("field" . field)
+    ("startAt" . startat)
+    ("endAt" . endat)
+    ("graduated" . graduated)
+    ("honors" . honors)
+  ))
+
+(defstruct employment
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (roleids nil)
+  (reportstoids nil)
+  (appointmenttype nil)
+  (appointedbyids nil)
+  (compensationrecords nil)
+  (responsibilities nil)
+  (terminationreason nil)
+  (personid nil)
+  (organizationid nil)
+  (title nil)
+  (department nil)
+  (startat nil)
+  (endat nil)
+  (current nil)
+  (employmenttype nil)
+  (locationid nil)
+)
+(defparameter +employment-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("roleIds" . roleids)
+    ("reportsToIds" . reportstoids)
+    ("appointmentType" . appointmenttype)
+    ("appointedByIds" . appointedbyids)
+    ("compensationRecords" . compensationrecords)
+    ("responsibilities" . responsibilities)
+    ("terminationReason" . terminationreason)
+    ("personId" . personid)
+    ("organizationId" . organizationid)
+    ("title" . title)
+    ("department" . department)
+    ("startAt" . startat)
+    ("endAt" . endat)
+    ("current" . current)
+    ("employmentType" . employmenttype)
+    ("locationId" . locationid)
+  ))
+
+(defstruct entity
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (entityclass nil)
+  (canonicalname nil)
+  (sameasids nil)
+  (duplicatecandidateids nil)
+  (identityconfidence nil)
+  (identitykeys nil)
+  (etype nil)
+  (eid nil)
+  (name nil)
+  (displayname nil)
+  (legalname nil)
+  (shortname nil)
+  (formernames nil)
+  (bio nil)
+  (payloadjurisdiction nil)
+  (country nil)
+  (foundedat nil)
+  (dissolvedat nil)
+  (website nil)
+  (imageurl nil)
+  (logourl nil)
+  (payloadexternalids nil)
+  (contactids nil)
+  (locationids nil)
+)
+(defparameter +entity-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("entityClass" . entityclass)
+    ("canonicalName" . canonicalname)
+    ("sameAsIds" . sameasids)
+    ("duplicateCandidateIds" . duplicatecandidateids)
+    ("identityConfidence" . identityconfidence)
+    ("identityKeys" . identitykeys)
+    ("etype" . etype)
+    ("eid" . eid)
+    ("name" . name)
+    ("displayName" . displayname)
+    ("legalName" . legalname)
+    ("shortName" . shortname)
+    ("formerNames" . formernames)
+    ("bio" . bio)
+    ("payloadJurisdiction" . payloadjurisdiction)
+    ("country" . country)
+    ("foundedAt" . foundedat)
+    ("dissolvedAt" . dissolvedat)
+    ("website" . website)
+    ("imageUrl" . imageurl)
+    ("logoUrl" . logourl)
+    ("payloadExternalIds" . payloadexternalids)
+    ("contactIds" . contactids)
+    ("locationIds" . locationids)
+  ))
+
+(defstruct event
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (eventtypeid nil)
+  (parenteventid nil)
+  (childeventids nil)
+  (participantroles nil)
+  (actionrecords nil)
+  (sourceeventids nil)
+  (recurrencerule nil)
+  (resultids nil)
+  (claimids nil)
+  (eventkind nil)
+  (name nil)
+  (participantids nil)
+  (participants nil)
+  (organizerids nil)
+  (sponsorids nil)
+  (locationids nil)
+  (startat nil)
+  (endat nil)
+  (outcome nil)
+  (agenda nil)
+  (decisions nil)
+  (actions nil)
+  (amount nil)
+  (currency nil)
+  (payloadjurisdiction nil)
+  (caseid nil)
+  (contractid nil)
+  (meetingid nil)
+)
+(defparameter +event-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("eventTypeId" . eventtypeid)
+    ("parentEventId" . parenteventid)
+    ("childEventIds" . childeventids)
+    ("participantRoles" . participantroles)
+    ("actionRecords" . actionrecords)
+    ("sourceEventIds" . sourceeventids)
+    ("recurrenceRule" . recurrencerule)
+    ("resultIds" . resultids)
+    ("claimIds" . claimids)
+    ("eventKind" . eventkind)
+    ("name" . name)
+    ("participantIds" . participantids)
+    ("participants" . participants)
+    ("organizerIds" . organizerids)
+    ("sponsorIds" . sponsorids)
+    ("locationIds" . locationids)
+    ("startAt" . startat)
+    ("endAt" . endat)
+    ("outcome" . outcome)
+    ("agenda" . agenda)
+    ("decisions" . decisions)
+    ("actions" . actions)
+    ("amount" . amount)
+    ("currency" . currency)
+    ("payloadJurisdiction" . payloadjurisdiction)
+    ("caseId" . caseid)
+    ("contractId" . contractid)
+    ("meetingId" . meetingid)
+  ))
+
+(defstruct evidence-record
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (subjectids nil)
+  (claimids nil)
+  (exactcontent nil)
+  (normalizedcontent nil)
+  (extractionmethod nil)
+  (captureactionid nil)
+  (custodyactions nil)
+  (hashes nil)
+  (admissibilitystatus nil)
+  (evidenceid nil)
+  (sourceid nil)
+  (sourceurl nil)
+  (kind nil)
+  (role nil)
+  (claim nil)
+  (observation nil)
+  (excerpt nil)
+  (locator nil)
+  (page nil)
+  (section nil)
+  (payloadcollectedat nil)
+  (payloadobservedat nil)
+  (payloadcontenthash nil)
+  (payloadhashalgorithm nil)
+  (payloadconfidence nil)
+  (corroborates nil)
+  (contradicts nil)
+  (payloadchainofcustody nil)
+  (attachments nil)
+  (payloadnotes nil)
+  (metadata nil)
+)
+(defparameter +evidence-record-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("subjectIds" . subjectids)
+    ("claimIds" . claimids)
+    ("exactContent" . exactcontent)
+    ("normalizedContent" . normalizedcontent)
+    ("extractionMethod" . extractionmethod)
+    ("captureActionId" . captureactionid)
+    ("custodyActions" . custodyactions)
+    ("hashes" . hashes)
+    ("admissibilityStatus" . admissibilitystatus)
+    ("evidenceId" . evidenceid)
+    ("sourceId" . sourceid)
+    ("sourceUrl" . sourceurl)
+    ("kind" . kind)
+    ("role" . role)
+    ("claim" . claim)
+    ("observation" . observation)
+    ("excerpt" . excerpt)
+    ("locator" . locator)
+    ("page" . page)
+    ("section" . section)
+    ("payloadCollectedAt" . payloadcollectedat)
+    ("payloadObservedAt" . payloadobservedat)
+    ("payloadContentHash" . payloadcontenthash)
+    ("payloadHashAlgorithm" . payloadhashalgorithm)
+    ("payloadConfidence" . payloadconfidence)
+    ("corroborates" . corroborates)
+    ("contradicts" . contradicts)
+    ("payloadChainOfCustody" . payloadchainofcustody)
+    ("attachments" . attachments)
+    ("payloadNotes" . payloadnotes)
+    ("metadata" . metadata)
+  ))
+
+(defstruct financial-observation
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (transactionid nil)
+  (payerids nil)
+  (payeeids nil)
+  (accountids nil)
+  (amountrecord nil)
+  (amountbasis nil)
+  (reportingstandard nil)
+  (filingids nil)
+  (sourcetransactionids nil)
+  (memoed nil)
+  (refunded nil)
+  (entityid nil)
+  (observationtype nil)
+  (amount nil)
+  (currency nil)
+  (valuetype nil)
+  (periodstart nil)
+  (periodend nil)
+  (fiscalyear nil)
+  (fiscalquarter nil)
+  (reportedat nil)
+  (counterpartyids nil)
+  (instrument nil)
+  (units nil)
+  (unitprice nil)
+  (percentage nil)
+  (methodology nil)
+  (qualifications nil)
+)
+(defparameter +financial-observation-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("transactionId" . transactionid)
+    ("payerIds" . payerids)
+    ("payeeIds" . payeeids)
+    ("accountIds" . accountids)
+    ("amountRecord" . amountrecord)
+    ("amountBasis" . amountbasis)
+    ("reportingStandard" . reportingstandard)
+    ("filingIds" . filingids)
+    ("sourceTransactionIds" . sourcetransactionids)
+    ("memoed" . memoed)
+    ("refunded" . refunded)
+    ("entityId" . entityid)
+    ("observationType" . observationtype)
+    ("amount" . amount)
+    ("currency" . currency)
+    ("valueType" . valuetype)
+    ("periodStart" . periodstart)
+    ("periodEnd" . periodend)
+    ("fiscalYear" . fiscalyear)
+    ("fiscalQuarter" . fiscalquarter)
+    ("reportedAt" . reportedat)
+    ("counterpartyIds" . counterpartyids)
+    ("instrument" . instrument)
+    ("units" . units)
+    ("unitPrice" . unitprice)
+    ("percentage" . percentage)
+    ("methodology" . methodology)
+    ("qualifications" . qualifications)
+  ))
+
+(defstruct grant
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (awardnumber nil)
+  (primerecipientid nil)
+  (subrecipientids nil)
+  (programid nil)
+  (fundingrecords nil)
+  (assistancelistingids nil)
+  (matchingamount nil)
+  (performancelocationids nil)
+  (objectiveids nil)
+  (reportids nil)
+  (contractid nil)
+  (awardid nil)
+  (solicitationid nil)
+  (vehicleid nil)
+  (buyerid nil)
+  (sellerid nil)
+  (agencyids nil)
+  (vendorids nil)
+  (subcontractorids nil)
+  (scope nil)
+  (awardtype nil)
+  (competitiontype nil)
+  (signedat nil)
+  (startat nil)
+  (endat nil)
+  (ceilingamount nil)
+  (potentialamount nil)
+  (obligatedamount nil)
+  (outlayamount nil)
+  (recognizedrevenue nil)
+  (currency nil)
+  (naics nil)
+  (psc nil)
+  (placeofperformance nil)
+  (modifications nil)
+  (grantorid nil)
+  (recipientids nil)
+  (program nil)
+  (assistancelisting nil)
+  (matchingrequired nil)
+)
+(defparameter +grant-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("awardNumber" . awardnumber)
+    ("primeRecipientId" . primerecipientid)
+    ("subrecipientIds" . subrecipientids)
+    ("programId" . programid)
+    ("fundingRecords" . fundingrecords)
+    ("assistanceListingIds" . assistancelistingids)
+    ("matchingAmount" . matchingamount)
+    ("performanceLocationIds" . performancelocationids)
+    ("objectiveIds" . objectiveids)
+    ("reportIds" . reportids)
+    ("contractId" . contractid)
+    ("awardId" . awardid)
+    ("solicitationId" . solicitationid)
+    ("vehicleId" . vehicleid)
+    ("buyerId" . buyerid)
+    ("sellerId" . sellerid)
+    ("agencyIds" . agencyids)
+    ("vendorIds" . vendorids)
+    ("subcontractorIds" . subcontractorids)
+    ("scope" . scope)
+    ("awardType" . awardtype)
+    ("competitionType" . competitiontype)
+    ("signedAt" . signedat)
+    ("startAt" . startat)
+    ("endAt" . endat)
+    ("ceilingAmount" . ceilingamount)
+    ("potentialAmount" . potentialamount)
+    ("obligatedAmount" . obligatedamount)
+    ("outlayAmount" . outlayamount)
+    ("recognizedRevenue" . recognizedrevenue)
+    ("currency" . currency)
+    ("naics" . naics)
+    ("psc" . psc)
+    ("placeOfPerformance" . placeofperformance)
+    ("modifications" . modifications)
+    ("grantorId" . grantorid)
+    ("recipientIds" . recipientids)
+    ("program" . program)
+    ("assistanceListing" . assistancelisting)
+    ("matchingRequired" . matchingrequired)
+  ))
+
+(defstruct legal-case
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (courtid nil)
+  (docketid nil)
+  (partyroles nil)
+  (relatedcaseids nil)
+  (motionids nil)
+  (orderids nil)
+  (opinionids nil)
+  (appealcaseids nil)
+  (disposition nil)
+  (precedentialstatus nil)
+  (casenumber nil)
+  (casename nil)
+  (court nil)
+  (payloadjurisdiction nil)
+  (judgeids nil)
+  (partyids nil)
+  (plaintiffids nil)
+  (defendantids nil)
+  (attorneyids nil)
+  (casetype nil)
+  (claims nil)
+  (filedat nil)
+  (closedat nil)
+  (docketentries nil)
+  (outcome nil)
+  (citation nil)
+)
+(defparameter +legal-case-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("courtId" . courtid)
+    ("docketId" . docketid)
+    ("partyRoles" . partyroles)
+    ("relatedCaseIds" . relatedcaseids)
+    ("motionIds" . motionids)
+    ("orderIds" . orderids)
+    ("opinionIds" . opinionids)
+    ("appealCaseIds" . appealcaseids)
+    ("disposition" . disposition)
+    ("precedentialStatus" . precedentialstatus)
+    ("caseNumber" . casenumber)
+    ("caseName" . casename)
+    ("court" . court)
+    ("payloadJurisdiction" . payloadjurisdiction)
+    ("judgeIds" . judgeids)
+    ("partyIds" . partyids)
+    ("plaintiffIds" . plaintiffids)
+    ("defendantIds" . defendantids)
+    ("attorneyIds" . attorneyids)
+    ("caseType" . casetype)
+    ("claims" . claims)
+    ("filedAt" . filedat)
+    ("closedAt" . closedat)
+    ("docketEntries" . docketentries)
+    ("outcome" . outcome)
+    ("citation" . citation)
+  ))
+
+(defstruct lobbying-filing
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (filingsystem nil)
+  (registrantrefs nil)
+  (clientrefs nil)
+  (lobbyistrefs nil)
+  (coveredofficialids nil)
+  (issuecodes nil)
+  (amountrecords nil)
+  (foreignentityids nil)
+  (priorfilingid nil)
+  (amendsfilingid nil)
+  (sourcefilingurl nil)
+  (filingid nil)
+  (registrantid nil)
+  (clientid nil)
+  (lobbyistids nil)
+  (governmententities nil)
+  (issues nil)
+  (specificissues nil)
+  (income nil)
+  (expenses nil)
+  (currency nil)
+  (periodstart nil)
+  (periodend nil)
+  (filedat nil)
+  (filingtype nil)
+  (amendment nil)
+  (termination nil)
+)
+(defparameter +lobbying-filing-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("filingSystem" . filingsystem)
+    ("registrantRefs" . registrantrefs)
+    ("clientRefs" . clientrefs)
+    ("lobbyistRefs" . lobbyistrefs)
+    ("coveredOfficialIds" . coveredofficialids)
+    ("issueCodes" . issuecodes)
+    ("amountRecords" . amountrecords)
+    ("foreignEntityIds" . foreignentityids)
+    ("priorFilingId" . priorfilingid)
+    ("amendsFilingId" . amendsfilingid)
+    ("sourceFilingUrl" . sourcefilingurl)
+    ("filingId" . filingid)
+    ("registrantId" . registrantid)
+    ("clientId" . clientid)
+    ("lobbyistIds" . lobbyistids)
+    ("governmentEntities" . governmententities)
+    ("issues" . issues)
+    ("specificIssues" . specificissues)
+    ("income" . income)
+    ("expenses" . expenses)
+    ("currency" . currency)
+    ("periodStart" . periodstart)
+    ("periodEnd" . periodend)
+    ("filedAt" . filedat)
+    ("filingType" . filingtype)
+    ("amendment" . amendment)
+    ("termination" . termination)
+  ))
+
+(defstruct meeting
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (meetingtype nil)
+  (chairids nil)
+  (attendeeroles nil)
+  (agendaitemids nil)
+  (minutefileids nil)
+  (decisionids nil)
+  (actionitemids nil)
+  (parentmeetingid nil)
+  (recurrencerule nil)
+  (eventkind nil)
+  (name nil)
+  (participantids nil)
+  (participants nil)
+  (organizerids nil)
+  (sponsorids nil)
+  (locationids nil)
+  (startat nil)
+  (endat nil)
+  (outcome nil)
+  (agenda nil)
+  (decisions nil)
+  (actions nil)
+  (amount nil)
+  (currency nil)
+  (payloadjurisdiction nil)
+  (caseid nil)
+  (contractid nil)
+  (meetingid nil)
+)
+(defparameter +meeting-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("meetingType" . meetingtype)
+    ("chairIds" . chairids)
+    ("attendeeRoles" . attendeeroles)
+    ("agendaItemIds" . agendaitemids)
+    ("minuteFileIds" . minutefileids)
+    ("decisionIds" . decisionids)
+    ("actionItemIds" . actionitemids)
+    ("parentMeetingId" . parentmeetingid)
+    ("recurrenceRule" . recurrencerule)
+    ("eventKind" . eventkind)
+    ("name" . name)
+    ("participantIds" . participantids)
+    ("participants" . participants)
+    ("organizerIds" . organizerids)
+    ("sponsorIds" . sponsorids)
+    ("locationIds" . locationids)
+    ("startAt" . startat)
+    ("endAt" . endat)
+    ("outcome" . outcome)
+    ("agenda" . agenda)
+    ("decisions" . decisions)
+    ("actions" . actions)
+    ("amount" . amount)
+    ("currency" . currency)
+    ("payloadJurisdiction" . payloadjurisdiction)
+    ("caseId" . caseid)
+    ("contractId" . contractid)
+    ("meetingId" . meetingid)
+  ))
+
+(defstruct observation
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (subjectrefs nil)
+  (observedproperty nil)
+  (rawvalue nil)
+  (actionid nil)
+  (observerrefs nil)
+  (uncertainty nil)
+  (observerid nil)
+  (subjectid nil)
+  (observationtype nil)
+  (value nil)
+  (unit nil)
+  (method nil)
+  (instrument nil)
+  (payloadobservedat nil)
+)
+(defparameter +observation-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("subjectRefs" . subjectrefs)
+    ("observedProperty" . observedproperty)
+    ("rawValue" . rawvalue)
+    ("actionId" . actionid)
+    ("observerRefs" . observerrefs)
+    ("uncertainty" . uncertainty)
+    ("observerId" . observerid)
+    ("subjectId" . subjectid)
+    ("observationType" . observationtype)
+    ("value" . value)
+    ("unit" . unit)
+    ("method" . method)
+    ("instrument" . instrument)
+    ("payloadObservedAt" . payloadobservedat)
+  ))
+
+(defstruct ownership
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (ownerrefs nil)
+  (ownedrefs nil)
+  (ownershipinstrument nil)
+  (percentagebasis nil)
+  (votingpercentage nil)
+  (economicpercentage nil)
+  (valuerecord nil)
+  (acquisitioneventid nil)
+  (disposaleventid nil)
+  (ownerid nil)
+  (assetid nil)
+  (ownershiptype nil)
+  (percentage nil)
+  (units nil)
+  (startat nil)
+  (endat nil)
+  (beneficial nil)
+  (direct nil)
+)
+(defparameter +ownership-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("ownerRefs" . ownerrefs)
+    ("ownedRefs" . ownedrefs)
+    ("ownershipInstrument" . ownershipinstrument)
+    ("percentageBasis" . percentagebasis)
+    ("votingPercentage" . votingpercentage)
+    ("economicPercentage" . economicpercentage)
+    ("valueRecord" . valuerecord)
+    ("acquisitionEventId" . acquisitioneventid)
+    ("disposalEventId" . disposaleventid)
+    ("ownerId" . ownerid)
+    ("assetId" . assetid)
+    ("ownershipType" . ownershiptype)
+    ("percentage" . percentage)
+    ("units" . units)
+    ("startAt" . startat)
+    ("endAt" . endat)
+    ("beneficial" . beneficial)
+    ("direct" . direct)
+  ))
+
+(defstruct policy
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (policyversion nil)
+  (parentpolicyid nil)
+  (authorityids nil)
+  (implementationids nil)
+  (textfileids nil)
+  (sectionids nil)
+  (adoptedat nil)
+  (repealedat nil)
+  (supersededbyid nil)
+  (compliancerequirementids nil)
+  (policyid nil)
+  (name nil)
+  (issuerid nil)
+  (payloadjurisdiction nil)
+  (policytype nil)
+  (text nil)
+  (effectiveat nil)
+  (payloadexpiresat nil)
+  (affectedids nil)
+)
+(defparameter +policy-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("policyVersion" . policyversion)
+    ("parentPolicyId" . parentpolicyid)
+    ("authorityIds" . authorityids)
+    ("implementationIds" . implementationids)
+    ("textFileIds" . textfileids)
+    ("sectionIds" . sectionids)
+    ("adoptedAt" . adoptedat)
+    ("repealedAt" . repealedat)
+    ("supersededById" . supersededbyid)
+    ("complianceRequirementIds" . compliancerequirementids)
+    ("policyId" . policyid)
+    ("name" . name)
+    ("issuerId" . issuerid)
+    ("payloadJurisdiction" . payloadjurisdiction)
+    ("policyType" . policytype)
+    ("text" . text)
+    ("effectiveAt" . effectiveat)
+    ("payloadExpiresAt" . payloadexpiresat)
+    ("affectedIds" . affectedids)
+  ))
+
+(defstruct procurement
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (procurementstage nil)
+  (noticeid nil)
+  (parentawardid nil)
+  (partyroles nil)
+  (fundingrecords nil)
+  (lineitems nil)
+  (competitionexceptions nil)
+  (evaluationcriteria nil)
+  (sourcesystemids nil)
+  (contractid nil)
+  (awardid nil)
+  (solicitationid nil)
+  (vehicleid nil)
+  (buyerid nil)
+  (sellerid nil)
+  (agencyids nil)
+  (vendorids nil)
+  (subcontractorids nil)
+  (scope nil)
+  (awardtype nil)
+  (competitiontype nil)
+  (signedat nil)
+  (startat nil)
+  (endat nil)
+  (ceilingamount nil)
+  (potentialamount nil)
+  (obligatedamount nil)
+  (outlayamount nil)
+  (recognizedrevenue nil)
+  (currency nil)
+  (naics nil)
+  (psc nil)
+  (placeofperformance nil)
+  (modifications nil)
+)
+(defparameter +procurement-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("procurementStage" . procurementstage)
+    ("noticeId" . noticeid)
+    ("parentAwardId" . parentawardid)
+    ("partyRoles" . partyroles)
+    ("fundingRecords" . fundingrecords)
+    ("lineItems" . lineitems)
+    ("competitionExceptions" . competitionexceptions)
+    ("evaluationCriteria" . evaluationcriteria)
+    ("sourceSystemIds" . sourcesystemids)
+    ("contractId" . contractid)
+    ("awardId" . awardid)
+    ("solicitationId" . solicitationid)
+    ("vehicleId" . vehicleid)
+    ("buyerId" . buyerid)
+    ("sellerId" . sellerid)
+    ("agencyIds" . agencyids)
+    ("vendorIds" . vendorids)
+    ("subcontractorIds" . subcontractorids)
+    ("scope" . scope)
+    ("awardType" . awardtype)
+    ("competitionType" . competitiontype)
+    ("signedAt" . signedat)
+    ("startAt" . startat)
+    ("endAt" . endat)
+    ("ceilingAmount" . ceilingamount)
+    ("potentialAmount" . potentialamount)
+    ("obligatedAmount" . obligatedamount)
+    ("outlayAmount" . outlayamount)
+    ("recognizedRevenue" . recognizedrevenue)
+    ("currency" . currency)
+    ("naics" . naics)
+    ("psc" . psc)
+    ("placeOfPerformance" . placeofperformance)
+    ("modifications" . modifications)
+  ))
+
+(defstruct product
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (supplierids nil)
+  (versionids nil)
+  (componentids nil)
+  (dependencyids nil)
+  (deploymentids nil)
+  (sbomfileids nil)
+  (supportendat nil)
+  (pricingrecords nil)
+  (securityadvisoryids nil)
+  (etype nil)
+  (eid nil)
+  (name nil)
+  (displayname nil)
+  (legalname nil)
+  (shortname nil)
+  (formernames nil)
+  (bio nil)
+  (payloadjurisdiction nil)
+  (country nil)
+  (foundedat nil)
+  (dissolvedat nil)
+  (website nil)
+  (imageurl nil)
+  (logourl nil)
+  (payloadexternalids nil)
+  (contactids nil)
+  (locationids nil)
+  (manufacturerid nil)
+  (vendorids nil)
+  (producttype nil)
+  (model nil)
+  (versionname nil)
+  (releasedate nil)
+  (endoflife nil)
+  (features nil)
+  (capabilities nil)
+  (integrations nil)
+  (customers nil)
+  (license nil)
+  (pricing nil)
+  (technical nil)
+)
+(defparameter +product-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("supplierIds" . supplierids)
+    ("versionIds" . versionids)
+    ("componentIds" . componentids)
+    ("dependencyIds" . dependencyids)
+    ("deploymentIds" . deploymentids)
+    ("sbomFileIds" . sbomfileids)
+    ("supportEndAt" . supportendat)
+    ("pricingRecords" . pricingrecords)
+    ("securityAdvisoryIds" . securityadvisoryids)
+    ("etype" . etype)
+    ("eid" . eid)
+    ("name" . name)
+    ("displayName" . displayname)
+    ("legalName" . legalname)
+    ("shortName" . shortname)
+    ("formerNames" . formernames)
+    ("bio" . bio)
+    ("payloadJurisdiction" . payloadjurisdiction)
+    ("country" . country)
+    ("foundedAt" . foundedat)
+    ("dissolvedAt" . dissolvedat)
+    ("website" . website)
+    ("imageUrl" . imageurl)
+    ("logoUrl" . logourl)
+    ("payloadExternalIds" . payloadexternalids)
+    ("contactIds" . contactids)
+    ("locationIds" . locationids)
+    ("manufacturerId" . manufacturerid)
+    ("vendorIds" . vendorids)
+    ("productType" . producttype)
+    ("model" . model)
+    ("versionName" . versionname)
+    ("releaseDate" . releasedate)
+    ("endOfLife" . endoflife)
+    ("features" . features)
+    ("capabilities" . capabilities)
+    ("integrations" . integrations)
+    ("customers" . customers)
+    ("license" . license)
+    ("pricing" . pricing)
+    ("technical" . technical)
+  ))
+
+(defstruct research-node
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (objective nil)
+  (instructions nil)
+  (inputids nil)
+  (targetids nil)
+  (actorids nil)
+  (actorselectionrules nil)
+  (outputids nil)
+  (artifactids nil)
+  (childids nil)
+  (dependencyids nil)
+  (runids nil)
+  (currentactorid nil)
+  (currentrunid nil)
+  (limits nil)
+  (stop nil)
+  (counters nil)
+  (history nil)
+  (nodecreatedat nil)
+  (startedat nil)
+  (completedat nil)
+  (lasterror nil)
+  (pausedreason nil)
+)
+(defparameter +research-node-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("objective" . objective)
+    ("instructions" . instructions)
+    ("inputIds" . inputids)
+    ("targetIds" . targetids)
+    ("actorIds" . actorids)
+    ("actorSelectionRules" . actorselectionrules)
+    ("outputIds" . outputids)
+    ("artifactIds" . artifactids)
+    ("childIds" . childids)
+    ("dependencyIds" . dependencyids)
+    ("runIds" . runids)
+    ("currentActorId" . currentactorid)
+    ("currentRunId" . currentrunid)
+    ("limits" . limits)
+    ("stop" . stop)
+    ("counters" . counters)
+    ("history" . history)
+    ("nodeCreatedAt" . nodecreatedat)
+    ("startedAt" . startedat)
+    ("completedAt" . completedat)
+    ("lastError" . lasterror)
+    ("pausedReason" . pausedreason)
+  ))
+
+(defstruct research-pass
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (parentpassid nil)
+  (childpassids nil)
+  (targetids nil)
+  (actionrecords nil)
+  (claimids nil)
+  (outputids nil)
+  (metrics nil)
+  (terminationreason nil)
+  (schemarevision nil)
+  (researchquestion nil)
+  (method nil)
+  (classificationrules nil)
+  (findingids nil)
+  (findings nil)
+  (supportingrecordids nil)
+  (counterevidenceids nil)
+  (unresolvedtargetids nil)
+  (sourceids nil)
+  (agentidentity nil)
+  (narrativerole nil)
+  (startedat nil)
+  (completedat nil)
+  (iteration nil)
+)
+(defparameter +research-pass-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("parentPassId" . parentpassid)
+    ("childPassIds" . childpassids)
+    ("targetIds" . targetids)
+    ("actionRecords" . actionrecords)
+    ("claimIds" . claimids)
+    ("outputIds" . outputids)
+    ("metrics" . metrics)
+    ("terminationReason" . terminationreason)
+    ("schemaRevision" . schemarevision)
+    ("researchQuestion" . researchquestion)
+    ("method" . method)
+    ("classificationRules" . classificationrules)
+    ("findingIds" . findingids)
+    ("findings" . findings)
+    ("supportingRecordIds" . supportingrecordids)
+    ("counterevidenceIds" . counterevidenceids)
+    ("unresolvedTargetIds" . unresolvedtargetids)
+    ("sourceIds" . sourceids)
+    ("agentIdentity" . agentidentity)
+    ("narrativeRole" . narrativerole)
+    ("startedAt" . startedat)
+    ("completedAt" . completedat)
+    ("iteration" . iteration)
+  ))
+
+(defstruct social-media-post
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (authorrefs nil)
+  (conversationid nil)
+  (parentpostid nil)
+  (attachmentids nil)
+  (captureids nil)
+  (engagementobservationids nil)
+  (payloadcontenthash nil)
+  (content nil)
+  (platform nil)
+  (user nil)
+  (userid nil)
+  (isreply nil)
+  (media nil)
+  (messageid nil)
+  (replyto nil)
+  (group nil)
+  (channel nil)
+  (threadid nil)
+  (mentions nil)
+  (reactions nil)
+  (links nil)
+  (postedat nil)
+  (editedat nil)
+  (payloaddeleted nil)
+  (payloadvisibility nil)
+  (replies nil)
+  (replycount nil)
+  (repostcount nil)
+  (likecount nil)
+  (viewcount nil)
+  (url nil)
+  (payloadtags nil)
+  (title nil)
+  (quotepostid nil)
+)
+(defparameter +social-media-post-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("authorRefs" . authorrefs)
+    ("conversationId" . conversationid)
+    ("parentPostId" . parentpostid)
+    ("attachmentIds" . attachmentids)
+    ("captureIds" . captureids)
+    ("engagementObservationIds" . engagementobservationids)
+    ("payloadContentHash" . payloadcontenthash)
+    ("content" . content)
+    ("platform" . platform)
+    ("user" . user)
+    ("userId" . userid)
+    ("isReply" . isreply)
+    ("media" . media)
+    ("messageId" . messageid)
+    ("replyTo" . replyto)
+    ("group" . group)
+    ("channel" . channel)
+    ("threadId" . threadid)
+    ("mentions" . mentions)
+    ("reactions" . reactions)
+    ("links" . links)
+    ("postedAt" . postedat)
+    ("editedAt" . editedat)
+    ("payloadDeleted" . payloaddeleted)
+    ("payloadVisibility" . payloadvisibility)
+    ("replies" . replies)
+    ("replyCount" . replycount)
+    ("repostCount" . repostcount)
+    ("likeCount" . likecount)
+    ("viewCount" . viewcount)
+    ("url" . url)
+    ("payloadTags" . payloadtags)
+    ("title" . title)
+    ("quotePostId" . quotepostid)
+  ))
+
+(defstruct source
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (sourcetypeid nil)
+  (publisherid nil)
+  (authorids nil)
+  (captureactionid nil)
+  (originalfileids nil)
+  (archiveids nil)
+  (termsofuse nil)
+  (accessrestrictions nil)
+  (supersedessourceids nil)
+  (sourceid nil)
+  (kind nil)
+  (type nil)
+  (sensor nil)
+  (name nil)
+  (title nil)
+  (publisher nil)
+  (author nil)
+  (organization nil)
+  (uri nil)
+  (url nil)
+  (archiveurl nil)
+  (publishedat nil)
+  (retrievedat nil)
+  (accessedat nil)
+  (payloadlanguage nil)
+  (payloadjurisdiction nil)
+  (medium nil)
+  (credibility nil)
+  (reliability nil)
+  (authenticity nil)
+  (independence nil)
+  (accessmethod nil)
+  (query nil)
+  (requestid nil)
+  (responsestatus nil)
+  (payloadcontenthash nil)
+  (payloadhashalgorithm nil)
+  (license nil)
+  (quote nil)
+  (locator nil)
+  (page nil)
+  (section nil)
+  (payloadnotes nil)
+  (metadata nil)
+)
+(defparameter +source-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("sourceTypeId" . sourcetypeid)
+    ("publisherId" . publisherid)
+    ("authorIds" . authorids)
+    ("captureActionId" . captureactionid)
+    ("originalFileIds" . originalfileids)
+    ("archiveIds" . archiveids)
+    ("termsOfUse" . termsofuse)
+    ("accessRestrictions" . accessrestrictions)
+    ("supersedesSourceIds" . supersedessourceids)
+    ("sourceId" . sourceid)
+    ("kind" . kind)
+    ("type" . type)
+    ("sensor" . sensor)
+    ("name" . name)
+    ("title" . title)
+    ("publisher" . publisher)
+    ("author" . author)
+    ("organization" . organization)
+    ("uri" . uri)
+    ("url" . url)
+    ("archiveUrl" . archiveurl)
+    ("publishedAt" . publishedat)
+    ("retrievedAt" . retrievedat)
+    ("accessedAt" . accessedat)
+    ("payloadLanguage" . payloadlanguage)
+    ("payloadJurisdiction" . payloadjurisdiction)
+    ("medium" . medium)
+    ("credibility" . credibility)
+    ("reliability" . reliability)
+    ("authenticity" . authenticity)
+    ("independence" . independence)
+    ("accessMethod" . accessmethod)
+    ("query" . query)
+    ("requestId" . requestid)
+    ("responseStatus" . responsestatus)
+    ("payloadContentHash" . payloadcontenthash)
+    ("payloadHashAlgorithm" . payloadhashalgorithm)
+    ("license" . license)
+    ("quote" . quote)
+    ("locator" . locator)
+    ("page" . page)
+    ("section" . section)
+    ("payloadNotes" . payloadnotes)
+    ("metadata" . metadata)
+  ))
+
+(defstruct task
+  (id nil)
+  (rev nil)
+  (dataset nil)
+  (dtype nil)
+  (schemaversion nil)
+  (externalids nil)
+  (aliases nil)
+  (sources nil)
+  (sourceurls nil)
+  (sourcerecordids nil)
+  (sourcekinds nil)
+  (sourcelicense nil)
+  (sourceterms nil)
+  (sourceretrievedat nil)
+  (collectedat nil)
+  (observedat nil)
+  (firstseenat nil)
+  (lastseenat nil)
+  (createdat nil)
+  (updatedat nil)
+  (validfrom nil)
+  (validuntil nil)
+  (expiresat nil)
+  (collector nil)
+  (collectorversion nil)
+  (collectionmethod nil)
+  (collectionstatus nil)
+  (runid nil)
+  (correlationid nil)
+  (causationid nil)
+  (parentid nil)
+  (rootid nil)
+  (confidence nil)
+  (confidencebasis nil)
+  (qualityscore nil)
+  (completenessscore nil)
+  (verificationstatus nil)
+  (verifiedat nil)
+  (verifiedby nil)
+  (provenance nil)
+  (chainofcustody nil)
+  (transformhistory nil)
+  (labels nil)
+  (tags nil)
+  (topics nil)
+  (language nil)
+  (jurisdiction nil)
+  (countrycode nil)
+  (regioncode nil)
+  (timezone nil)
+  (sensitivity nil)
+  (visibility nil)
+  (owner nil)
+  (accesscontrol nil)
+  (legalbasis nil)
+  (retentionpolicy nil)
+  (contenttype nil)
+  (encoding nil)
+  (sizebytes nil)
+  (contenthash nil)
+  (hashalgorithm nil)
+  (normalizedhash nil)
+  (raw nil)
+  (rawcontent nil)
+  (notes nil)
+  (deleted nil)
+  (tombstonereason nil)
+  (extensions nil)
+  (description nil)
+  (status nil)
+  (contentvalidfrom nil)
+  (contentvaliduntil nil)
+  (parenttaskid nil)
+  (dependencytaskids nil)
+  (actorids nil)
+  (skillids nil)
+  (toolids nil)
+  (inputids nil)
+  (attemptids nil)
+  (schedule nil)
+  (startedat nil)
+  (resultsummary nil)
+  (errorids nil)
+  (tasktype nil)
+  (subjectids nil)
+  (assigneeids nil)
+  (priority nil)
+  (dueat nil)
+  (completedat nil)
+  (instructions nil)
+  (resultids nil)
+)
+(defparameter +task-wire-fields+
+  '(
+    ("id" . id)
+    ("rev" . rev)
+    ("dataset" . dataset)
+    ("dtype" . dtype)
+    ("schemaVersion" . schemaversion)
+    ("externalIds" . externalids)
+    ("aliases" . aliases)
+    ("sources" . sources)
+    ("sourceUrls" . sourceurls)
+    ("sourceRecordIds" . sourcerecordids)
+    ("sourceKinds" . sourcekinds)
+    ("sourceLicense" . sourcelicense)
+    ("sourceTerms" . sourceterms)
+    ("sourceRetrievedAt" . sourceretrievedat)
+    ("collectedAt" . collectedat)
+    ("observedAt" . observedat)
+    ("firstSeenAt" . firstseenat)
+    ("lastSeenAt" . lastseenat)
+    ("createdAt" . createdat)
+    ("updatedAt" . updatedat)
+    ("validFrom" . validfrom)
+    ("validUntil" . validuntil)
+    ("expiresAt" . expiresat)
+    ("collector" . collector)
+    ("collectorVersion" . collectorversion)
+    ("collectionMethod" . collectionmethod)
+    ("collectionStatus" . collectionstatus)
+    ("runId" . runid)
+    ("correlationId" . correlationid)
+    ("causationId" . causationid)
+    ("parentId" . parentid)
+    ("rootId" . rootid)
+    ("confidence" . confidence)
+    ("confidenceBasis" . confidencebasis)
+    ("qualityScore" . qualityscore)
+    ("completenessScore" . completenessscore)
+    ("verificationStatus" . verificationstatus)
+    ("verifiedAt" . verifiedat)
+    ("verifiedBy" . verifiedby)
+    ("provenance" . provenance)
+    ("chainOfCustody" . chainofcustody)
+    ("transformHistory" . transformhistory)
+    ("labels" . labels)
+    ("tags" . tags)
+    ("topics" . topics)
+    ("language" . language)
+    ("jurisdiction" . jurisdiction)
+    ("countryCode" . countrycode)
+    ("regionCode" . regioncode)
+    ("timezone" . timezone)
+    ("sensitivity" . sensitivity)
+    ("visibility" . visibility)
+    ("owner" . owner)
+    ("accessControl" . accesscontrol)
+    ("legalBasis" . legalbasis)
+    ("retentionPolicy" . retentionpolicy)
+    ("contentType" . contenttype)
+    ("encoding" . encoding)
+    ("sizeBytes" . sizebytes)
+    ("contentHash" . contenthash)
+    ("hashAlgorithm" . hashalgorithm)
+    ("normalizedHash" . normalizedhash)
+    ("raw" . raw)
+    ("rawContent" . rawcontent)
+    ("notes" . notes)
+    ("deleted" . deleted)
+    ("tombstoneReason" . tombstonereason)
+    ("extensions" . extensions)
+    ("description" . description)
+    ("status" . status)
+    ("contentValidFrom" . contentvalidfrom)
+    ("contentValidUntil" . contentvaliduntil)
+    ("parentTaskId" . parenttaskid)
+    ("dependencyTaskIds" . dependencytaskids)
+    ("actorIds" . actorids)
+    ("skillIds" . skillids)
+    ("toolIds" . toolids)
+    ("inputIds" . inputids)
+    ("attemptIds" . attemptids)
+    ("schedule" . schedule)
+    ("startedAt" . startedat)
+    ("resultSummary" . resultsummary)
+    ("errorIds" . errorids)
+    ("taskType" . tasktype)
+    ("subjectIds" . subjectids)
+    ("assigneeIds" . assigneeids)
+    ("priority" . priority)
+    ("dueAt" . dueat)
+    ("completedAt" . completedat)
+    ("instructions" . instructions)
+    ("resultIds" . resultids)
   ))
 
 (defstruct target
