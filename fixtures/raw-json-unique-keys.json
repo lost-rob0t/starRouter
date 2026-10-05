@@ -1,0 +1,141 @@
+{
+  "contract": "starintel.raw-json-unique-keys/1",
+  "description": "Object keys must be unique by decoded JSON string identity in each object, including repeated equal values. No Unicode normalization. Feed wire verbatim to the raw parser; parsing fixtures as documents would erase duplicates.",
+  "cases": [
+    {
+      "name": "literal_top",
+      "valid": false,
+      "wire": "{\"id\":\"first\",\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\"}"
+    },
+    {
+      "name": "escaped_top",
+      "valid": false,
+      "wire": "{\"\\u0069d\":\"first\",\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\"}"
+    },
+    {
+      "name": "equal_top",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\"}"
+    },
+    {
+      "name": "literal_nested",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"x\":1,\"x\":2}}"
+    },
+    {
+      "name": "escaped_nested",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"a\":1,\"\\u0061\":2}}"
+    },
+    {
+      "name": "equal_nested",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"x\":1,\"x\":1}}"
+    },
+    {
+      "name": "equal_object",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"x\":{\"k\":true},\"x\":{\"k\":true}}}"
+    },
+    {
+      "name": "equal_array",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"x\":[null,false],\"x\":[null,false]}}"
+    },
+    {
+      "name": "false_first",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"x\":false,\"x\":true}}"
+    },
+    {
+      "name": "null_first",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"x\":null,\"x\":false}}"
+    },
+    {
+      "name": "empty_key",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"\":1,\"\":2}}"
+    },
+    {
+      "name": "non_bmp_equivalent",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"𝄞\":1,\"\\ud834\\udd1e\":2}}"
+    },
+    {
+      "name": "non_bmp_uppercase",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"\\uD834\\uDD1E\":1,\"\\ud834\\udd1e\":1}}"
+    },
+    {
+      "name": "slash_equivalent",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"/\":1,\"\\/\":1}}"
+    },
+    {
+      "name": "control_equivalent",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"\\n\":1,\"\\u000a\":1}}"
+    },
+    {
+      "name": "array_object",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"items\":[{\"x\":1,\"x\":2}]}}"
+    },
+    {
+      "name": "proto_equal",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"__proto__\":1,\"__pro\\u0074o__\":1}}"
+    },
+    {
+      "name": "constructor_equal",
+      "valid": false,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"constructor\":1,\"constructor\":1}}"
+    },
+    {
+      "name": "sibling_control",
+      "valid": true,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"a\":{\"id\":1},\"b\":{\"id\":2}}}"
+    },
+    {
+      "name": "array_scope_control",
+      "valid": true,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"items\":[{\"id\":1},{\"id\":2}]}}"
+    },
+    {
+      "name": "parent_child_control",
+      "valid": true,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"x\":{\"x\":1}}}"
+    },
+    {
+      "name": "unicode_distinct_control",
+      "valid": true,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"\\u00e9\":1,\"e\\u0301\":2}}"
+    },
+    {
+      "name": "case_distinct_control",
+      "valid": true,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"A\":1,\"a\":2}}"
+    },
+    {
+      "name": "proto_control",
+      "valid": true,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"__proto__\":null,\"constructor\":false,\"__starintel_proto__\":1,\"__starintel_proto___\":2}}"
+    },
+    {
+      "name": "quoted_content_control",
+      "valid": true,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"text\":\"{\\\"a\\\":1,\\\"a\\\":2}\",\"a\":1}}"
+    },
+    {
+      "name": "escaped_distinct_control",
+      "valid": true,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"\\\\u0061\":1,\"a\":2}}"
+    },
+    {
+      "name": "exact_values_control",
+      "valid": true,
+      "wire": "{\"id\":\"person:duplicate\",\"dataset\":\"test\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"extensions\":{\"fraction\":0.12345678901234567890123456789,\"huge\":9223372036854775808,\"large\":1e10000,\"tiny\":1e-10000,\"null\":null,\"false\":false,\"unicode\":\"雪😀 café\"}}"
+    }
+  ]
+}
