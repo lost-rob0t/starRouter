@@ -15,7 +15,7 @@
       system = "x86_64-linux";
       pkgs = nixpkgs.legacyPackages.${system};
       python = pkgs.python3.withPackages (ps: [ ps.pyzmq ]);
-      paths = "--noNimblePath --path:src --path:${starintel-doc}/share/nimble/starintel_doc/src --path:${zmq} --path:${ulid}/src --path:${random}/src --path:${cligen} --path:${jsony}/src";
+      paths = "--noNimblePath --path:src --path:${starintel-doc}/src --path:${zmq} --path:${ulid}/src --path:${random}/src --path:${cligen} --path:${jsony}/src";
       libraries = pkgs.lib.makeLibraryPath [ pkgs.zeromq pkgs.pcre ];
       router = pkgs.stdenv.mkDerivation {
         pname = "starRouter";
