@@ -3,29 +3,55 @@
 * StarRouter
 Star Router is a zeromq based messaging broker for starintel.
 
+** Document authority and validation
+StarLang is the sole document specification authority. The complete generated
+0.10.1 release is pinned in =schema/starintel-schema.lock.json= and consumed
+through the immutable maintained Nim runtime in =starRouter.nimble= and
+=flake.lock=. No schema is authored or regenerated here.
+
+Document events (=newDocument=, =updateDocument= and =target=) are validated
+before the client transmits any multipart frame, when received by the broker,
+and before publication. Canonical documents use flat =id=, =schemaVersion= and
+the generated lowerCamelCase fields. Pass a =JsonNode= or the exact JSON string;
+raw JSON strings are forwarded without quoting or field loss. Source-approved
+historical nested 0.9.0 input is validated explicitly and forwarded unchanged.
+Older flat 0.7.x records and nested records labelled 0.10.1 are rejected.
+
+Malformed document messages receive NACK and are not published. Valid messages
+are published once. Control messages keep the router envelope and need no
+document schema. The router requires Nim 2; its pinned ZeroMQ bindings support
+that compiler. File logging uses Nim's standard logger (=FEDIWATCH_LOG= path,
+default =starRouter.log=), replacing the dependency that fails with Nim 2.
+
+Run =nix flake check -L= for the full build, release/dependency agreement checks,
+client boundary tests and actual local ZeroMQ tests over all 60 document types.
+CI also verifies upstream bytes using =scripts/sync-starintel-schema.py=.
+The old network examples in =tests/= are interactive clients that require an
+operator-run broker; they are not a deterministic test suite.
+
+
 Note, this is not even alpha quality.
 Also do not expose this to the web, a solution for that will come.
 
 
 
 ** Installation
-nimble for some reason... fails to compile but still it will get the depps needed.
-
-Install deps and fail
+Build the pinned dependency closure and run all deterministic validation:
 #+begin_src shell
-nimble install
+nix flake check -L
+nix build
+./result/bin/starRouter
 #+end_src
 
-Then when that erros compile by hand.
+For native Nim 2 development, install the pinned Nimble dependencies, then use
+=nimble test= for deterministic client-boundary tests. The full Nix gate also
+starts an actual local broker and checks both Python and native Nim clients.
 
-#+begin_src shell
-nim c -d:release -o:./starRouter src/starRouter.nim
-#+end_src
-
-then copy that to someplace into your path.
-
-There is optional jsony support for faster parsing of msgs, if you want that you should install jsony.
-compile with ~-d:useJsony~ to use it.
+The pinned optional JSONy backend is selected with ~-d:useJsony~ for
+non-document payload decoding. Canonical document bindings always use the
+maintained runtime's =jsonutils= codec after strict schema validation; this
+preserves generated =Option= fields, including explicit false values. Both
+build modes are exercised with real native clients by the full Nix gate.
 
 ** Compile options
 
@@ -36,3 +62,15 @@ compile with ~-d:useJsony~ to use it.
 Feel free to open PR or issues or donate
 
 + XMR: 8Bt75mjmyreavdkZoANJUVSUrPBvTLhESfeRd3QJYnh5dYh6HMJVtxg7SRCgZzzhFQYHpzqh4URKWLk2CvrcKhiJCCfGh8L
+
+** Container build
+The container builds the same pinned Nix package and runs its complete tests.
+The final image contains only the executable and its runtime dependency closure.
+
+#+begin_src shell
+docker build -t starrouter .
+docker run --init --rm -p 6000:6000 -p 6001:6001 starrouter
+#+end_src
+
+Pull-request CI also exercises the actual container over all 60 generated
+StarIntel document types, including rejection without publication.

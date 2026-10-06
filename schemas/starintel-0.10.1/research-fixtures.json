@@ -1,0 +1,134 @@
+[
+  {
+    "name": "minimal-operation",
+    "valid": true,
+    "document": {
+      "id": "operation:test",
+      "dataset": "test",
+      "dtype": "operation",
+      "schemaVersion": "0.10.1",
+      "mission": "Verify a documented question",
+      "status": "planned",
+      "phases": [
+        {
+          "phaseId": "collect",
+          "objective": "Collect references",
+          "state": "planned"
+        }
+      ]
+    }
+  },
+  {
+    "name": "empty-phases",
+    "valid": false,
+    "document": {
+      "id": "operation:test",
+      "dataset": "test",
+      "dtype": "operation",
+      "schemaVersion": "0.10.1",
+      "mission": "Verify a documented question",
+      "status": "planned",
+      "phases": []
+    }
+  },
+  {
+    "name": "self-cycle",
+    "valid": false,
+    "document": {
+      "id": "operation:test",
+      "dataset": "test",
+      "dtype": "operation",
+      "schemaVersion": "0.10.1",
+      "mission": "Verify a documented question",
+      "status": "planned",
+      "phases": [
+        {
+          "phaseId": "collect",
+          "objective": "Collect references",
+          "state": "planned",
+          "dependsOn": [
+            "collect"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "unknown-dataset",
+    "valid": false,
+    "document": {
+      "id": "operation:test",
+      "dataset": "test",
+      "dtype": "operation",
+      "schemaVersion": "0.10.1",
+      "mission": "Verify a documented question",
+      "status": "planned",
+      "phases": [
+        {
+          "phaseId": "collect",
+          "objective": "Collect references",
+          "state": "planned",
+          "datasetBindingIds": [
+            "absent"
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "missing-evidence",
+    "valid": false,
+    "document": {
+      "id": "operation:test",
+      "dataset": "test",
+      "dtype": "operation",
+      "schemaVersion": "0.10.1",
+      "mission": "Verify a documented question",
+      "status": "planned",
+      "phases": [
+        {
+          "phaseId": "collect",
+          "objective": "Collect references",
+          "state": "completed"
+        }
+      ]
+    }
+  },
+  {
+    "name": "scope-contradiction",
+    "valid": false,
+    "document": {
+      "id": "operation:test",
+      "dataset": "test",
+      "dtype": "operation",
+      "schemaVersion": "0.10.1",
+      "mission": "Verify a documented question",
+      "status": "planned",
+      "phases": [
+        {
+          "phaseId": "collect",
+          "objective": "Collect references",
+          "state": "planned",
+          "inScope": [
+            "excluded"
+          ]
+        }
+      ],
+      "outOfScope": [
+        "excluded"
+      ]
+    }
+  },
+  {
+    "name": "research-target-not-scheduler",
+    "valid": true,
+    "document": {
+      "id": "research:test",
+      "dataset": "test",
+      "dtype": "investigation-target",
+      "schemaVersion": "0.10.1",
+      "target": "Public question",
+      "researchQuestion": "What changed?"
+    }
+  }
+]

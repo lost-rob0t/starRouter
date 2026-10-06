@@ -1,0 +1,3666 @@
+[
+  {
+    "name": "alert-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "rule_id": "fixture",
+      "trigger_event_id": "fixture",
+      "related_alert_ids": [
+        "fixture"
+      ],
+      "first_triggered_at": null,
+      "last_triggered_at": null,
+      "occurrence_count": 1,
+      "acknowledgement_actions": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "suppressed_until": "fixture",
+      "resolved_at": null,
+      "resolution": "fixture",
+      "alert_type": "fixture",
+      "subject_ids": [
+        "fixture"
+      ],
+      "condition": "fixture",
+      "threshold": 1.25,
+      "triggered_at": null,
+      "severity": 1.25,
+      "acknowledged_by": [
+        "fixture"
+      ]
+    },
+    "document": {
+      "id": "fixture:alert",
+      "dataset": "conformance",
+      "dtype": "alert",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "ruleId": "fixture",
+      "triggerEventId": "fixture",
+      "relatedAlertIds": [
+        "fixture"
+      ],
+      "firstTriggeredAt": null,
+      "lastTriggeredAt": null,
+      "occurrenceCount": 1,
+      "acknowledgementActions": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "suppressedUntil": "fixture",
+      "resolvedAt": null,
+      "resolution": "fixture",
+      "alertType": "fixture",
+      "subjectIds": [
+        "fixture"
+      ],
+      "condition": "fixture",
+      "threshold": "1.25",
+      "triggeredAt": null,
+      "severity": "1.25",
+      "acknowledgedBy": [
+        "fixture"
+      ]
+    }
+  },
+  {
+    "name": "analysis-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "hypotheses": [
+        "fixture"
+      ],
+      "method_ids": [
+        "fixture"
+      ],
+      "claim_ids": [
+        "fixture"
+      ],
+      "logic": "fixture",
+      "reasoning_artifact_ids": [
+        "fixture"
+      ],
+      "uncertainty_sources": [
+        "fixture"
+      ],
+      "dependency_ids": [
+        "fixture"
+      ],
+      "review_ids": [
+        "fixture"
+      ],
+      "output_ids": [
+        "fixture"
+      ],
+      "question": "fixture",
+      "method": "fixture",
+      "framework": "fixture",
+      "scope": "fixture",
+      "input_ids": [
+        "fixture"
+      ],
+      "finding_ids": [
+        "fixture"
+      ],
+      "findings": [
+        "fixture"
+      ],
+      "conclusions": [
+        "fixture"
+      ],
+      "recommendations": [
+        "fixture"
+      ],
+      "counterarguments": [
+        "fixture"
+      ],
+      "limitations": [
+        "fixture"
+      ],
+      "unresolved": [
+        "fixture"
+      ],
+      "confidence": 0.0
+    },
+    "document": {
+      "id": "fixture:analysis",
+      "dataset": "conformance",
+      "dtype": "analysis",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "hypotheses": [
+        "fixture"
+      ],
+      "methodIds": [
+        "fixture"
+      ],
+      "claimIds": [
+        "fixture"
+      ],
+      "logic": "fixture",
+      "reasoningArtifactIds": [
+        "fixture"
+      ],
+      "uncertaintySources": [
+        "fixture"
+      ],
+      "dependencyIds": [
+        "fixture"
+      ],
+      "reviewIds": [
+        "fixture"
+      ],
+      "outputIds": [
+        "fixture"
+      ],
+      "question": "fixture",
+      "method": "fixture",
+      "framework": "fixture",
+      "scope": "fixture",
+      "inputIds": [
+        "fixture"
+      ],
+      "findingIds": [
+        "fixture"
+      ],
+      "findings": [
+        "fixture"
+      ],
+      "conclusions": [
+        "fixture"
+      ],
+      "recommendations": [
+        "fixture"
+      ],
+      "counterarguments": [
+        "fixture"
+      ],
+      "limitations": [
+        "fixture"
+      ],
+      "unresolved": [
+        "fixture"
+      ],
+      "payloadConfidence": "0.0"
+    }
+  },
+  {
+    "name": "asset-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "asset_class": "fixture",
+      "custodian_ids": [
+        "fixture"
+      ],
+      "beneficial_owner_ids": [
+        "fixture"
+      ],
+      "identifier_records": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": 0.0,
+          "valid_from": null,
+          "valid_to": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "valuation_records": [
+        {
+          "amount": 1.25,
+          "currency": "fixture",
+          "basis": "fixture",
+          "as_of": null,
+          "notes": "fixture"
+        }
+      ],
+      "acquired_at": null,
+      "disposed_at": null,
+      "acquisition_event_id": "fixture",
+      "disposal_event_id": "fixture",
+      "component_ids": [
+        "fixture"
+      ],
+      "etype": "fixture",
+      "eid": "fixture",
+      "name": "fixture",
+      "display_name": "fixture",
+      "legal_name": "fixture",
+      "short_name": "fixture",
+      "former_names": [
+        "fixture"
+      ],
+      "bio": "fixture",
+      "jurisdiction": "fixture",
+      "country": "fixture",
+      "founded_at": null,
+      "dissolved_at": null,
+      "website": "fixture",
+      "image_url": "fixture",
+      "logo_url": "fixture",
+      "external_ids": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": 0.0,
+          "valid_from": null,
+          "valid_to": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "contact_ids": [
+        "fixture"
+      ],
+      "location_ids": [
+        "fixture"
+      ],
+      "asset_type": "fixture",
+      "owner_ids": [
+        "fixture"
+      ],
+      "operator_ids": [
+        "fixture"
+      ],
+      "serial_number": "fixture",
+      "registration": "fixture",
+      "value": 1.25,
+      "currency": "fixture",
+      "location_id": "fixture"
+    },
+    "document": {
+      "id": "fixture:asset",
+      "dataset": "conformance",
+      "dtype": "asset",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "assetClass": "fixture",
+      "custodianIds": [
+        "fixture"
+      ],
+      "beneficialOwnerIds": [
+        "fixture"
+      ],
+      "identifierRecords": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": "0.0",
+          "validFrom": null,
+          "validTo": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "valuationRecords": [
+        {
+          "amount": "1.25",
+          "currency": "fixture",
+          "basis": "fixture",
+          "asOf": null,
+          "notes": "fixture"
+        }
+      ],
+      "acquiredAt": null,
+      "disposedAt": null,
+      "acquisitionEventId": "fixture",
+      "disposalEventId": "fixture",
+      "componentIds": [
+        "fixture"
+      ],
+      "etype": "fixture",
+      "eid": "fixture",
+      "name": "fixture",
+      "displayName": "fixture",
+      "legalName": "fixture",
+      "shortName": "fixture",
+      "formerNames": [
+        "fixture"
+      ],
+      "bio": "fixture",
+      "payloadJurisdiction": "fixture",
+      "country": "fixture",
+      "foundedAt": null,
+      "dissolvedAt": null,
+      "website": "fixture",
+      "imageUrl": "fixture",
+      "logoUrl": "fixture",
+      "payloadExternalIds": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": "0.0",
+          "validFrom": null,
+          "validTo": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "contactIds": [
+        "fixture"
+      ],
+      "locationIds": [
+        "fixture"
+      ],
+      "assetType": "fixture",
+      "ownerIds": [
+        "fixture"
+      ],
+      "operatorIds": [
+        "fixture"
+      ],
+      "serialNumber": "fixture",
+      "registration": "fixture",
+      "value": "1.25",
+      "currency": "fixture",
+      "locationId": "fixture"
+    }
+  },
+  {
+    "name": "campaign-finance-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "transaction_id": "fixture",
+      "committee_ids": [
+        "fixture"
+      ],
+      "donor_refs": [
+        "fixture"
+      ],
+      "recipient_refs": [
+        "fixture"
+      ],
+      "amount_record": {
+        "amount": 1.25,
+        "currency": "fixture",
+        "basis": "fixture",
+        "as_of": null,
+        "notes": "fixture"
+      },
+      "transaction_date": "fixture",
+      "memoed": false,
+      "memo_text": "fixture",
+      "refund_of_id": "fixture",
+      "aggregate_amount": {
+        "amount": 1.25,
+        "currency": "fixture",
+        "basis": "fixture",
+        "as_of": null,
+        "notes": "fixture"
+      },
+      "employer": "fixture",
+      "occupation": "fixture",
+      "source_system_ids": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": 0.0,
+          "valid_from": null,
+          "valid_to": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "entity_id": "fixture",
+      "observation_type": "fixture",
+      "amount": 1.25,
+      "currency": "fixture",
+      "value_type": "fixture",
+      "period_start": null,
+      "period_end": null,
+      "fiscal_year": 1,
+      "fiscal_quarter": "fixture",
+      "reported_at": null,
+      "counterparty_ids": [
+        "fixture"
+      ],
+      "instrument": "fixture",
+      "units": 1.25,
+      "unit_price": 1.25,
+      "percentage": 1.25,
+      "methodology": "fixture",
+      "qualifications": [
+        "fixture"
+      ],
+      "committee_id": "fixture",
+      "donor_id": "fixture",
+      "recipient_id": "fixture",
+      "filing_id": "fixture",
+      "contribution_type": "fixture",
+      "election_cycle": "fixture"
+    },
+    "document": {
+      "id": "fixture:campaign-finance",
+      "dataset": "conformance",
+      "dtype": "campaign-finance",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "transactionId": "fixture",
+      "committeeIds": [
+        "fixture"
+      ],
+      "donorRefs": [
+        "fixture"
+      ],
+      "recipientRefs": [
+        "fixture"
+      ],
+      "amountRecord": {
+        "amount": "1.25",
+        "currency": "fixture",
+        "basis": "fixture",
+        "asOf": null,
+        "notes": "fixture"
+      },
+      "transactionDate": "fixture",
+      "memoed": false,
+      "memoText": "fixture",
+      "refundOfId": "fixture",
+      "aggregateAmount": {
+        "amount": "1.25",
+        "currency": "fixture",
+        "basis": "fixture",
+        "asOf": null,
+        "notes": "fixture"
+      },
+      "employer": "fixture",
+      "occupation": "fixture",
+      "sourceSystemIds": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": "0.0",
+          "validFrom": null,
+          "validTo": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "entityId": "fixture",
+      "observationType": "fixture",
+      "amount": "1.25",
+      "currency": "fixture",
+      "valueType": "fixture",
+      "periodStart": null,
+      "periodEnd": null,
+      "fiscalYear": 1,
+      "fiscalQuarter": "fixture",
+      "reportedAt": null,
+      "counterpartyIds": [
+        "fixture"
+      ],
+      "instrument": "fixture",
+      "units": "1.25",
+      "unitPrice": "1.25",
+      "percentage": "1.25",
+      "methodology": "fixture",
+      "qualifications": [
+        "fixture"
+      ],
+      "committeeId": "fixture",
+      "donorId": "fixture",
+      "recipientId": "fixture",
+      "filingId": "fixture",
+      "contributionType": "fixture",
+      "electionCycle": "fixture"
+    }
+  },
+  {
+    "name": "claim-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "proposition": "fixture",
+      "subject_refs": [
+        "fixture"
+      ],
+      "object_refs": [
+        "fixture"
+      ],
+      "supporting_source_ids": [
+        "fixture"
+      ],
+      "review_ids": [
+        "fixture"
+      ],
+      "truth_status": "fixture",
+      "verification_method": [
+        "fixture"
+      ],
+      "derived_from_claim_ids": [
+        "fixture"
+      ],
+      "scope": "fixture",
+      "claim": "fixture",
+      "claimant_id": "fixture",
+      "subject_ids": [
+        "fixture"
+      ],
+      "predicate": "fixture",
+      "object": {
+        "opaque_key": false
+      },
+      "claim_type": "fixture",
+      "polarity": "fixture",
+      "certainty": 0.0,
+      "supporting_evidence_ids": [
+        "fixture"
+      ],
+      "contradicting_evidence_ids": [
+        "fixture"
+      ],
+      "adjudication": "fixture"
+    },
+    "document": {
+      "id": "fixture:claim",
+      "dataset": "conformance",
+      "dtype": "claim",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "proposition": "fixture",
+      "subjectRefs": [
+        "fixture"
+      ],
+      "objectRefs": [
+        "fixture"
+      ],
+      "supportingSourceIds": [
+        "fixture"
+      ],
+      "reviewIds": [
+        "fixture"
+      ],
+      "truthStatus": "fixture",
+      "verificationMethod": [
+        "fixture"
+      ],
+      "derivedFromClaimIds": [
+        "fixture"
+      ],
+      "scope": "fixture",
+      "claim": "fixture",
+      "claimantId": "fixture",
+      "subjectIds": [
+        "fixture"
+      ],
+      "predicate": "fixture",
+      "object": {
+        "opaque_key": false
+      },
+      "claimType": "fixture",
+      "polarity": "fixture",
+      "certainty": "0.0",
+      "supportingEvidenceIds": [
+        "fixture"
+      ],
+      "contradictingEvidenceIds": [
+        "fixture"
+      ],
+      "adjudication": "fixture"
+    }
+  },
+  {
+    "name": "concept-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "concept_id": "fixture",
+      "vocabulary": "fixture",
+      "namespace": "fixture",
+      "version": "fixture",
+      "preferred_label": "fixture",
+      "synonyms": [
+        "fixture"
+      ],
+      "definition_source_ids": [
+        "fixture"
+      ],
+      "mapping_ids": [
+        "fixture"
+      ],
+      "term": "fixture",
+      "definition": "fixture",
+      "domain": "fixture",
+      "broader_ids": [
+        "fixture"
+      ],
+      "narrower_ids": [
+        "fixture"
+      ],
+      "related_ids": [
+        "fixture"
+      ],
+      "examples": [
+        "fixture"
+      ],
+      "criteria": [
+        "fixture"
+      ]
+    },
+    "document": {
+      "id": "fixture:concept",
+      "dataset": "conformance",
+      "dtype": "concept",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "conceptId": "fixture",
+      "vocabulary": "fixture",
+      "namespace": "fixture",
+      "version": "fixture",
+      "preferredLabel": "fixture",
+      "synonyms": [
+        "fixture"
+      ],
+      "definitionSourceIds": [
+        "fixture"
+      ],
+      "mappingIds": [
+        "fixture"
+      ],
+      "term": "fixture",
+      "definition": "fixture",
+      "domain": "fixture",
+      "broaderIds": [
+        "fixture"
+      ],
+      "narrowerIds": [
+        "fixture"
+      ],
+      "relatedIds": [
+        "fixture"
+      ],
+      "examples": [
+        "fixture"
+      ],
+      "criteria": [
+        "fixture"
+      ]
+    }
+  },
+  {
+    "name": "contract-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "parent_award_id": "fixture",
+      "prime_award_id": "fixture",
+      "party_roles": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "funding_records": [
+        {
+          "amount": 1.25,
+          "currency": "fixture",
+          "basis": "fixture",
+          "as_of": null,
+          "notes": "fixture"
+        }
+      ],
+      "line_items": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "clause_ids": [
+        "fixture"
+      ],
+      "deliverable_ids": [
+        "fixture"
+      ],
+      "performance_location_ids": [
+        "fixture"
+      ],
+      "source_system_ids": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": 0.0,
+          "valid_from": null,
+          "valid_to": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "contract_id": "fixture",
+      "award_id": "fixture",
+      "solicitation_id": "fixture",
+      "vehicle_id": "fixture",
+      "buyer_id": "fixture",
+      "seller_id": "fixture",
+      "agency_ids": [
+        "fixture"
+      ],
+      "vendor_ids": [
+        "fixture"
+      ],
+      "subcontractor_ids": [
+        "fixture"
+      ],
+      "scope": "fixture",
+      "award_type": "fixture",
+      "competition_type": "fixture",
+      "signed_at": null,
+      "start_at": null,
+      "end_at": null,
+      "ceiling_amount": 1.25,
+      "potential_amount": 1.25,
+      "obligated_amount": 1.25,
+      "outlay_amount": 1.25,
+      "recognized_revenue": 1.25,
+      "currency": "fixture",
+      "naics": [
+        "fixture"
+      ],
+      "psc": [
+        "fixture"
+      ],
+      "place_of_performance": "fixture",
+      "modifications": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ]
+    },
+    "document": {
+      "id": "fixture:contract",
+      "dataset": "conformance",
+      "dtype": "contract",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "parentAwardId": "fixture",
+      "primeAwardId": "fixture",
+      "partyRoles": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "fundingRecords": [
+        {
+          "amount": "1.25",
+          "currency": "fixture",
+          "basis": "fixture",
+          "asOf": null,
+          "notes": "fixture"
+        }
+      ],
+      "lineItems": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "clauseIds": [
+        "fixture"
+      ],
+      "deliverableIds": [
+        "fixture"
+      ],
+      "performanceLocationIds": [
+        "fixture"
+      ],
+      "sourceSystemIds": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": "0.0",
+          "validFrom": null,
+          "validTo": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "contractId": "fixture",
+      "awardId": "fixture",
+      "solicitationId": "fixture",
+      "vehicleId": "fixture",
+      "buyerId": "fixture",
+      "sellerId": "fixture",
+      "agencyIds": [
+        "fixture"
+      ],
+      "vendorIds": [
+        "fixture"
+      ],
+      "subcontractorIds": [
+        "fixture"
+      ],
+      "scope": "fixture",
+      "awardType": "fixture",
+      "competitionType": "fixture",
+      "signedAt": null,
+      "startAt": null,
+      "endAt": null,
+      "ceilingAmount": "1.25",
+      "potentialAmount": "1.25",
+      "obligatedAmount": "1.25",
+      "outlayAmount": "1.25",
+      "recognizedRevenue": "1.25",
+      "currency": "fixture",
+      "naics": [
+        "fixture"
+      ],
+      "psc": [
+        "fixture"
+      ],
+      "placeOfPerformance": "fixture",
+      "modifications": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ]
+    }
+  },
+  {
+    "name": "dataset-manifest-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "dataset_id": "fixture",
+      "dataset_version": "fixture",
+      "profile": "fixture",
+      "profile_version": "fixture",
+      "schema_revision": "fixture",
+      "document_versions": [
+        "fixture"
+      ],
+      "source_dataset_ids": [
+        "fixture"
+      ],
+      "sync_cursor": "fixture",
+      "sync_status": "fixture",
+      "validated_at": null,
+      "manifest_type": "fixture",
+      "name": "fixture",
+      "actor": "fixture",
+      "consumer_path": "fixture",
+      "target_options": [
+        {
+          "opaque_key": false
+        }
+      ],
+      "document_ids": [
+        "fixture"
+      ],
+      "counts_by_dtype": {
+        "person": 2,
+        "org": 0
+      },
+      "record_count": 1,
+      "hash_algorithm": "fixture",
+      "content_hash": "fixture",
+      "files": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "schema_versions": [
+        "fixture"
+      ],
+      "generated_at": null
+    },
+    "document": {
+      "id": "fixture:dataset-manifest",
+      "dataset": "conformance",
+      "dtype": "dataset-manifest",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "datasetId": "fixture",
+      "datasetVersion": "fixture",
+      "profile": "fixture",
+      "profileVersion": "fixture",
+      "schemaRevision": "fixture",
+      "documentVersions": [
+        "fixture"
+      ],
+      "sourceDatasetIds": [
+        "fixture"
+      ],
+      "syncCursor": "fixture",
+      "syncStatus": "fixture",
+      "validatedAt": null,
+      "manifestType": "fixture",
+      "name": "fixture",
+      "actor": "fixture",
+      "consumerPath": "fixture",
+      "targetOptions": [
+        {
+          "opaque_key": false
+        }
+      ],
+      "documentIds": [
+        "fixture"
+      ],
+      "countsByDtype": [
+        {
+          "key": "person",
+          "value": 2
+        },
+        {
+          "key": "org",
+          "value": 0
+        }
+      ],
+      "recordCount": 1,
+      "payloadHashAlgorithm": "fixture",
+      "payloadContentHash": "fixture",
+      "files": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "schemaVersions": [
+        "fixture"
+      ],
+      "generatedAt": null
+    }
+  },
+  {
+    "name": "education-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "education_type": "fixture",
+      "credential_id": "fixture",
+      "program_id": "fixture",
+      "attendance_status": "fixture",
+      "awarded_at": null,
+      "thesis_title": "fixture",
+      "advisor_ids": [
+        "fixture"
+      ],
+      "person_id": "fixture",
+      "institution_id": "fixture",
+      "degree": "fixture",
+      "field": "fixture",
+      "start_at": null,
+      "end_at": null,
+      "graduated": false,
+      "honors": [
+        "fixture"
+      ]
+    },
+    "document": {
+      "id": "fixture:education",
+      "dataset": "conformance",
+      "dtype": "education",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "educationType": "fixture",
+      "credentialId": "fixture",
+      "programId": "fixture",
+      "attendanceStatus": "fixture",
+      "awardedAt": null,
+      "thesisTitle": "fixture",
+      "advisorIds": [
+        "fixture"
+      ],
+      "personId": "fixture",
+      "institutionId": "fixture",
+      "degree": "fixture",
+      "field": "fixture",
+      "startAt": null,
+      "endAt": null,
+      "graduated": false,
+      "honors": [
+        "fixture"
+      ]
+    }
+  },
+  {
+    "name": "employment-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "role_ids": [
+        "fixture"
+      ],
+      "reports_to_ids": [
+        "fixture"
+      ],
+      "appointment_type": "fixture",
+      "appointed_by_ids": [
+        "fixture"
+      ],
+      "compensation_records": [
+        {
+          "amount": 1.25,
+          "currency": "fixture",
+          "basis": "fixture",
+          "as_of": null,
+          "notes": "fixture"
+        }
+      ],
+      "responsibilities": [
+        "fixture"
+      ],
+      "termination_reason": "fixture",
+      "person_id": "fixture",
+      "organization_id": "fixture",
+      "title": "fixture",
+      "department": "fixture",
+      "start_at": null,
+      "end_at": null,
+      "current": false,
+      "employment_type": "fixture",
+      "location_id": "fixture"
+    },
+    "document": {
+      "id": "fixture:employment",
+      "dataset": "conformance",
+      "dtype": "employment",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "roleIds": [
+        "fixture"
+      ],
+      "reportsToIds": [
+        "fixture"
+      ],
+      "appointmentType": "fixture",
+      "appointedByIds": [
+        "fixture"
+      ],
+      "compensationRecords": [
+        {
+          "amount": "1.25",
+          "currency": "fixture",
+          "basis": "fixture",
+          "asOf": null,
+          "notes": "fixture"
+        }
+      ],
+      "responsibilities": [
+        "fixture"
+      ],
+      "terminationReason": "fixture",
+      "personId": "fixture",
+      "organizationId": "fixture",
+      "title": "fixture",
+      "department": "fixture",
+      "startAt": null,
+      "endAt": null,
+      "current": false,
+      "employmentType": "fixture",
+      "locationId": "fixture"
+    }
+  },
+  {
+    "name": "entity-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "entity_class": "fixture",
+      "canonical_name": "fixture",
+      "same_as_ids": [
+        "fixture"
+      ],
+      "duplicate_candidate_ids": [
+        "fixture"
+      ],
+      "identity_confidence": 0.0,
+      "identity_keys": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": 0.0,
+          "valid_from": null,
+          "valid_to": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "etype": "fixture",
+      "eid": "fixture",
+      "name": "fixture",
+      "display_name": "fixture",
+      "legal_name": "fixture",
+      "short_name": "fixture",
+      "former_names": [
+        "fixture"
+      ],
+      "bio": "fixture",
+      "jurisdiction": "fixture",
+      "country": "fixture",
+      "founded_at": null,
+      "dissolved_at": null,
+      "website": "fixture",
+      "image_url": "fixture",
+      "logo_url": "fixture",
+      "external_ids": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": 0.0,
+          "valid_from": null,
+          "valid_to": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "contact_ids": [
+        "fixture"
+      ],
+      "location_ids": [
+        "fixture"
+      ]
+    },
+    "document": {
+      "id": "fixture:entity",
+      "dataset": "conformance",
+      "dtype": "entity",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "entityClass": "fixture",
+      "canonicalName": "fixture",
+      "sameAsIds": [
+        "fixture"
+      ],
+      "duplicateCandidateIds": [
+        "fixture"
+      ],
+      "identityConfidence": "0.0",
+      "identityKeys": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": "0.0",
+          "validFrom": null,
+          "validTo": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "etype": "fixture",
+      "eid": "fixture",
+      "name": "fixture",
+      "displayName": "fixture",
+      "legalName": "fixture",
+      "shortName": "fixture",
+      "formerNames": [
+        "fixture"
+      ],
+      "bio": "fixture",
+      "payloadJurisdiction": "fixture",
+      "country": "fixture",
+      "foundedAt": null,
+      "dissolvedAt": null,
+      "website": "fixture",
+      "imageUrl": "fixture",
+      "logoUrl": "fixture",
+      "payloadExternalIds": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": "0.0",
+          "validFrom": null,
+          "validTo": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "contactIds": [
+        "fixture"
+      ],
+      "locationIds": [
+        "fixture"
+      ]
+    }
+  },
+  {
+    "name": "event-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": "2026-10-04T01:02:03.456789+01:00",
+      "valid_to": "2026-10-04T01:02:03.456789+01:00",
+      "event_type_id": "fixture",
+      "parent_event_id": "fixture",
+      "child_event_ids": [
+        "fixture"
+      ],
+      "participant_roles": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "action_records": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "source_event_ids": [
+        "fixture"
+      ],
+      "recurrence_rule": "fixture",
+      "result_ids": [
+        "fixture"
+      ],
+      "claim_ids": [
+        "fixture"
+      ],
+      "event_kind": "fixture",
+      "name": "fixture",
+      "participant_ids": [
+        "fixture"
+      ],
+      "participants": [
+        "fixture"
+      ],
+      "organizer_ids": [
+        "fixture"
+      ],
+      "sponsor_ids": [
+        "fixture"
+      ],
+      "location_ids": [
+        "fixture"
+      ],
+      "start_at": "2026-10-04T01:02:03.456789+01:00",
+      "end_at": null,
+      "outcome": "fixture",
+      "agenda": [
+        "fixture"
+      ],
+      "decisions": [
+        "fixture"
+      ],
+      "actions": [
+        "fixture"
+      ],
+      "amount": 1.25,
+      "currency": "fixture",
+      "jurisdiction": "fixture",
+      "case_id": "fixture",
+      "contract_id": "fixture",
+      "meeting_id": "fixture"
+    },
+    "document": {
+      "id": "fixture:event",
+      "dataset": "conformance",
+      "dtype": "event",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": "2026-10-04T01:02:03.456789+01:00",
+      "contentValidUntil": "2026-10-04T01:02:03.456789+01:00",
+      "eventTypeId": "fixture",
+      "parentEventId": "fixture",
+      "childEventIds": [
+        "fixture"
+      ],
+      "participantRoles": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "actionRecords": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "sourceEventIds": [
+        "fixture"
+      ],
+      "recurrenceRule": "fixture",
+      "resultIds": [
+        "fixture"
+      ],
+      "claimIds": [
+        "fixture"
+      ],
+      "eventKind": "fixture",
+      "name": "fixture",
+      "participantIds": [
+        "fixture"
+      ],
+      "participants": [
+        "fixture"
+      ],
+      "organizerIds": [
+        "fixture"
+      ],
+      "sponsorIds": [
+        "fixture"
+      ],
+      "locationIds": [
+        "fixture"
+      ],
+      "startAt": "2026-10-04T01:02:03.456789+01:00",
+      "endAt": null,
+      "outcome": "fixture",
+      "agenda": [
+        "fixture"
+      ],
+      "decisions": [
+        "fixture"
+      ],
+      "actions": [
+        "fixture"
+      ],
+      "amount": "1.25",
+      "currency": "fixture",
+      "payloadJurisdiction": "fixture",
+      "caseId": "fixture",
+      "contractId": "fixture",
+      "meetingId": "fixture"
+    }
+  },
+  {
+    "name": "evidence-record-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "subject_ids": [
+        "fixture"
+      ],
+      "claim_ids": [
+        "fixture"
+      ],
+      "exact_content": "fixture",
+      "normalized_content": "fixture",
+      "extraction_method": "fixture",
+      "capture_action_id": "fixture",
+      "custody_actions": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "hashes": {
+        "opaque_key": null,
+        "flag": false
+      },
+      "admissibility_status": "fixture",
+      "evidence_id": "fixture",
+      "source_id": "fixture",
+      "source_url": "fixture",
+      "kind": "fixture",
+      "role": "fixture",
+      "claim": "fixture",
+      "observation": "fixture",
+      "excerpt": "fixture",
+      "locator": "fixture",
+      "page": "fixture",
+      "section": "fixture",
+      "collected_at": null,
+      "observed_at": null,
+      "content_hash": "fixture",
+      "hash_algorithm": "fixture",
+      "confidence": 0.0,
+      "corroborates": [
+        "fixture"
+      ],
+      "contradicts": [
+        "fixture"
+      ],
+      "chain_of_custody": [
+        "fixture"
+      ],
+      "attachments": [
+        "fixture"
+      ],
+      "notes": "fixture",
+      "metadata": {
+        "opaque_key": null,
+        "flag": false
+      }
+    },
+    "document": {
+      "id": "fixture:evidence-record",
+      "dataset": "conformance",
+      "dtype": "evidence-record",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "subjectIds": [
+        "fixture"
+      ],
+      "claimIds": [
+        "fixture"
+      ],
+      "exactContent": "fixture",
+      "normalizedContent": "fixture",
+      "extractionMethod": "fixture",
+      "captureActionId": "fixture",
+      "custodyActions": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "hashes": {
+        "opaque_key": null,
+        "flag": false
+      },
+      "admissibilityStatus": "fixture",
+      "evidenceId": "fixture",
+      "sourceId": "fixture",
+      "sourceUrl": "fixture",
+      "kind": "fixture",
+      "role": "fixture",
+      "claim": "fixture",
+      "observation": "fixture",
+      "excerpt": "fixture",
+      "locator": "fixture",
+      "page": "fixture",
+      "section": "fixture",
+      "payloadCollectedAt": null,
+      "payloadObservedAt": null,
+      "payloadContentHash": "fixture",
+      "payloadHashAlgorithm": "fixture",
+      "payloadConfidence": "0.0",
+      "corroborates": [
+        "fixture"
+      ],
+      "contradicts": [
+        "fixture"
+      ],
+      "payloadChainOfCustody": [
+        "fixture"
+      ],
+      "attachments": [
+        "fixture"
+      ],
+      "payloadNotes": "fixture",
+      "metadata": {
+        "opaque_key": null,
+        "flag": false
+      }
+    }
+  },
+  {
+    "name": "financial-observation-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "transaction_id": "fixture",
+      "payer_ids": [
+        "fixture"
+      ],
+      "payee_ids": [
+        "fixture"
+      ],
+      "account_ids": [
+        "fixture"
+      ],
+      "amount_record": {
+        "amount": 1.25,
+        "currency": "fixture",
+        "basis": "fixture",
+        "as_of": null,
+        "notes": "fixture"
+      },
+      "amount_basis": "fixture",
+      "reporting_standard": "fixture",
+      "filing_ids": [
+        "fixture"
+      ],
+      "source_transaction_ids": [
+        "fixture"
+      ],
+      "memoed": false,
+      "refunded": false,
+      "entity_id": "fixture",
+      "observation_type": "fixture",
+      "amount": 1.25,
+      "currency": "fixture",
+      "value_type": "fixture",
+      "period_start": null,
+      "period_end": null,
+      "fiscal_year": 1,
+      "fiscal_quarter": "fixture",
+      "reported_at": null,
+      "counterparty_ids": [
+        "fixture"
+      ],
+      "instrument": "fixture",
+      "units": 1.25,
+      "unit_price": 1.25,
+      "percentage": 1.25,
+      "methodology": "fixture",
+      "qualifications": [
+        "fixture"
+      ]
+    },
+    "document": {
+      "id": "fixture:financial-observation",
+      "dataset": "conformance",
+      "dtype": "financial-observation",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "transactionId": "fixture",
+      "payerIds": [
+        "fixture"
+      ],
+      "payeeIds": [
+        "fixture"
+      ],
+      "accountIds": [
+        "fixture"
+      ],
+      "amountRecord": {
+        "amount": "1.25",
+        "currency": "fixture",
+        "basis": "fixture",
+        "asOf": null,
+        "notes": "fixture"
+      },
+      "amountBasis": "fixture",
+      "reportingStandard": "fixture",
+      "filingIds": [
+        "fixture"
+      ],
+      "sourceTransactionIds": [
+        "fixture"
+      ],
+      "memoed": false,
+      "refunded": false,
+      "entityId": "fixture",
+      "observationType": "fixture",
+      "amount": "1.25",
+      "currency": "fixture",
+      "valueType": "fixture",
+      "periodStart": null,
+      "periodEnd": null,
+      "fiscalYear": 1,
+      "fiscalQuarter": "fixture",
+      "reportedAt": null,
+      "counterpartyIds": [
+        "fixture"
+      ],
+      "instrument": "fixture",
+      "units": "1.25",
+      "unitPrice": "1.25",
+      "percentage": "1.25",
+      "methodology": "fixture",
+      "qualifications": [
+        "fixture"
+      ]
+    }
+  },
+  {
+    "name": "grant-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "award_number": "fixture",
+      "prime_recipient_id": "fixture",
+      "subrecipient_ids": [
+        "fixture"
+      ],
+      "program_id": "fixture",
+      "funding_records": [
+        {
+          "amount": 1.25,
+          "currency": "fixture",
+          "basis": "fixture",
+          "as_of": null,
+          "notes": "fixture"
+        }
+      ],
+      "assistance_listing_ids": [
+        "fixture"
+      ],
+      "matching_amount": {
+        "amount": 1.25,
+        "currency": "fixture",
+        "basis": "fixture",
+        "as_of": null,
+        "notes": "fixture"
+      },
+      "performance_location_ids": [
+        "fixture"
+      ],
+      "objective_ids": [
+        "fixture"
+      ],
+      "report_ids": [
+        "fixture"
+      ],
+      "contract_id": "fixture",
+      "award_id": "fixture",
+      "solicitation_id": "fixture",
+      "vehicle_id": "fixture",
+      "buyer_id": "fixture",
+      "seller_id": "fixture",
+      "agency_ids": [
+        "fixture"
+      ],
+      "vendor_ids": [
+        "fixture"
+      ],
+      "subcontractor_ids": [
+        "fixture"
+      ],
+      "scope": "fixture",
+      "award_type": "fixture",
+      "competition_type": "fixture",
+      "signed_at": null,
+      "start_at": null,
+      "end_at": null,
+      "ceiling_amount": 1.25,
+      "potential_amount": 1.25,
+      "obligated_amount": 1.25,
+      "outlay_amount": 1.25,
+      "recognized_revenue": 1.25,
+      "currency": "fixture",
+      "naics": [
+        "fixture"
+      ],
+      "psc": [
+        "fixture"
+      ],
+      "place_of_performance": "fixture",
+      "modifications": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "grantor_id": "fixture",
+      "recipient_ids": [
+        "fixture"
+      ],
+      "program": "fixture",
+      "assistance_listing": "fixture",
+      "matching_required": false
+    },
+    "document": {
+      "id": "fixture:grant",
+      "dataset": "conformance",
+      "dtype": "grant",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "awardNumber": "fixture",
+      "primeRecipientId": "fixture",
+      "subrecipientIds": [
+        "fixture"
+      ],
+      "programId": "fixture",
+      "fundingRecords": [
+        {
+          "amount": "1.25",
+          "currency": "fixture",
+          "basis": "fixture",
+          "asOf": null,
+          "notes": "fixture"
+        }
+      ],
+      "assistanceListingIds": [
+        "fixture"
+      ],
+      "matchingAmount": {
+        "amount": "1.25",
+        "currency": "fixture",
+        "basis": "fixture",
+        "asOf": null,
+        "notes": "fixture"
+      },
+      "performanceLocationIds": [
+        "fixture"
+      ],
+      "objectiveIds": [
+        "fixture"
+      ],
+      "reportIds": [
+        "fixture"
+      ],
+      "contractId": "fixture",
+      "awardId": "fixture",
+      "solicitationId": "fixture",
+      "vehicleId": "fixture",
+      "buyerId": "fixture",
+      "sellerId": "fixture",
+      "agencyIds": [
+        "fixture"
+      ],
+      "vendorIds": [
+        "fixture"
+      ],
+      "subcontractorIds": [
+        "fixture"
+      ],
+      "scope": "fixture",
+      "awardType": "fixture",
+      "competitionType": "fixture",
+      "signedAt": null,
+      "startAt": null,
+      "endAt": null,
+      "ceilingAmount": "1.25",
+      "potentialAmount": "1.25",
+      "obligatedAmount": "1.25",
+      "outlayAmount": "1.25",
+      "recognizedRevenue": "1.25",
+      "currency": "fixture",
+      "naics": [
+        "fixture"
+      ],
+      "psc": [
+        "fixture"
+      ],
+      "placeOfPerformance": "fixture",
+      "modifications": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "grantorId": "fixture",
+      "recipientIds": [
+        "fixture"
+      ],
+      "program": "fixture",
+      "assistanceListing": "fixture",
+      "matchingRequired": false
+    }
+  },
+  {
+    "name": "legal-case-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "court_id": "fixture",
+      "docket_id": "fixture",
+      "party_roles": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "related_case_ids": [
+        "fixture"
+      ],
+      "motion_ids": [
+        "fixture"
+      ],
+      "order_ids": [
+        "fixture"
+      ],
+      "opinion_ids": [
+        "fixture"
+      ],
+      "appeal_case_ids": [
+        "fixture"
+      ],
+      "disposition": "fixture",
+      "precedential_status": "fixture",
+      "case_number": "fixture",
+      "case_name": "fixture",
+      "court": "fixture",
+      "jurisdiction": "fixture",
+      "judge_ids": [
+        "fixture"
+      ],
+      "party_ids": [
+        "fixture"
+      ],
+      "plaintiff_ids": [
+        "fixture"
+      ],
+      "defendant_ids": [
+        "fixture"
+      ],
+      "attorney_ids": [
+        "fixture"
+      ],
+      "case_type": "fixture",
+      "claims": [
+        "fixture"
+      ],
+      "filed_at": null,
+      "closed_at": null,
+      "docket_entries": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "outcome": "fixture",
+      "citation": "fixture"
+    },
+    "document": {
+      "id": "fixture:legal-case",
+      "dataset": "conformance",
+      "dtype": "legal-case",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "courtId": "fixture",
+      "docketId": "fixture",
+      "partyRoles": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "relatedCaseIds": [
+        "fixture"
+      ],
+      "motionIds": [
+        "fixture"
+      ],
+      "orderIds": [
+        "fixture"
+      ],
+      "opinionIds": [
+        "fixture"
+      ],
+      "appealCaseIds": [
+        "fixture"
+      ],
+      "disposition": "fixture",
+      "precedentialStatus": "fixture",
+      "caseNumber": "fixture",
+      "caseName": "fixture",
+      "court": "fixture",
+      "payloadJurisdiction": "fixture",
+      "judgeIds": [
+        "fixture"
+      ],
+      "partyIds": [
+        "fixture"
+      ],
+      "plaintiffIds": [
+        "fixture"
+      ],
+      "defendantIds": [
+        "fixture"
+      ],
+      "attorneyIds": [
+        "fixture"
+      ],
+      "caseType": "fixture",
+      "claims": [
+        "fixture"
+      ],
+      "filedAt": null,
+      "closedAt": null,
+      "docketEntries": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "outcome": "fixture",
+      "citation": "fixture"
+    }
+  },
+  {
+    "name": "lobbying-filing-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "filing_system": "fixture",
+      "registrant_refs": [
+        "fixture"
+      ],
+      "client_refs": [
+        "fixture"
+      ],
+      "lobbyist_refs": [
+        "fixture"
+      ],
+      "covered_official_ids": [
+        "fixture"
+      ],
+      "issue_codes": [
+        "fixture"
+      ],
+      "amount_records": [
+        {
+          "amount": 1.25,
+          "currency": "fixture",
+          "basis": "fixture",
+          "as_of": null,
+          "notes": "fixture"
+        }
+      ],
+      "foreign_entity_ids": [
+        "fixture"
+      ],
+      "prior_filing_id": "fixture",
+      "amends_filing_id": "fixture",
+      "source_filing_url": "fixture",
+      "filing_id": "fixture",
+      "registrant_id": "fixture",
+      "client_id": "fixture",
+      "lobbyist_ids": [
+        "fixture"
+      ],
+      "government_entities": [
+        "fixture"
+      ],
+      "issues": [
+        "fixture"
+      ],
+      "specific_issues": [
+        "fixture"
+      ],
+      "income": 1.25,
+      "expenses": 1.25,
+      "currency": "fixture",
+      "period_start": null,
+      "period_end": null,
+      "filed_at": null,
+      "filing_type": "fixture",
+      "amendment": false,
+      "termination": false
+    },
+    "document": {
+      "id": "fixture:lobbying-filing",
+      "dataset": "conformance",
+      "dtype": "lobbying-filing",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "filingSystem": "fixture",
+      "registrantRefs": [
+        "fixture"
+      ],
+      "clientRefs": [
+        "fixture"
+      ],
+      "lobbyistRefs": [
+        "fixture"
+      ],
+      "coveredOfficialIds": [
+        "fixture"
+      ],
+      "issueCodes": [
+        "fixture"
+      ],
+      "amountRecords": [
+        {
+          "amount": "1.25",
+          "currency": "fixture",
+          "basis": "fixture",
+          "asOf": null,
+          "notes": "fixture"
+        }
+      ],
+      "foreignEntityIds": [
+        "fixture"
+      ],
+      "priorFilingId": "fixture",
+      "amendsFilingId": "fixture",
+      "sourceFilingUrl": "fixture",
+      "filingId": "fixture",
+      "registrantId": "fixture",
+      "clientId": "fixture",
+      "lobbyistIds": [
+        "fixture"
+      ],
+      "governmentEntities": [
+        "fixture"
+      ],
+      "issues": [
+        "fixture"
+      ],
+      "specificIssues": [
+        "fixture"
+      ],
+      "income": "1.25",
+      "expenses": "1.25",
+      "currency": "fixture",
+      "periodStart": null,
+      "periodEnd": null,
+      "filedAt": null,
+      "filingType": "fixture",
+      "amendment": false,
+      "termination": false
+    }
+  },
+  {
+    "name": "meeting-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "meeting_type": "fixture",
+      "chair_ids": [
+        "fixture"
+      ],
+      "attendee_roles": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "agenda_item_ids": [
+        "fixture"
+      ],
+      "minute_file_ids": [
+        "fixture"
+      ],
+      "decision_ids": [
+        "fixture"
+      ],
+      "action_item_ids": [
+        "fixture"
+      ],
+      "parent_meeting_id": "fixture",
+      "recurrence_rule": "fixture",
+      "event_kind": "fixture",
+      "name": "fixture",
+      "participant_ids": [
+        "fixture"
+      ],
+      "participants": [
+        "fixture"
+      ],
+      "organizer_ids": [
+        "fixture"
+      ],
+      "sponsor_ids": [
+        "fixture"
+      ],
+      "location_ids": [
+        "fixture"
+      ],
+      "start_at": null,
+      "end_at": null,
+      "outcome": "fixture",
+      "agenda": [
+        "fixture"
+      ],
+      "decisions": [
+        "fixture"
+      ],
+      "actions": [
+        "fixture"
+      ],
+      "amount": 1.25,
+      "currency": "fixture",
+      "jurisdiction": "fixture",
+      "case_id": "fixture",
+      "contract_id": "fixture",
+      "meeting_id": "fixture"
+    },
+    "document": {
+      "id": "fixture:meeting",
+      "dataset": "conformance",
+      "dtype": "meeting",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "meetingType": "fixture",
+      "chairIds": [
+        "fixture"
+      ],
+      "attendeeRoles": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "agendaItemIds": [
+        "fixture"
+      ],
+      "minuteFileIds": [
+        "fixture"
+      ],
+      "decisionIds": [
+        "fixture"
+      ],
+      "actionItemIds": [
+        "fixture"
+      ],
+      "parentMeetingId": "fixture",
+      "recurrenceRule": "fixture",
+      "eventKind": "fixture",
+      "name": "fixture",
+      "participantIds": [
+        "fixture"
+      ],
+      "participants": [
+        "fixture"
+      ],
+      "organizerIds": [
+        "fixture"
+      ],
+      "sponsorIds": [
+        "fixture"
+      ],
+      "locationIds": [
+        "fixture"
+      ],
+      "startAt": null,
+      "endAt": null,
+      "outcome": "fixture",
+      "agenda": [
+        "fixture"
+      ],
+      "decisions": [
+        "fixture"
+      ],
+      "actions": [
+        "fixture"
+      ],
+      "amount": "1.25",
+      "currency": "fixture",
+      "payloadJurisdiction": "fixture",
+      "caseId": "fixture",
+      "contractId": "fixture",
+      "meetingId": "fixture"
+    }
+  },
+  {
+    "name": "observation-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "subject_refs": [
+        "fixture"
+      ],
+      "observed_property": "fixture",
+      "raw_value": {
+        "opaque_key": false
+      },
+      "action_id": "fixture",
+      "observer_refs": [
+        "fixture"
+      ],
+      "uncertainty": 1.25,
+      "observer_id": "fixture",
+      "subject_id": "fixture",
+      "observation_type": "fixture",
+      "value": {
+        "opaque_key": false
+      },
+      "unit": "fixture",
+      "method": "fixture",
+      "instrument": "fixture",
+      "observed_at": null
+    },
+    "document": {
+      "id": "fixture:observation",
+      "dataset": "conformance",
+      "dtype": "observation",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "subjectRefs": [
+        "fixture"
+      ],
+      "observedProperty": "fixture",
+      "rawValue": {
+        "opaque_key": false
+      },
+      "actionId": "fixture",
+      "observerRefs": [
+        "fixture"
+      ],
+      "uncertainty": "1.25",
+      "observerId": "fixture",
+      "subjectId": "fixture",
+      "observationType": "fixture",
+      "value": {
+        "opaque_key": false
+      },
+      "unit": "fixture",
+      "method": "fixture",
+      "instrument": "fixture",
+      "payloadObservedAt": null
+    }
+  },
+  {
+    "name": "ownership-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "owner_refs": [
+        "fixture"
+      ],
+      "owned_refs": [
+        "fixture"
+      ],
+      "ownership_instrument": "fixture",
+      "percentage_basis": "fixture",
+      "voting_percentage": 1.25,
+      "economic_percentage": 1.25,
+      "value_record": {
+        "amount": 1.25,
+        "currency": "fixture",
+        "basis": "fixture",
+        "as_of": null,
+        "notes": "fixture"
+      },
+      "acquisition_event_id": "fixture",
+      "disposal_event_id": "fixture",
+      "owner_id": "fixture",
+      "asset_id": "fixture",
+      "ownership_type": "fixture",
+      "percentage": 1.25,
+      "units": 1.25,
+      "start_at": null,
+      "end_at": null,
+      "beneficial": false,
+      "direct": false
+    },
+    "document": {
+      "id": "fixture:ownership",
+      "dataset": "conformance",
+      "dtype": "ownership",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "ownerRefs": [
+        "fixture"
+      ],
+      "ownedRefs": [
+        "fixture"
+      ],
+      "ownershipInstrument": "fixture",
+      "percentageBasis": "fixture",
+      "votingPercentage": "1.25",
+      "economicPercentage": "1.25",
+      "valueRecord": {
+        "amount": "1.25",
+        "currency": "fixture",
+        "basis": "fixture",
+        "asOf": null,
+        "notes": "fixture"
+      },
+      "acquisitionEventId": "fixture",
+      "disposalEventId": "fixture",
+      "ownerId": "fixture",
+      "assetId": "fixture",
+      "ownershipType": "fixture",
+      "percentage": "1.25",
+      "units": "1.25",
+      "startAt": null,
+      "endAt": null,
+      "beneficial": false,
+      "direct": false
+    }
+  },
+  {
+    "name": "policy-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "policy_version": "fixture",
+      "parent_policy_id": "fixture",
+      "authority_ids": [
+        "fixture"
+      ],
+      "implementation_ids": [
+        "fixture"
+      ],
+      "text_file_ids": [
+        "fixture"
+      ],
+      "section_ids": [
+        "fixture"
+      ],
+      "adopted_at": null,
+      "repealed_at": null,
+      "superseded_by_id": "fixture",
+      "compliance_requirement_ids": [
+        "fixture"
+      ],
+      "policy_id": "fixture",
+      "name": "fixture",
+      "issuer_id": "fixture",
+      "jurisdiction": "fixture",
+      "policy_type": "fixture",
+      "text": "fixture",
+      "effective_at": null,
+      "expires_at": null,
+      "affected_ids": [
+        "fixture"
+      ]
+    },
+    "document": {
+      "id": "fixture:policy",
+      "dataset": "conformance",
+      "dtype": "policy",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "policyVersion": "fixture",
+      "parentPolicyId": "fixture",
+      "authorityIds": [
+        "fixture"
+      ],
+      "implementationIds": [
+        "fixture"
+      ],
+      "textFileIds": [
+        "fixture"
+      ],
+      "sectionIds": [
+        "fixture"
+      ],
+      "adoptedAt": null,
+      "repealedAt": null,
+      "supersededById": "fixture",
+      "complianceRequirementIds": [
+        "fixture"
+      ],
+      "policyId": "fixture",
+      "name": "fixture",
+      "issuerId": "fixture",
+      "payloadJurisdiction": "fixture",
+      "policyType": "fixture",
+      "text": "fixture",
+      "effectiveAt": null,
+      "payloadExpiresAt": null,
+      "affectedIds": [
+        "fixture"
+      ]
+    }
+  },
+  {
+    "name": "procurement-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "procurement_stage": "fixture",
+      "notice_id": "fixture",
+      "parent_award_id": "fixture",
+      "party_roles": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "funding_records": [
+        {
+          "amount": 1.25,
+          "currency": "fixture",
+          "basis": "fixture",
+          "as_of": null,
+          "notes": "fixture"
+        }
+      ],
+      "line_items": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "competition_exceptions": [
+        "fixture"
+      ],
+      "evaluation_criteria": [
+        "fixture"
+      ],
+      "source_system_ids": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": 0.0,
+          "valid_from": null,
+          "valid_to": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "contract_id": "fixture",
+      "award_id": "fixture",
+      "solicitation_id": "fixture",
+      "vehicle_id": "fixture",
+      "buyer_id": "fixture",
+      "seller_id": "fixture",
+      "agency_ids": [
+        "fixture"
+      ],
+      "vendor_ids": [
+        "fixture"
+      ],
+      "subcontractor_ids": [
+        "fixture"
+      ],
+      "scope": "fixture",
+      "award_type": "fixture",
+      "competition_type": "fixture",
+      "signed_at": null,
+      "start_at": null,
+      "end_at": null,
+      "ceiling_amount": 1.25,
+      "potential_amount": 1.25,
+      "obligated_amount": 1.25,
+      "outlay_amount": 1.25,
+      "recognized_revenue": 1.25,
+      "currency": "fixture",
+      "naics": [
+        "fixture"
+      ],
+      "psc": [
+        "fixture"
+      ],
+      "place_of_performance": "fixture",
+      "modifications": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ]
+    },
+    "document": {
+      "id": "fixture:procurement",
+      "dataset": "conformance",
+      "dtype": "procurement",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "procurementStage": "fixture",
+      "noticeId": "fixture",
+      "parentAwardId": "fixture",
+      "partyRoles": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "fundingRecords": [
+        {
+          "amount": "1.25",
+          "currency": "fixture",
+          "basis": "fixture",
+          "asOf": null,
+          "notes": "fixture"
+        }
+      ],
+      "lineItems": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "competitionExceptions": [
+        "fixture"
+      ],
+      "evaluationCriteria": [
+        "fixture"
+      ],
+      "sourceSystemIds": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": "0.0",
+          "validFrom": null,
+          "validTo": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "contractId": "fixture",
+      "awardId": "fixture",
+      "solicitationId": "fixture",
+      "vehicleId": "fixture",
+      "buyerId": "fixture",
+      "sellerId": "fixture",
+      "agencyIds": [
+        "fixture"
+      ],
+      "vendorIds": [
+        "fixture"
+      ],
+      "subcontractorIds": [
+        "fixture"
+      ],
+      "scope": "fixture",
+      "awardType": "fixture",
+      "competitionType": "fixture",
+      "signedAt": null,
+      "startAt": null,
+      "endAt": null,
+      "ceilingAmount": "1.25",
+      "potentialAmount": "1.25",
+      "obligatedAmount": "1.25",
+      "outlayAmount": "1.25",
+      "recognizedRevenue": "1.25",
+      "currency": "fixture",
+      "naics": [
+        "fixture"
+      ],
+      "psc": [
+        "fixture"
+      ],
+      "placeOfPerformance": "fixture",
+      "modifications": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ]
+    }
+  },
+  {
+    "name": "product-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "supplier_ids": [
+        "fixture"
+      ],
+      "version_ids": [
+        "fixture"
+      ],
+      "component_ids": [
+        "fixture"
+      ],
+      "dependency_ids": [
+        "fixture"
+      ],
+      "deployment_ids": [
+        "fixture"
+      ],
+      "sbom_file_ids": [
+        "fixture"
+      ],
+      "support_end_at": null,
+      "pricing_records": [
+        {
+          "amount": 1.25,
+          "currency": "fixture",
+          "basis": "fixture",
+          "as_of": null,
+          "notes": "fixture"
+        }
+      ],
+      "security_advisory_ids": [
+        "fixture"
+      ],
+      "etype": "fixture",
+      "eid": "fixture",
+      "name": "fixture",
+      "display_name": "fixture",
+      "legal_name": "fixture",
+      "short_name": "fixture",
+      "former_names": [
+        "fixture"
+      ],
+      "bio": "fixture",
+      "jurisdiction": "fixture",
+      "country": "fixture",
+      "founded_at": null,
+      "dissolved_at": null,
+      "website": "fixture",
+      "image_url": "fixture",
+      "logo_url": "fixture",
+      "external_ids": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": 0.0,
+          "valid_from": null,
+          "valid_to": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "contact_ids": [
+        "fixture"
+      ],
+      "location_ids": [
+        "fixture"
+      ],
+      "manufacturer_id": "fixture",
+      "vendor_ids": [
+        "fixture"
+      ],
+      "product_type": "fixture",
+      "model": "fixture",
+      "version_name": "fixture",
+      "release_date": null,
+      "end_of_life": null,
+      "features": [
+        "fixture"
+      ],
+      "capabilities": [
+        "fixture"
+      ],
+      "integrations": [
+        "fixture"
+      ],
+      "customers": [
+        "fixture"
+      ],
+      "license": "fixture",
+      "pricing": {
+        "opaque_key": null,
+        "flag": false
+      },
+      "technical": {
+        "opaque_key": null,
+        "flag": false
+      }
+    },
+    "document": {
+      "id": "fixture:product",
+      "dataset": "conformance",
+      "dtype": "product",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "supplierIds": [
+        "fixture"
+      ],
+      "versionIds": [
+        "fixture"
+      ],
+      "componentIds": [
+        "fixture"
+      ],
+      "dependencyIds": [
+        "fixture"
+      ],
+      "deploymentIds": [
+        "fixture"
+      ],
+      "sbomFileIds": [
+        "fixture"
+      ],
+      "supportEndAt": null,
+      "pricingRecords": [
+        {
+          "amount": "1.25",
+          "currency": "fixture",
+          "basis": "fixture",
+          "asOf": null,
+          "notes": "fixture"
+        }
+      ],
+      "securityAdvisoryIds": [
+        "fixture"
+      ],
+      "etype": "fixture",
+      "eid": "fixture",
+      "name": "fixture",
+      "displayName": "fixture",
+      "legalName": "fixture",
+      "shortName": "fixture",
+      "formerNames": [
+        "fixture"
+      ],
+      "bio": "fixture",
+      "payloadJurisdiction": "fixture",
+      "country": "fixture",
+      "foundedAt": null,
+      "dissolvedAt": null,
+      "website": "fixture",
+      "imageUrl": "fixture",
+      "logoUrl": "fixture",
+      "payloadExternalIds": [
+        {
+          "scheme": "fixture",
+          "value": "fixture",
+          "issuer": "fixture",
+          "jurisdiction": "fixture",
+          "canonical": false,
+          "confidence": "0.0",
+          "validFrom": null,
+          "validTo": null,
+          "url": "fixture",
+          "notes": "fixture"
+        }
+      ],
+      "contactIds": [
+        "fixture"
+      ],
+      "locationIds": [
+        "fixture"
+      ],
+      "manufacturerId": "fixture",
+      "vendorIds": [
+        "fixture"
+      ],
+      "productType": "fixture",
+      "model": "fixture",
+      "versionName": "fixture",
+      "releaseDate": null,
+      "endOfLife": null,
+      "features": [
+        "fixture"
+      ],
+      "capabilities": [
+        "fixture"
+      ],
+      "integrations": [
+        "fixture"
+      ],
+      "customers": [
+        "fixture"
+      ],
+      "license": "fixture",
+      "pricing": {
+        "opaque_key": null,
+        "flag": false
+      },
+      "technical": {
+        "opaque_key": null,
+        "flag": false
+      }
+    }
+  },
+  {
+    "name": "research-node-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "draft",
+      "valid_from": null,
+      "valid_to": null,
+      "objective": "fixture",
+      "instructions": "fixture",
+      "input_ids": [
+        "fixture"
+      ],
+      "target_ids": [
+        "fixture"
+      ],
+      "actor_ids": [
+        "fixture"
+      ],
+      "actor_selection_rules": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "output_ids": [
+        "fixture"
+      ],
+      "artifact_ids": [
+        "fixture"
+      ],
+      "child_ids": [
+        "fixture"
+      ],
+      "dependency_ids": [
+        "fixture"
+      ],
+      "run_ids": [
+        "fixture"
+      ],
+      "current_actor_id": "fixture",
+      "current_run_id": "fixture",
+      "limits": {
+        "max_depth": 1,
+        "max_actor_runs": 1,
+        "max_requests": 1,
+        "max_elapsed_ms": 1,
+        "max_repeated_state": 1,
+        "max_cost": 0.0,
+        "currency": "fixture"
+      },
+      "stop": {
+        "when_actor_queue_empty": false,
+        "when_no_new_documents": false,
+        "when_objective_satisfied": false,
+        "halt_on_actor_failure": false
+      },
+      "counters": {
+        "depth": 0,
+        "actor_runs": 0,
+        "requests": 0,
+        "repeated_state": 0,
+        "elapsed_ms": 0,
+        "cost": 0.0
+      },
+      "history": [
+        {
+          "from": null,
+          "to": "fixture",
+          "at": "2026-10-04T00:00:00Z",
+          "message": "fixture",
+          "error": "fixture",
+          "actor_id": "fixture",
+          "run_id": "fixture",
+          "output_ids": [
+            "fixture"
+          ],
+          "artifact_ids": [
+            "fixture"
+          ]
+        }
+      ],
+      "created_at": "2026-10-04T01:02:03.456789+01:00",
+      "started_at": null,
+      "completed_at": null,
+      "last_error": "fixture",
+      "paused_reason": "fixture"
+    },
+    "document": {
+      "id": "fixture:research-node",
+      "dataset": "conformance",
+      "dtype": "research-node",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "draft",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "objective": "fixture",
+      "instructions": "fixture",
+      "inputIds": [
+        "fixture"
+      ],
+      "targetIds": [
+        "fixture"
+      ],
+      "actorIds": [
+        "fixture"
+      ],
+      "actorSelectionRules": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "outputIds": [
+        "fixture"
+      ],
+      "artifactIds": [
+        "fixture"
+      ],
+      "childIds": [
+        "fixture"
+      ],
+      "dependencyIds": [
+        "fixture"
+      ],
+      "runIds": [
+        "fixture"
+      ],
+      "currentActorId": "fixture",
+      "currentRunId": "fixture",
+      "limits": {
+        "maxDepth": 1,
+        "maxActorRuns": 1,
+        "maxRequests": 1,
+        "maxElapsedMs": 1,
+        "maxRepeatedState": 1,
+        "maxCost": "0.0",
+        "currency": "fixture"
+      },
+      "stop": {
+        "whenActorQueueEmpty": false,
+        "whenNoNewDocuments": false,
+        "whenObjectiveSatisfied": false,
+        "haltOnActorFailure": false
+      },
+      "counters": {
+        "depth": 0,
+        "actorRuns": 0,
+        "requests": 0,
+        "repeatedState": 0,
+        "elapsedMs": 0,
+        "cost": "0.0"
+      },
+      "history": [
+        {
+          "from": null,
+          "to": "fixture",
+          "at": "2026-10-04T00:00:00Z",
+          "message": "fixture",
+          "error": "fixture",
+          "actorId": "fixture",
+          "runId": "fixture",
+          "outputIds": [
+            "fixture"
+          ],
+          "artifactIds": [
+            "fixture"
+          ]
+        }
+      ],
+      "nodeCreatedAt": "2026-10-04T01:02:03.456789+01:00",
+      "startedAt": null,
+      "completedAt": null,
+      "lastError": "fixture",
+      "pausedReason": "fixture"
+    }
+  },
+  {
+    "name": "research-pass-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "parent_pass_id": "fixture",
+      "child_pass_ids": [
+        "fixture"
+      ],
+      "target_ids": [
+        "fixture"
+      ],
+      "action_records": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "claim_ids": [
+        "fixture"
+      ],
+      "output_ids": [
+        "fixture"
+      ],
+      "metrics": {
+        "opaque_key": false
+      },
+      "termination_reason": "fixture",
+      "schema_revision": "fixture",
+      "research_question": "fixture",
+      "method": "fixture",
+      "classification_rules": [
+        "fixture"
+      ],
+      "finding_ids": [
+        "fixture"
+      ],
+      "findings": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "supporting_record_ids": [
+        "fixture"
+      ],
+      "counterevidence_ids": [
+        "fixture"
+      ],
+      "unresolved_target_ids": [
+        "fixture"
+      ],
+      "source_ids": [
+        "fixture"
+      ],
+      "agent_identity": "fixture",
+      "narrative_role": "fixture",
+      "started_at": null,
+      "completed_at": null,
+      "iteration": 1
+    },
+    "document": {
+      "id": "fixture:research-pass",
+      "dataset": "conformance",
+      "dtype": "research-pass",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "parentPassId": "fixture",
+      "childPassIds": [
+        "fixture"
+      ],
+      "targetIds": [
+        "fixture"
+      ],
+      "actionRecords": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "claimIds": [
+        "fixture"
+      ],
+      "outputIds": [
+        "fixture"
+      ],
+      "metrics": {
+        "opaque_key": false
+      },
+      "terminationReason": "fixture",
+      "schemaRevision": "fixture",
+      "researchQuestion": "fixture",
+      "method": "fixture",
+      "classificationRules": [
+        "fixture"
+      ],
+      "findingIds": [
+        "fixture"
+      ],
+      "findings": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "supportingRecordIds": [
+        "fixture"
+      ],
+      "counterevidenceIds": [
+        "fixture"
+      ],
+      "unresolvedTargetIds": [
+        "fixture"
+      ],
+      "sourceIds": [
+        "fixture"
+      ],
+      "agentIdentity": "fixture",
+      "narrativeRole": "fixture",
+      "startedAt": null,
+      "completedAt": null,
+      "iteration": 1
+    }
+  },
+  {
+    "name": "social-media-post-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "author_refs": [
+        "fixture"
+      ],
+      "conversation_id": "fixture",
+      "parent_post_id": "fixture",
+      "attachment_ids": [
+        "fixture"
+      ],
+      "capture_ids": [
+        "fixture"
+      ],
+      "engagement_observation_ids": [
+        "fixture"
+      ],
+      "content_hash": "fixture",
+      "content": "fixture",
+      "platform": "fixture",
+      "user": "fixture",
+      "user_id": "fixture",
+      "is_reply": false,
+      "media": [
+        "fixture"
+      ],
+      "message_id": "fixture",
+      "reply_to": "fixture",
+      "group": "fixture",
+      "channel": "fixture",
+      "thread_id": "fixture",
+      "mentions": [
+        "fixture"
+      ],
+      "reactions": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "links": [
+        "fixture"
+      ],
+      "posted_at": null,
+      "edited_at": null,
+      "deleted": false,
+      "visibility": "fixture",
+      "replies": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "reply_count": 1,
+      "repost_count": 1,
+      "like_count": 1,
+      "view_count": 1,
+      "url": "fixture",
+      "tags": [
+        "fixture"
+      ],
+      "title": "fixture",
+      "quote_post_id": "fixture"
+    },
+    "document": {
+      "id": "fixture:social-media-post",
+      "dataset": "conformance",
+      "dtype": "social-media-post",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "authorRefs": [
+        "fixture"
+      ],
+      "conversationId": "fixture",
+      "parentPostId": "fixture",
+      "attachmentIds": [
+        "fixture"
+      ],
+      "captureIds": [
+        "fixture"
+      ],
+      "engagementObservationIds": [
+        "fixture"
+      ],
+      "payloadContentHash": "fixture",
+      "content": "fixture",
+      "platform": "fixture",
+      "user": "fixture",
+      "userId": "fixture",
+      "isReply": false,
+      "media": [
+        "fixture"
+      ],
+      "messageId": "fixture",
+      "replyTo": "fixture",
+      "group": "fixture",
+      "channel": "fixture",
+      "threadId": "fixture",
+      "mentions": [
+        "fixture"
+      ],
+      "reactions": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "links": [
+        "fixture"
+      ],
+      "postedAt": null,
+      "editedAt": null,
+      "payloadDeleted": false,
+      "payloadVisibility": "fixture",
+      "replies": [
+        {
+          "opaque_key": null,
+          "flag": false
+        }
+      ],
+      "replyCount": 1,
+      "repostCount": 1,
+      "likeCount": 1,
+      "viewCount": 1,
+      "url": "fixture",
+      "payloadTags": [
+        "fixture"
+      ],
+      "title": "fixture",
+      "quotePostId": "fixture"
+    }
+  },
+  {
+    "name": "source-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "source_type_id": "fixture",
+      "publisher_id": "fixture",
+      "author_ids": [
+        "fixture"
+      ],
+      "capture_action_id": "fixture",
+      "original_file_ids": [
+        "fixture"
+      ],
+      "archive_ids": [
+        "fixture"
+      ],
+      "terms_of_use": "fixture",
+      "access_restrictions": [
+        "fixture"
+      ],
+      "supersedes_source_ids": [
+        "fixture"
+      ],
+      "source_id": "fixture",
+      "kind": "fixture",
+      "type": "fixture",
+      "sensor": "fixture",
+      "name": "fixture",
+      "title": "fixture",
+      "publisher": "fixture",
+      "author": "fixture",
+      "organization": "fixture",
+      "uri": "fixture",
+      "url": "fixture",
+      "archive_url": "fixture",
+      "published_at": null,
+      "retrieved_at": null,
+      "accessed_at": null,
+      "language": "fixture",
+      "jurisdiction": "fixture",
+      "medium": "fixture",
+      "credibility": 0.0,
+      "reliability": 0.0,
+      "authenticity": 0.0,
+      "independence": 0.0,
+      "access_method": "fixture",
+      "query": "fixture",
+      "request_id": "fixture",
+      "response_status": 1,
+      "content_hash": "fixture",
+      "hash_algorithm": "fixture",
+      "license": "fixture",
+      "quote": "fixture",
+      "locator": "fixture",
+      "page": "fixture",
+      "section": "fixture",
+      "notes": "fixture",
+      "metadata": {
+        "opaque_key": null,
+        "flag": false
+      }
+    },
+    "document": {
+      "id": "fixture:source",
+      "dataset": "conformance",
+      "dtype": "source",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "sourceTypeId": "fixture",
+      "publisherId": "fixture",
+      "authorIds": [
+        "fixture"
+      ],
+      "captureActionId": "fixture",
+      "originalFileIds": [
+        "fixture"
+      ],
+      "archiveIds": [
+        "fixture"
+      ],
+      "termsOfUse": "fixture",
+      "accessRestrictions": [
+        "fixture"
+      ],
+      "supersedesSourceIds": [
+        "fixture"
+      ],
+      "sourceId": "fixture",
+      "kind": "fixture",
+      "type": "fixture",
+      "sensor": "fixture",
+      "name": "fixture",
+      "title": "fixture",
+      "publisher": "fixture",
+      "author": "fixture",
+      "organization": "fixture",
+      "uri": "fixture",
+      "url": "fixture",
+      "archiveUrl": "fixture",
+      "publishedAt": null,
+      "retrievedAt": null,
+      "accessedAt": null,
+      "payloadLanguage": "fixture",
+      "payloadJurisdiction": "fixture",
+      "medium": "fixture",
+      "credibility": "0.0",
+      "reliability": "0.0",
+      "authenticity": "0.0",
+      "independence": "0.0",
+      "accessMethod": "fixture",
+      "query": "fixture",
+      "requestId": "fixture",
+      "responseStatus": 1,
+      "payloadContentHash": "fixture",
+      "payloadHashAlgorithm": "fixture",
+      "license": "fixture",
+      "quote": "fixture",
+      "locator": "fixture",
+      "page": "fixture",
+      "section": "fixture",
+      "payloadNotes": "fixture",
+      "metadata": {
+        "opaque_key": null,
+        "flag": false
+      }
+    }
+  },
+  {
+    "name": "task-all-fields",
+    "valid": true,
+    "legacyData": {
+      "description": "fixture",
+      "status": "fixture",
+      "valid_from": null,
+      "valid_to": null,
+      "parent_task_id": "fixture",
+      "dependency_task_ids": [
+        "fixture"
+      ],
+      "actor_ids": [
+        "fixture"
+      ],
+      "skill_ids": [
+        "fixture"
+      ],
+      "tool_ids": [
+        "fixture"
+      ],
+      "input_ids": [
+        "fixture"
+      ],
+      "attempt_ids": [
+        "fixture"
+      ],
+      "schedule": "fixture",
+      "started_at": null,
+      "result_summary": "fixture",
+      "error_ids": [
+        "fixture"
+      ],
+      "task_type": "fixture",
+      "subject_ids": [
+        "fixture"
+      ],
+      "assignee_ids": [
+        "fixture"
+      ],
+      "priority": 1.25,
+      "due_at": null,
+      "completed_at": null,
+      "instructions": "fixture",
+      "result_ids": [
+        "fixture"
+      ]
+    },
+    "document": {
+      "id": "fixture:task",
+      "dataset": "conformance",
+      "dtype": "task",
+      "schemaVersion": "0.10.1",
+      "createdAt": 1791072000,
+      "validFrom": 1791072000,
+      "description": "fixture",
+      "status": "fixture",
+      "contentValidFrom": null,
+      "contentValidUntil": null,
+      "parentTaskId": "fixture",
+      "dependencyTaskIds": [
+        "fixture"
+      ],
+      "actorIds": [
+        "fixture"
+      ],
+      "skillIds": [
+        "fixture"
+      ],
+      "toolIds": [
+        "fixture"
+      ],
+      "inputIds": [
+        "fixture"
+      ],
+      "attemptIds": [
+        "fixture"
+      ],
+      "schedule": "fixture",
+      "startedAt": null,
+      "resultSummary": "fixture",
+      "errorIds": [
+        "fixture"
+      ],
+      "taskType": "fixture",
+      "subjectIds": [
+        "fixture"
+      ],
+      "assigneeIds": [
+        "fixture"
+      ],
+      "priority": "1.25",
+      "dueAt": null,
+      "completedAt": null,
+      "instructions": "fixture",
+      "resultIds": [
+        "fixture"
+      ]
+    }
+  }
+]

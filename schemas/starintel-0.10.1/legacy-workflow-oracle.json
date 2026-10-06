@@ -1,0 +1,5388 @@
+{
+  "repository": "lost-rob0t/starintel-gpt-auto-dig",
+  "commit": "cb258634bf413b9f3620c229dfd821270e8d5377",
+  "sourcePath": "starintel_doc/spec.py",
+  "sourceSha256": "5d51f48bec710e3785d2d7d8ef1313e887371f1bbe69232e6f13a77a221ac2c9",
+  "schemas": {
+    "alert": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rule_id": {
+          "type": "string"
+        },
+        "trigger_event_id": {
+          "type": "string"
+        },
+        "related_alert_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "first_triggered_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "last_triggered_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "occurrence_count": {
+          "type": "integer"
+        },
+        "acknowledgement_actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "suppressed_until": {
+          "type": "string"
+        },
+        "resolved_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "resolution": {
+          "type": "string"
+        },
+        "alert_type": {
+          "type": "string"
+        },
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "condition": {
+          "type": "string"
+        },
+        "threshold": {
+          "type": "number"
+        },
+        "triggered_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "severity": {
+          "type": "number"
+        },
+        "acknowledged_by": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "analysis": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "hypotheses": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "method_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "logic": {
+          "type": "string"
+        },
+        "reasoning_artifact_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "uncertainty_sources": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dependency_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "review_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "output_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "question": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "framework": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "input_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "finding_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "conclusions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recommendations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "counterarguments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unresolved": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        }
+      },
+      "additionalProperties": false
+    },
+    "asset": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "asset_class": {
+          "type": "string"
+        },
+        "custodian_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "beneficial_owner_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "identifier_records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "scheme": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "issuer": {
+                "type": "string"
+              },
+              "jurisdiction": {
+                "type": "string"
+              },
+              "canonical": {
+                "type": "boolean"
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0
+              },
+              "valid_from": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "valid_to": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "scheme",
+              "value"
+            ]
+          }
+        },
+        "valuation_records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number"
+              },
+              "currency": {
+                "type": "string"
+              },
+              "basis": {
+                "type": "string"
+              },
+              "as_of": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "acquired_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "disposed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "acquisition_event_id": {
+          "type": "string"
+        },
+        "disposal_event_id": {
+          "type": "string"
+        },
+        "component_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "etype": {
+          "type": "string"
+        },
+        "eid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "legal_name": {
+          "type": "string"
+        },
+        "short_name": {
+          "type": "string"
+        },
+        "former_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bio": {
+          "type": "string"
+        },
+        "jurisdiction": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "founded_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dissolved_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "website": {
+          "type": "string"
+        },
+        "image_url": {
+          "type": "string"
+        },
+        "logo_url": {
+          "type": "string"
+        },
+        "external_ids": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "scheme": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "issuer": {
+                "type": "string"
+              },
+              "jurisdiction": {
+                "type": "string"
+              },
+              "canonical": {
+                "type": "boolean"
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0
+              },
+              "valid_from": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "valid_to": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "scheme",
+              "value"
+            ]
+          }
+        },
+        "contact_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "location_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "asset_type": {
+          "type": "string"
+        },
+        "owner_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "operator_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "serial_number": {
+          "type": "string"
+        },
+        "registration": {
+          "type": "string"
+        },
+        "value": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "location_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "campaign-finance": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "transaction_id": {
+          "type": "string"
+        },
+        "committee_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "donor_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recipient_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "amount_record": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "number"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "basis": {
+              "type": "string"
+            },
+            "as_of": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "notes": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "transaction_date": {
+          "type": "string"
+        },
+        "memoed": {
+          "type": "boolean"
+        },
+        "memo_text": {
+          "type": "string"
+        },
+        "refund_of_id": {
+          "type": "string"
+        },
+        "aggregate_amount": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "number"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "basis": {
+              "type": "string"
+            },
+            "as_of": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "notes": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "employer": {
+          "type": "string"
+        },
+        "occupation": {
+          "type": "string"
+        },
+        "source_system_ids": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "scheme": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "issuer": {
+                "type": "string"
+              },
+              "jurisdiction": {
+                "type": "string"
+              },
+              "canonical": {
+                "type": "boolean"
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0
+              },
+              "valid_from": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "valid_to": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "scheme",
+              "value"
+            ]
+          }
+        },
+        "entity_id": {
+          "type": "string"
+        },
+        "observation_type": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "value_type": {
+          "type": "string"
+        },
+        "period_start": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "period_end": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "fiscal_year": {
+          "type": "integer"
+        },
+        "fiscal_quarter": {
+          "type": "string"
+        },
+        "reported_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "counterparty_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "instrument": {
+          "type": "string"
+        },
+        "units": {
+          "type": "number"
+        },
+        "unit_price": {
+          "type": "number"
+        },
+        "percentage": {
+          "type": "number"
+        },
+        "methodology": {
+          "type": "string"
+        },
+        "qualifications": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "committee_id": {
+          "type": "string"
+        },
+        "donor_id": {
+          "type": "string"
+        },
+        "recipient_id": {
+          "type": "string"
+        },
+        "filing_id": {
+          "type": "string"
+        },
+        "contribution_type": {
+          "type": "string"
+        },
+        "election_cycle": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "claim": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "proposition": {
+          "type": "string"
+        },
+        "subject_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "object_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "supporting_source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "review_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "truth_status": {
+          "type": "string"
+        },
+        "verification_method": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "derived_from_claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "scope": {
+          "type": "string"
+        },
+        "claim": {
+          "type": "string"
+        },
+        "claimant_id": {
+          "type": "string"
+        },
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "predicate": {
+          "type": "string"
+        },
+        "object": {},
+        "claim_type": {
+          "type": "string"
+        },
+        "polarity": {
+          "type": "string"
+        },
+        "certainty": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "supporting_evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "contradicting_evidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "adjudication": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "claim"
+      ]
+    },
+    "concept": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "concept_id": {
+          "type": "string"
+        },
+        "vocabulary": {
+          "type": "string"
+        },
+        "namespace": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "preferred_label": {
+          "type": "string"
+        },
+        "synonyms": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "definition_source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "mapping_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "term": {
+          "type": "string"
+        },
+        "definition": {
+          "type": "string"
+        },
+        "domain": {
+          "type": "string"
+        },
+        "broader_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "narrower_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "related_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "examples": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "contract": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "parent_award_id": {
+          "type": "string"
+        },
+        "prime_award_id": {
+          "type": "string"
+        },
+        "party_roles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "funding_records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number"
+              },
+              "currency": {
+                "type": "string"
+              },
+              "basis": {
+                "type": "string"
+              },
+              "as_of": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "line_items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "clause_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deliverable_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "performance_location_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_system_ids": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "scheme": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "issuer": {
+                "type": "string"
+              },
+              "jurisdiction": {
+                "type": "string"
+              },
+              "canonical": {
+                "type": "boolean"
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0
+              },
+              "valid_from": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "valid_to": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "scheme",
+              "value"
+            ]
+          }
+        },
+        "contract_id": {
+          "type": "string"
+        },
+        "award_id": {
+          "type": "string"
+        },
+        "solicitation_id": {
+          "type": "string"
+        },
+        "vehicle_id": {
+          "type": "string"
+        },
+        "buyer_id": {
+          "type": "string"
+        },
+        "seller_id": {
+          "type": "string"
+        },
+        "agency_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "vendor_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "subcontractor_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "scope": {
+          "type": "string"
+        },
+        "award_type": {
+          "type": "string"
+        },
+        "competition_type": {
+          "type": "string"
+        },
+        "signed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "start_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ceiling_amount": {
+          "type": "number"
+        },
+        "potential_amount": {
+          "type": "number"
+        },
+        "obligated_amount": {
+          "type": "number"
+        },
+        "outlay_amount": {
+          "type": "number"
+        },
+        "recognized_revenue": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "naics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "psc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "place_of_performance": {
+          "type": "string"
+        },
+        "modifications": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "dataset-manifest": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dataset_id": {
+          "type": "string"
+        },
+        "dataset_version": {
+          "type": "string"
+        },
+        "profile": {
+          "type": "string"
+        },
+        "profile_version": {
+          "type": "string"
+        },
+        "schema_revision": {
+          "type": "string"
+        },
+        "document_versions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_dataset_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sync_cursor": {
+          "type": "string"
+        },
+        "sync_status": {
+          "type": "string"
+        },
+        "validated_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "manifest_type": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "actor": {
+          "type": "string"
+        },
+        "consumer_path": {
+          "type": "string"
+        },
+        "target_options": {
+          "type": "array",
+          "items": {}
+        },
+        "document_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "counts_by_dtype": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer"
+          }
+        },
+        "record_count": {
+          "type": "integer"
+        },
+        "hash_algorithm": {
+          "type": "string"
+        },
+        "content_hash": {
+          "type": "string"
+        },
+        "files": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "schema_versions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "generated_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "education": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "education_type": {
+          "type": "string"
+        },
+        "credential_id": {
+          "type": "string"
+        },
+        "program_id": {
+          "type": "string"
+        },
+        "attendance_status": {
+          "type": "string"
+        },
+        "awarded_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "thesis_title": {
+          "type": "string"
+        },
+        "advisor_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "person_id": {
+          "type": "string"
+        },
+        "institution_id": {
+          "type": "string"
+        },
+        "degree": {
+          "type": "string"
+        },
+        "field": {
+          "type": "string"
+        },
+        "start_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "graduated": {
+          "type": "boolean"
+        },
+        "honors": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "employment": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "role_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reports_to_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "appointment_type": {
+          "type": "string"
+        },
+        "appointed_by_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "compensation_records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number"
+              },
+              "currency": {
+                "type": "string"
+              },
+              "basis": {
+                "type": "string"
+              },
+              "as_of": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "responsibilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "termination_reason": {
+          "type": "string"
+        },
+        "person_id": {
+          "type": "string"
+        },
+        "organization_id": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "department": {
+          "type": "string"
+        },
+        "start_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "current": {
+          "type": "boolean"
+        },
+        "employment_type": {
+          "type": "string"
+        },
+        "location_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "entity": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "entity_class": {
+          "type": "string"
+        },
+        "canonical_name": {
+          "type": "string"
+        },
+        "same_as_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "duplicate_candidate_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "identity_confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "identity_keys": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "scheme": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "issuer": {
+                "type": "string"
+              },
+              "jurisdiction": {
+                "type": "string"
+              },
+              "canonical": {
+                "type": "boolean"
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0
+              },
+              "valid_from": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "valid_to": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "scheme",
+              "value"
+            ]
+          }
+        },
+        "etype": {
+          "type": "string"
+        },
+        "eid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "legal_name": {
+          "type": "string"
+        },
+        "short_name": {
+          "type": "string"
+        },
+        "former_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bio": {
+          "type": "string"
+        },
+        "jurisdiction": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "founded_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dissolved_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "website": {
+          "type": "string"
+        },
+        "image_url": {
+          "type": "string"
+        },
+        "logo_url": {
+          "type": "string"
+        },
+        "external_ids": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "scheme": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "issuer": {
+                "type": "string"
+              },
+              "jurisdiction": {
+                "type": "string"
+              },
+              "canonical": {
+                "type": "boolean"
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0
+              },
+              "valid_from": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "valid_to": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "scheme",
+              "value"
+            ]
+          }
+        },
+        "contact_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "location_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "event": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "event_type_id": {
+          "type": "string"
+        },
+        "parent_event_id": {
+          "type": "string"
+        },
+        "child_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "participant_roles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "action_records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "source_event_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "recurrence_rule": {
+          "type": "string"
+        },
+        "result_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "event_kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "participant_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "participants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "organizer_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sponsor_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "location_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "start_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "outcome": {
+          "type": "string"
+        },
+        "agenda": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "decisions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "amount": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "jurisdiction": {
+          "type": "string"
+        },
+        "case_id": {
+          "type": "string"
+        },
+        "contract_id": {
+          "type": "string"
+        },
+        "meeting_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "evidence-record": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "exact_content": {
+          "type": "string"
+        },
+        "normalized_content": {
+          "type": "string"
+        },
+        "extraction_method": {
+          "type": "string"
+        },
+        "capture_action_id": {
+          "type": "string"
+        },
+        "custody_actions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "hashes": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "admissibility_status": {
+          "type": "string"
+        },
+        "evidence_id": {
+          "type": "string"
+        },
+        "source_id": {
+          "type": "string"
+        },
+        "source_url": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "claim": {
+          "type": "string"
+        },
+        "observation": {
+          "type": "string"
+        },
+        "excerpt": {
+          "type": "string"
+        },
+        "locator": {
+          "type": "string"
+        },
+        "page": {
+          "type": "string"
+        },
+        "section": {
+          "type": "string"
+        },
+        "collected_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "observed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "content_hash": {
+          "type": "string"
+        },
+        "hash_algorithm": {
+          "type": "string"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "corroborates": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "contradicts": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "chain_of_custody": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "attachments": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "financial-observation": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "transaction_id": {
+          "type": "string"
+        },
+        "payer_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "payee_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "account_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "amount_record": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "number"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "basis": {
+              "type": "string"
+            },
+            "as_of": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "notes": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "amount_basis": {
+          "type": "string"
+        },
+        "reporting_standard": {
+          "type": "string"
+        },
+        "filing_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_transaction_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "memoed": {
+          "type": "boolean"
+        },
+        "refunded": {
+          "type": "boolean"
+        },
+        "entity_id": {
+          "type": "string"
+        },
+        "observation_type": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "value_type": {
+          "type": "string"
+        },
+        "period_start": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "period_end": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "fiscal_year": {
+          "type": "integer"
+        },
+        "fiscal_quarter": {
+          "type": "string"
+        },
+        "reported_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "counterparty_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "instrument": {
+          "type": "string"
+        },
+        "units": {
+          "type": "number"
+        },
+        "unit_price": {
+          "type": "number"
+        },
+        "percentage": {
+          "type": "number"
+        },
+        "methodology": {
+          "type": "string"
+        },
+        "qualifications": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "grant": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "award_number": {
+          "type": "string"
+        },
+        "prime_recipient_id": {
+          "type": "string"
+        },
+        "subrecipient_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "program_id": {
+          "type": "string"
+        },
+        "funding_records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number"
+              },
+              "currency": {
+                "type": "string"
+              },
+              "basis": {
+                "type": "string"
+              },
+              "as_of": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "assistance_listing_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "matching_amount": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "number"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "basis": {
+              "type": "string"
+            },
+            "as_of": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "notes": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "performance_location_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "objective_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "report_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "contract_id": {
+          "type": "string"
+        },
+        "award_id": {
+          "type": "string"
+        },
+        "solicitation_id": {
+          "type": "string"
+        },
+        "vehicle_id": {
+          "type": "string"
+        },
+        "buyer_id": {
+          "type": "string"
+        },
+        "seller_id": {
+          "type": "string"
+        },
+        "agency_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "vendor_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "subcontractor_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "scope": {
+          "type": "string"
+        },
+        "award_type": {
+          "type": "string"
+        },
+        "competition_type": {
+          "type": "string"
+        },
+        "signed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "start_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ceiling_amount": {
+          "type": "number"
+        },
+        "potential_amount": {
+          "type": "number"
+        },
+        "obligated_amount": {
+          "type": "number"
+        },
+        "outlay_amount": {
+          "type": "number"
+        },
+        "recognized_revenue": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "naics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "psc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "place_of_performance": {
+          "type": "string"
+        },
+        "modifications": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "grantor_id": {
+          "type": "string"
+        },
+        "recipient_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "program": {
+          "type": "string"
+        },
+        "assistance_listing": {
+          "type": "string"
+        },
+        "matching_required": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "legal-case": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "court_id": {
+          "type": "string"
+        },
+        "docket_id": {
+          "type": "string"
+        },
+        "party_roles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "related_case_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "motion_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "order_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "opinion_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "appeal_case_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "disposition": {
+          "type": "string"
+        },
+        "precedential_status": {
+          "type": "string"
+        },
+        "case_number": {
+          "type": "string"
+        },
+        "case_name": {
+          "type": "string"
+        },
+        "court": {
+          "type": "string"
+        },
+        "jurisdiction": {
+          "type": "string"
+        },
+        "judge_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "party_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "plaintiff_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "defendant_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "attorney_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "case_type": {
+          "type": "string"
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "filed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "closed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "docket_entries": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "outcome": {
+          "type": "string"
+        },
+        "citation": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "lobbying-filing": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "filing_system": {
+          "type": "string"
+        },
+        "registrant_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "client_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "lobbyist_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "covered_official_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "issue_codes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "amount_records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number"
+              },
+              "currency": {
+                "type": "string"
+              },
+              "basis": {
+                "type": "string"
+              },
+              "as_of": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "foreign_entity_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "prior_filing_id": {
+          "type": "string"
+        },
+        "amends_filing_id": {
+          "type": "string"
+        },
+        "source_filing_url": {
+          "type": "string"
+        },
+        "filing_id": {
+          "type": "string"
+        },
+        "registrant_id": {
+          "type": "string"
+        },
+        "client_id": {
+          "type": "string"
+        },
+        "lobbyist_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "government_entities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "issues": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "specific_issues": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "income": {
+          "type": "number"
+        },
+        "expenses": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "period_start": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "period_end": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "filed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "filing_type": {
+          "type": "string"
+        },
+        "amendment": {
+          "type": "boolean"
+        },
+        "termination": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "meeting": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "meeting_type": {
+          "type": "string"
+        },
+        "chair_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "attendee_roles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "agenda_item_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "minute_file_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "decision_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "action_item_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "parent_meeting_id": {
+          "type": "string"
+        },
+        "recurrence_rule": {
+          "type": "string"
+        },
+        "event_kind": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "participant_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "participants": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "organizer_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sponsor_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "location_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "start_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "outcome": {
+          "type": "string"
+        },
+        "agenda": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "decisions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "amount": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "jurisdiction": {
+          "type": "string"
+        },
+        "case_id": {
+          "type": "string"
+        },
+        "contract_id": {
+          "type": "string"
+        },
+        "meeting_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "observation": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "subject_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "observed_property": {
+          "type": "string"
+        },
+        "raw_value": {},
+        "action_id": {
+          "type": "string"
+        },
+        "observer_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "uncertainty": {
+          "type": "number"
+        },
+        "observer_id": {
+          "type": "string"
+        },
+        "subject_id": {
+          "type": "string"
+        },
+        "observation_type": {
+          "type": "string"
+        },
+        "value": {},
+        "unit": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "instrument": {
+          "type": "string"
+        },
+        "observed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "ownership": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "owner_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "owned_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "ownership_instrument": {
+          "type": "string"
+        },
+        "percentage_basis": {
+          "type": "string"
+        },
+        "voting_percentage": {
+          "type": "number"
+        },
+        "economic_percentage": {
+          "type": "number"
+        },
+        "value_record": {
+          "type": "object",
+          "properties": {
+            "amount": {
+              "type": "number"
+            },
+            "currency": {
+              "type": "string"
+            },
+            "basis": {
+              "type": "string"
+            },
+            "as_of": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "notes": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "acquisition_event_id": {
+          "type": "string"
+        },
+        "disposal_event_id": {
+          "type": "string"
+        },
+        "owner_id": {
+          "type": "string"
+        },
+        "asset_id": {
+          "type": "string"
+        },
+        "ownership_type": {
+          "type": "string"
+        },
+        "percentage": {
+          "type": "number"
+        },
+        "units": {
+          "type": "number"
+        },
+        "start_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "beneficial": {
+          "type": "boolean"
+        },
+        "direct": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "policy": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "policy_version": {
+          "type": "string"
+        },
+        "parent_policy_id": {
+          "type": "string"
+        },
+        "authority_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "implementation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "text_file_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "section_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "adopted_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "repealed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "superseded_by_id": {
+          "type": "string"
+        },
+        "compliance_requirement_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "policy_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "issuer_id": {
+          "type": "string"
+        },
+        "jurisdiction": {
+          "type": "string"
+        },
+        "policy_type": {
+          "type": "string"
+        },
+        "text": {
+          "type": "string"
+        },
+        "effective_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "affected_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "procurement": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "procurement_stage": {
+          "type": "string"
+        },
+        "notice_id": {
+          "type": "string"
+        },
+        "parent_award_id": {
+          "type": "string"
+        },
+        "party_roles": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "funding_records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number"
+              },
+              "currency": {
+                "type": "string"
+              },
+              "basis": {
+                "type": "string"
+              },
+              "as_of": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "line_items": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "competition_exceptions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "evaluation_criteria": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_system_ids": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "scheme": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "issuer": {
+                "type": "string"
+              },
+              "jurisdiction": {
+                "type": "string"
+              },
+              "canonical": {
+                "type": "boolean"
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0
+              },
+              "valid_from": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "valid_to": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "scheme",
+              "value"
+            ]
+          }
+        },
+        "contract_id": {
+          "type": "string"
+        },
+        "award_id": {
+          "type": "string"
+        },
+        "solicitation_id": {
+          "type": "string"
+        },
+        "vehicle_id": {
+          "type": "string"
+        },
+        "buyer_id": {
+          "type": "string"
+        },
+        "seller_id": {
+          "type": "string"
+        },
+        "agency_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "vendor_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "subcontractor_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "scope": {
+          "type": "string"
+        },
+        "award_type": {
+          "type": "string"
+        },
+        "competition_type": {
+          "type": "string"
+        },
+        "signed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "start_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "ceiling_amount": {
+          "type": "number"
+        },
+        "potential_amount": {
+          "type": "number"
+        },
+        "obligated_amount": {
+          "type": "number"
+        },
+        "outlay_amount": {
+          "type": "number"
+        },
+        "recognized_revenue": {
+          "type": "number"
+        },
+        "currency": {
+          "type": "string"
+        },
+        "naics": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "psc": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "place_of_performance": {
+          "type": "string"
+        },
+        "modifications": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "product": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "supplier_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "version_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "component_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dependency_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "deployment_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "sbom_file_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "support_end_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pricing_records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "amount": {
+                "type": "number"
+              },
+              "currency": {
+                "type": "string"
+              },
+              "basis": {
+                "type": "string"
+              },
+              "as_of": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "security_advisory_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "etype": {
+          "type": "string"
+        },
+        "eid": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "display_name": {
+          "type": "string"
+        },
+        "legal_name": {
+          "type": "string"
+        },
+        "short_name": {
+          "type": "string"
+        },
+        "former_names": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "bio": {
+          "type": "string"
+        },
+        "jurisdiction": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "founded_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "dissolved_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "website": {
+          "type": "string"
+        },
+        "image_url": {
+          "type": "string"
+        },
+        "logo_url": {
+          "type": "string"
+        },
+        "external_ids": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "scheme": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string"
+              },
+              "issuer": {
+                "type": "string"
+              },
+              "jurisdiction": {
+                "type": "string"
+              },
+              "canonical": {
+                "type": "boolean"
+              },
+              "confidence": {
+                "type": "number",
+                "minimum": 0.0,
+                "maximum": 1.0
+              },
+              "valid_from": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "valid_to": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "format": "date-time"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "url": {
+                "type": "string"
+              },
+              "notes": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "scheme",
+              "value"
+            ]
+          }
+        },
+        "contact_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "location_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "manufacturer_id": {
+          "type": "string"
+        },
+        "vendor_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "product_type": {
+          "type": "string"
+        },
+        "model": {
+          "type": "string"
+        },
+        "version_name": {
+          "type": "string"
+        },
+        "release_date": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_of_life": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "features": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "capabilities": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "integrations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "customers": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "license": {
+          "type": "string"
+        },
+        "pricing": {
+          "type": "object",
+          "additionalProperties": true
+        },
+        "technical": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "research-node": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "draft",
+            "queued",
+            "running",
+            "paused",
+            "blocked",
+            "completed",
+            "failed",
+            "killed"
+          ]
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "objective": {
+          "type": "string"
+        },
+        "instructions": {
+          "type": "string"
+        },
+        "input_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "target_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "actor_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "actor_selection_rules": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "output_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "artifact_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "child_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "dependency_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "run_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "current_actor_id": {
+          "type": "string"
+        },
+        "current_run_id": {
+          "type": "string"
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "max_depth": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_actor_runs": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_requests": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_elapsed_ms": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_repeated_state": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "max_cost": {
+              "type": "number",
+              "minimum": 0.0
+            },
+            "currency": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "stop": {
+          "type": "object",
+          "properties": {
+            "when_actor_queue_empty": {
+              "type": "boolean"
+            },
+            "when_no_new_documents": {
+              "type": "boolean"
+            },
+            "when_objective_satisfied": {
+              "type": "boolean"
+            },
+            "halt_on_actor_failure": {
+              "type": "boolean"
+            }
+          },
+          "additionalProperties": false
+        },
+        "counters": {
+          "type": "object",
+          "properties": {
+            "depth": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "actor_runs": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "requests": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "repeated_state": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "elapsed_ms": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "cost": {
+              "type": "number",
+              "minimum": 0.0
+            }
+          },
+          "additionalProperties": false
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "from": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "to": {
+                "type": "string"
+              },
+              "at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "message": {
+                "type": "string"
+              },
+              "error": {
+                "type": "string"
+              },
+              "actor_id": {
+                "type": "string"
+              },
+              "run_id": {
+                "type": "string"
+              },
+              "output_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "artifact_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "additionalProperties": false,
+            "required": [
+              "to",
+              "at"
+            ]
+          }
+        },
+        "created_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "started_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "completed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "last_error": {
+          "type": "string"
+        },
+        "paused_reason": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "required": [
+        "objective",
+        "status"
+      ]
+    },
+    "research-pass": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "parent_pass_id": {
+          "type": "string"
+        },
+        "child_pass_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "target_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "action_records": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "claim_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "output_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "metrics": {},
+        "termination_reason": {
+          "type": "string"
+        },
+        "schema_revision": {
+          "type": "string"
+        },
+        "research_question": {
+          "type": "string"
+        },
+        "method": {
+          "type": "string"
+        },
+        "classification_rules": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "finding_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "supporting_record_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "counterevidence_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unresolved_target_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "agent_identity": {
+          "type": "string"
+        },
+        "narrative_role": {
+          "type": "string"
+        },
+        "started_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "completed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "iteration": {
+          "type": "integer"
+        }
+      },
+      "additionalProperties": false
+    },
+    "social-media-post": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "author_refs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "conversation_id": {
+          "type": "string"
+        },
+        "parent_post_id": {
+          "type": "string"
+        },
+        "attachment_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "capture_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "engagement_observation_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "content_hash": {
+          "type": "string"
+        },
+        "content": {
+          "type": "string"
+        },
+        "platform": {
+          "type": "string"
+        },
+        "user": {
+          "type": "string"
+        },
+        "user_id": {
+          "type": "string"
+        },
+        "is_reply": {
+          "type": "boolean"
+        },
+        "media": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "message_id": {
+          "type": "string"
+        },
+        "reply_to": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string"
+        },
+        "channel": {
+          "type": "string"
+        },
+        "thread_id": {
+          "type": "string"
+        },
+        "mentions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reactions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "links": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "posted_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "edited_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "deleted": {
+          "type": "boolean"
+        },
+        "visibility": {
+          "type": "string"
+        },
+        "replies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        },
+        "reply_count": {
+          "type": "integer"
+        },
+        "repost_count": {
+          "type": "integer"
+        },
+        "like_count": {
+          "type": "integer"
+        },
+        "view_count": {
+          "type": "integer"
+        },
+        "url": {
+          "type": "string"
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "title": {
+          "type": "string"
+        },
+        "quote_post_id": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "source": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_type_id": {
+          "type": "string"
+        },
+        "publisher_id": {
+          "type": "string"
+        },
+        "author_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "capture_action_id": {
+          "type": "string"
+        },
+        "original_file_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "archive_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "terms_of_use": {
+          "type": "string"
+        },
+        "access_restrictions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "supersedes_source_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "source_id": {
+          "type": "string"
+        },
+        "kind": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "sensor": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "publisher": {
+          "type": "string"
+        },
+        "author": {
+          "type": "string"
+        },
+        "organization": {
+          "type": "string"
+        },
+        "uri": {
+          "type": "string"
+        },
+        "url": {
+          "type": "string"
+        },
+        "archive_url": {
+          "type": "string"
+        },
+        "published_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "retrieved_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "accessed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "language": {
+          "type": "string"
+        },
+        "jurisdiction": {
+          "type": "string"
+        },
+        "medium": {
+          "type": "string"
+        },
+        "credibility": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "reliability": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "authenticity": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "independence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0
+        },
+        "access_method": {
+          "type": "string"
+        },
+        "query": {
+          "type": "string"
+        },
+        "request_id": {
+          "type": "string"
+        },
+        "response_status": {
+          "type": "integer"
+        },
+        "content_hash": {
+          "type": "string"
+        },
+        "hash_algorithm": {
+          "type": "string"
+        },
+        "license": {
+          "type": "string"
+        },
+        "quote": {
+          "type": "string"
+        },
+        "locator": {
+          "type": "string"
+        },
+        "page": {
+          "type": "string"
+        },
+        "section": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": true
+        }
+      },
+      "additionalProperties": false
+    },
+    "task": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "valid_from": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "valid_to": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "parent_task_id": {
+          "type": "string"
+        },
+        "dependency_task_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "actor_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "skill_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "tool_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "input_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "attempt_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "schedule": {
+          "type": "string"
+        },
+        "started_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "result_summary": {
+          "type": "string"
+        },
+        "error_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "task_type": {
+          "type": "string"
+        },
+        "subject_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "assignee_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "priority": {
+          "type": "number"
+        },
+        "due_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "completed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "instructions": {
+          "type": "string"
+        },
+        "result_ids": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

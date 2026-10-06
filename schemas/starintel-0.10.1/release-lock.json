@@ -1,0 +1,28 @@
+{
+  "artifacts": {
+    "portable-manifest.json": "b464f5af646ed7a7409cc8aec1c17d69c3d656d412c7ab5fbce6c83d42bc6c6f",
+    "schema.json": "1d677d679adcf64ed2df6e9e98eff47c3f66f67f10efbe4c4b69f7fffa2def0a",
+    "starintel.lisp": "64476a8df88cfb4bf7b158979b0200537017245878d9e7390ac86a30eac24f71",
+    "starintel_types.nim": "4c009446c43c5ae050f3abcb564e089331e35b0ccc78f1de99ababa0844d3890",
+    "starintel_types.py": "83b6d93cbd16e2f71137e068042e7fb63322d5e2d642dcbca8ed99c0b871bc4f",
+    "starintel_types.ts": "e41862118667430c5cc8a4a3ca648c8fa2a6495352bb9f8e5acfbd93734756ff"
+  },
+  "authorityLibrary": "org.starintel/core@1",
+  "canonicalKeyStyle": "lowerCamelCase",
+  "hashAlgorithm": "sha256",
+  "releaseVersion": "0.10.1",
+  "schemaVersion": "0.10.1",
+  "sources": {
+    "compatibility-fixtures.json": "9e57f62022ea66bdc3a861185c7a6aea9b0f9a1094dbc3032364f6ff96e8da6f",
+    "compatibility.json": "95b9af3c984912053b65d4df65b2db7b88d0d97c065dad9e211d751873ef7553",
+    "core.star": "e09205e71fcd0f2bf87ff7d104c5ccff298d0054764def81e00f81a6bd8639fc",
+    "legacy-workflow-oracle.json": "efa0489d7c0688330575cd463035115fd74bb562589691aaf6e93b985f9748a8",
+    "operation_semantics.py": "b422660d389aeeb894f0c0ec5f2007e39bd99dca33f25ee4c2b51a15f2bfb29f",
+    "research-fixtures.json": "929c5058f7e8a001d9a7000c5f708d2f9f6b4b071be7e5ec5dead40a11f264b9",
+    "schema-lock-manifest.json": "c0b7fc34ed0c00814793789d32d9867c45e2e63963fd3ba09a720152cb94a7b5",
+    "supported-workflow-fixtures.json": "beb6cb6dc8dada43328e01172c4c475c882a64f4c47aeae6d1edff85eb575782",
+    "supported-workflow-inventory.json": "4c72e82065d2bb21ff643c7b98568ebd19f320db598f5f67b476f3fa619bcbf2",
+    "supported-workflow-mappings.json": "83c52626d416e018f802f023dca825f43fdd7936d61f598a891d0dbe1f1a3e48",
+    "workflow_semantics.py": "e42c38e7d60630aca29aeebfad5ea42ba7d4c7973960ae834ee5c49972e49642"
+  }
+}

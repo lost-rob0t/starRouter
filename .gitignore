@@ -23,3 +23,7 @@ nimble/*
 /starRouter
 /.env
 /src/starRouter
+
+result
+__pycache__/
+tests/test_wire
