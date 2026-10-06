@@ -31,7 +31,7 @@ for local, entry in lock["vendored_files"].items():
 for local, entry in runtime_lock["vendored_files"].items():
     assert hashlib.sha256((runtime / local).read_bytes()).hexdigest() == entry["sha256"], local
 
-pin = "0ba29aaa6fd0260a11d9d3a55067057ab4bdd6bc"
+pin = "7613609b963063d98fe31fb6a95a83a9ed30fe94"
 assert f"starintel-doc.nim.git#{pin}" in (root / "starRouter.nimble").read_text()
 assert json.loads((root / "flake.lock").read_text())["nodes"]["starintel-doc"]["locked"]["rev"] == pin
 
