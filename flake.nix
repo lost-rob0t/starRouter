@@ -2,7 +2,7 @@
   description = "StarIntel event router consuming the StarLang-generated document contract";
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    starintel-doc.url = "github:lost-rob0t/starintel-doc.nim/0ba29aaa6fd0260a11d9d3a55067057ab4bdd6bc";
+    starintel-doc.url = "github:lost-rob0t/starintel-doc.nim/7613609b963063d98fe31fb6a95a83a9ed30fe94";
     starintel-doc.inputs.nixpkgs.follows = "nixpkgs";
     zmq = { url = "github:nim-lang/nim-zmq/a56af54f599337a8f5d4934fcff7554c74f77854"; flake = false; };
     jsony = { url = "github:treeform/jsony/bb647e1ca21af25ffdc423bcb96feeeeae963ca2"; flake = false; };
