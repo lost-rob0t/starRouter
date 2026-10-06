@@ -21,7 +21,8 @@ doAssert typed.data.deleted.get == false
 # Python subscriber's existing document assertions.
 c.subscribe("native-wire")
 waitFor sleepAsync(300)
-let rawContract = parseJson(staticRead("../fixtures/raw-json-unique-keys.json"))
+const RawContractText = staticRead("../fixtures/raw-json-unique-keys.json")
+let rawContract = parseJson(RawContractText)
 doAssert rawContract["contract"].getStr == "starintel.raw-json-unique-keys/1"
 var exactCases = 0
 for fixture in rawContract["cases"]:
