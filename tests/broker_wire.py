@@ -133,6 +133,8 @@ try:
                                     capture_output=True, text=True, timeout=15)
             assert result.returncode == 0, result.stderr
             assert "native client emit PASS" in result.stdout
+            assert "native JsonNode exact-number receive/re-emit PASS (18 messages)" in result.stdout
+            print(result.stdout.strip())
             assert json.loads(subscriber.recv_multipart()[-1]) == document
             person = json.loads(subscriber.recv_multipart()[-1])
             assert person["id"] == "native:person" and person["schemaVersion"] == "0.10.1" and person["deleted"] is False

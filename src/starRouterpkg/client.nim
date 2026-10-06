@@ -2,6 +2,7 @@ import zmq
 import asyncdispatch
 import tables
 import std/[json, jsonutils]
+import starintel_doc/canonical as canonical
 import sequtils
 import proto
 import deques
@@ -144,7 +145,11 @@ proc fetch*[T](typ: typedesc[T] = T, client: Client): Future[Message[T]] {.async
   var msg = await client.fetch()
   result = Message[typ](id: msg.id, source: msg.source, topic: msg.topic, time: msg.time, typ: msg.typ)
   when T is JsonNode:
-    result.data = msg.data.parseJson()
+    # Retain the validated document's exact numeric tokens in the public JSON API.
+    if msg.typ in {newDocument, updateDocument, EventType.target}:
+      result.data = canonical.parseWireJson(msg.data)
+    else:
+      result.data = msg.data.parseJson()
   elif defined(useJsony):
     # Generated document bindings use Option fields; decode them through the
     # same jsonutils codec as the canonical runtime after strict validation.
