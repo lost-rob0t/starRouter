@@ -11,6 +11,17 @@ import zmq
 root = Path(__file__).resolve().parents[1]
 schema = json.loads((root / "schemas/starintel-0.10.1/generated/schema.json").read_text())
 manifest = json.loads((root / "schemas/starintel-0.10.1/generated/portable-manifest.json").read_text())
+research_fixtures = json.loads((root / "schemas/starintel-0.10.1/research-fixtures.json").read_text())
+raw_key_contract = json.loads((root / "fixtures/raw-json-unique-keys.json").read_text())
+
+minimal_operation = next(
+    fixture["document"]
+    for fixture in research_fixtures
+    if fixture["name"] == "minimal-operation" and fixture["valid"]
+)
+assert raw_key_contract["contract"] == "starintel.raw-json-unique-keys/1"
+assert sum(case["valid"] for case in raw_key_contract["cases"]) == 9
+assert sum(not case["valid"] for case in raw_key_contract["cases"]) == 18
 
 def sample(node):
     if "$ref" in node:
@@ -60,18 +71,31 @@ try:
     assert send(7, "", b"test") == [b"1"]
     # Allow the ZeroMQ subscription handshake to finish.
     time.sleep(0.3)
+
+    document_entries = [entry for entry in manifest["types"] if entry["kind"] == "document"]
+    persistent_entries = [
+        entry for entry in document_entries
+        if entry.get("persistence", "persistent") == "persistent"
+    ]
+    transient_entries = [
+        entry for entry in document_entries
+        if entry.get("persistence", "persistent") != "persistent"
+    ]
+    assert len(document_entries) == 123
+    assert len(persistent_entries) == 90
+    assert len(transient_entries) == 33
+
     count = 0
     target_wire = None
-    for entry in manifest["types"]:
-        if entry["kind"] != "document" or entry.get("persistence", "persistent") != "persistent":
-            continue
+    for entry in persistent_entries:
         dtype = entry["name"].split("/")[-1]
         name = "".join(word.capitalize() for word in dtype.split("-"))
-        document = sample(schema["$defs"][name])
+        if dtype == "operation":
+            document = dict(minimal_operation)
+        else:
+            document = sample(schema["$defs"][name])
         document.update(id="fixture:" + dtype, dataset="test", dtype=dtype, schemaVersion="0.10.1",
                         extensions={"opaque": {"flag": False, "nil": None, "items": []}})
-        if dtype == "operation":
-            document["phases"] = [{"phaseId": "collect", "objective": "Collect evidence", "state": "planned"}]
         wire = json.dumps(document)
         if dtype == "target": target_wire = wire
         assert send(3, wire) == [b"1"], dtype
@@ -80,6 +104,18 @@ try:
         assert not subscriber.poll(30), "duplicate publication"
         count += 1
     assert count == 90
+
+    for case in raw_key_contract["cases"]:
+        raw_wire = case["wire"]
+        if case["valid"]:
+            assert send(3, raw_wire) == [b"1"], case["name"]
+            frames = subscriber.recv_multipart()
+            assert len(frames) == 6 and frames[-1].decode() == raw_wire, (case["name"], frames)
+            assert not subscriber.poll(30), "duplicate raw fixture publication"
+        else:
+            assert send(3, raw_wire) == [b"2"], case["name"]
+            assert not subscriber.poll(100), "invalid raw fixture published"
+
     invalid = [{"_id": "old", "dtype": "person", "schema_version": "0.10.1", "data": {}},
                {**document, "schemaVersion": "0.10.2"}, {**document, "confidence": "1.1"}, []]
     for value in invalid:
@@ -115,7 +151,7 @@ try:
     del legacy["_id"]
     assert send(3, json.dumps(legacy)) == [b"2"]
     assert not subscriber.poll(100)
-    print("real ZeroMQ broker: all 90 dtypes, exact payloads, single publication, NACK/no publication, recovery PASS")
+    print("real ZeroMQ broker: 90 persistent dtypes, 33 transient definitions excluded, 27 raw-key cases, exact payloads, single publication, NACK/no publication, recovery PASS")
 finally:
     api.close(linger=0)
     subscriber.close(linger=0)
