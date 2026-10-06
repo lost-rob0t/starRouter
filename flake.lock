@@ -85,17 +85,17 @@
         ]
       },
       "locked": {
-        "lastModified": 1791140837,
-        "narHash": "sha256-YJTIEBFo3gOU6wG/P9Qj5/hXV6MTyaY2HByNu44BZ+w=",
+        "lastModified": 1791267466,
+        "narHash": "sha256-z8p9IG60rU0tCQr80lJhyZle/8tMd2alaGAQ9rYmVy8=",
         "owner": "lost-rob0t",
         "repo": "starintel-doc.nim",
-        "rev": "0ba29aaa6fd0260a11d9d3a55067057ab4bdd6bc",
+        "rev": "7613609b963063d98fe31fb6a95a83a9ed30fe94",
         "type": "github"
       },
       "original": {
         "owner": "lost-rob0t",
         "repo": "starintel-doc.nim",
-        "rev": "0ba29aaa6fd0260a11d9d3a55067057ab4bdd6bc",
+        "rev": "7613609b963063d98fe31fb6a95a83a9ed30fe94",
         "type": "github"
       }
     },
