@@ -63,12 +63,15 @@ try:
     count = 0
     target_wire = None
     for entry in manifest["types"]:
-        if entry["kind"] != "document": continue
+        if entry["kind"] != "document" or entry.get("persistence", "persistent") != "persistent":
+            continue
         dtype = entry["name"].split("/")[-1]
         name = "".join(word.capitalize() for word in dtype.split("-"))
         document = sample(schema["$defs"][name])
         document.update(id="fixture:" + dtype, dataset="test", dtype=dtype, schemaVersion="0.10.1",
                         extensions={"opaque": {"flag": False, "nil": None, "items": []}})
+        if dtype == "operation":
+            document["phases"] = [{"phaseId": "collect", "objective": "Collect evidence", "state": "planned"}]
         wire = json.dumps(document)
         if dtype == "target": target_wire = wire
         assert send(3, wire) == [b"1"], dtype
@@ -76,7 +79,7 @@ try:
         assert len(frames) == 6 and frames[-1].decode() == wire, (dtype, frames)
         assert not subscriber.poll(30), "duplicate publication"
         count += 1
-    assert count == 60
+    assert count == 90
     invalid = [{"_id": "old", "dtype": "person", "schema_version": "0.10.1", "data": {}},
                {**document, "schemaVersion": "0.10.2"}, {**document, "confidence": "1.1"}, []]
     for value in invalid:
@@ -112,7 +115,7 @@ try:
     del legacy["_id"]
     assert send(3, json.dumps(legacy)) == [b"2"]
     assert not subscriber.poll(100)
-    print("real ZeroMQ broker: all 60 dtypes, exact payloads, single publication, NACK/no publication, recovery PASS")
+    print("real ZeroMQ broker: all 90 dtypes, exact payloads, single publication, NACK/no publication, recovery PASS")
 finally:
     api.close(linger=0)
     subscriber.close(linger=0)
