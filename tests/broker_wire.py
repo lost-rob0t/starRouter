@@ -87,6 +87,7 @@ try:
 
     count = 0
     target_wire = None
+    file_wire = None
     for entry in persistent_entries:
         dtype = entry["name"].split("/")[-1]
         name = "".join(word.capitalize() for word in dtype.split("-"))
@@ -98,12 +99,34 @@ try:
                         extensions={"opaque": {"flag": False, "nil": None, "items": []}})
         wire = json.dumps(document)
         if dtype == "target": target_wire = wire
+        if dtype == "file": file_wire = wire
         assert send(3, wire) == [b"1"], dtype
         frames = subscriber.recv_multipart()
         assert len(frames) == 6 and frames[-1].decode() == wire, (dtype, frames)
         assert not subscriber.poll(30), "duplicate publication"
         count += 1
     assert count == 90
+
+    # All three optional File flags have generated default-bearing allOf
+    # constraints. Required-only inventory fixtures omit these fields, so the
+    # inventory alone cannot detect a validator that silently skips allOf.
+    assert file_wire is not None
+    file_document = json.loads(file_wire)
+    for field in ("quarantined", "executable", "trustFilenameExtension"):
+        assert field not in file_document
+        for value in (None, False, True, "false", False):
+            candidate = dict(file_document)
+            if value is not None:
+                candidate[field] = value
+            candidate_wire = json.dumps(candidate)
+            if isinstance(value, str):
+                assert send(3, candidate_wire) == [b"2"], (field, value)
+                assert not subscriber.poll(100), (field, "invalid allOf value published")
+            else:
+                assert send(3, candidate_wire) == [b"1"], (field, value)
+                frames = subscriber.recv_multipart()
+                assert len(frames) == 6 and frames[-1].decode() == candidate_wire, (field, value, frames)
+                assert not subscriber.poll(30), (field, "duplicate publication")
 
     for case in raw_key_contract["cases"]:
         raw_wire = case["wire"]
@@ -153,7 +176,7 @@ try:
     del legacy["_id"]
     assert send(3, json.dumps(legacy)) == [b"2"]
     assert not subscriber.poll(100)
-    print("real ZeroMQ broker: 90 persistent dtypes, 33 transient definitions excluded, 27 raw-key cases, exact payloads, single publication, NACK/no publication, recovery PASS")
+    print("real ZeroMQ broker: 90 persistent dtypes, 33 transient definitions excluded, 3 default-bearing allOf flags, 27 raw-key cases, exact payloads, single publication, NACK/no publication, recovery PASS")
 finally:
     api.close(linger=0)
     subscriber.close(linger=0)
