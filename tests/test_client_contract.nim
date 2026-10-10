@@ -23,3 +23,19 @@ doAssert document.typ == newDocument
 doAssert document.data == canonical
 
 echo "client message event-type checks passed"
+
+# A broker-side NACK (e.g. no target recipient) is not a successful send.
+# Test the same response gate used by Client.emit, not a mocked persistence ACK.
+proc rejected(reply: string): bool =
+  try:
+    requireAck(reply)
+  except IOError:
+    return true
+  return false
+
+requireAck($EventType.ack.ord)
+doAssert rejected($EventType.nack.ord)
+doAssert rejected("ACK")
+doAssert rejected("")
+doAssert rejected("not-an-ordinal")
+echo "client A2A rejection propagation checks passed"

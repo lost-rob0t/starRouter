@@ -84,13 +84,21 @@ proc newMessage*[T](client: Client, data: T, eventType: EventType, source,
       topic: topic, time: time, typ: eventType)
 
 
-# TODO Fix this, make it reliable
+## SC01 replies are transport acceptance, not durable storage receipts.
+## NACK or unknown replies must never look like successful A2A delivery.
+proc requireAck*(reply: string) =
+  case reply
+  of $EventType.ack.ord:
+    discard
+  of $EventType.nack.ord:
+    raise newException(IOError, "StarRouter NACK: command was rejected")
+  else:
+    raise newException(IOError, "Unexpected StarRouter acknowledgement")
+
 proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
   ## Emit a `Message[T]` to the message broker.
   ## By default it uses std json `%*` to serialize to json string, but if you compile with `-d:useJsony`, you can use `toJson()`
-  var
-    state = false
-    i = 0
+  discard tries # Retain the public signature; do not blindly replay commands.
   # nim bindings sends the identity for us?
   await c.apiSocket.sendAsync("", SNDMORE)
   await c.apiSocket.sendAsync("SC01", SNDMORE)
@@ -105,17 +113,7 @@ proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
     await c.apiSocket.sendAsync(data.data.toJson())
   else:
     await c.apiSocket.sendAsync(encodePayload(data.data))
-  let resp = await c.apiSocket.receiveAsync()
-  #while not state and i < tries:
-  #  client.apiSocket.send($eventType.ord, SNDMORE)
-  #  client.apiSocket.send($data)
-  #  let resp = await client.apiSocket.receiveAsync()
-  #  if resp == "ACK":
-  #    state = true
-  #    break
-  #  inc(i)
-  #  if not state:
-  #    raise newException(IOError, "Server Failed to reply")
+  requireAck(await c.apiSocket.receiveAsync())
 
 proc fetch*(client: Client): Future[Message[string]] {.async.} =
   ## Fetch data from subscriptions
