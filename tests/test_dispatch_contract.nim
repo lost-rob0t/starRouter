@@ -1,12 +1,12 @@
 ## No broker required: assert the exact action table and lossless actor routing.
 import ../src/starRouterpkg/[server, proto]
 
-for event in [newDocument, updateDocument, deleteDocument]:
+for event in [newDocument, updateDocument]:
   doAssert dispatchAction(event) == relayDocument
 doAssert dispatchAction(EventType.register) == registerClient
 doAssert dispatchAction(heartbeat) == heartbeatClient
 doAssert dispatchAction(target) == routeTarget
-for event in [ack, nack, getDocument]:
+for event in [ack, nack, getDocument, deleteDocument]:
   doAssert dispatchAction(event) == rejectEvent
 
 let canonical = """{"id":"target:one","dataset":"test","dtype":"target","schemaVersion":"0.10.1","ready":false,"extra":null}"""
@@ -17,7 +17,7 @@ let forwarded = routedTarget(incoming, "worker-abc-123")
 doAssert incoming.topic == "star:v1:collector:wireless"
 doAssert incoming.typ == target
 doAssert forwarded.topic == "worker-abc-123"
-doAssert forwarded.typ == target
+doAssert forwarded.typ == newDocument
 doAssert forwarded.source == incoming.source
 doAssert forwarded.id == incoming.id
 doAssert forwarded.time == incoming.time

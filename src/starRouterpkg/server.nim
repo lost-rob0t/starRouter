@@ -14,6 +14,7 @@ import wire
 type
   Actor = ref object
     id: string
+    transport: string
     liveness: int
     lastHeart: int64
   ActorManager = ref object
@@ -46,22 +47,23 @@ type
 func dispatchAction*(event: EventType): DispatchAction =
   ## SC01 is a single-action command; unhandled commands must never be ACKed.
   case event
-  of newDocument, updateDocument, deleteDocument: relayDocument
+  of newDocument, updateDocument: relayDocument
   of EventType.register: registerClient
   of heartbeat: heartbeatClient
   of target: routeTarget
   else: rejectEvent
 
 proc routedTarget*(msg: Message[string], recipient: string): Message[string] =
-  ## Do not mutate the original reference or disguise a Target as a Document.
+  ## SC01 legacy Target delivery is projected as newDocument to its recipient.
+  ## Copy the envelope so routing never mutates the caller's message.
   Message[string](source: msg.source, id: msg.id, time: msg.time,
-      typ: msg.typ, topic: recipient, data: msg.data)
+      typ: newDocument, topic: recipient, data: msg.data)
 
 proc `==`(x, y: Actor): bool = result = x.id == y.id
 
 proc newActor*(router: StarRouter, id: string): Actor =
   result = Actor(id: id)
-  result.liveness = 5
+  result.liveness = router.maxLives
   # Assume it is fine for now, wait until next beat time
   result.lastHeart = unix() + router.timeout
 
@@ -99,6 +101,11 @@ proc nextActor(manager: ActorManager): Actor =
 proc nextActor(router: StarRouter, actorName: string): Actor =
   result = router.actors[actorName].nextActor()
 
+
+proc ownsActor(router: StarRouter, id, transport: string): bool =
+  for manager in router.actors.values:
+    if manager.actors.hasKey(id):
+      return manager[id].transport == transport
 
 proc bumpActor(router: StarRouter, msg: Message[string]) =
   let actorName = msg.topic
@@ -167,17 +174,23 @@ proc multicast*[T](router: StarRouter, message: T) =
 
 
 
-proc receiveClientMessage*(router: StarRouter, source: string): Future[Message[
-    string]] {.async.} =
-  var msg = Message[string]()
-  msg.source = await router.apiConn.receiveAsync()
-  msg.id = await router.apiConn.receiveAsync()
-  msg.time = (await router.apiConn.receiveAsync()).parseInt()
-  let typ = await router.apiConn.receiveAsync()
-  msg.typ = EventType(typ.parseInt())
-  msg.topic = await router.apiConn.receiveAsync()
-  msg.data = await router.apiConn.receiveAsync()
-  return msg
+proc receiveMultipart*(connection: ZConnection): Future[seq[string]] {.async.} =
+  ## Drain the entire atomic ZeroMQ message before parsing or rejecting it.
+  result.add(await connection.receiveAsync())
+  while getsockopt[cint](connection, RCVMORE) != 0:
+    result.add(await connection.receiveAsync())
+
+proc decodeClientMessage(frames: seq[string]): Message[string] =
+  if frames.len != 9 or frames[1] != "" or frames[2] != "SC01":
+    raise newException(ValueError, "Invalid SC01 frame envelope")
+  let event = frames[6].parseInt()
+  if event < ord(low(EventType)) or event > ord(high(EventType)):
+    raise newException(ValueError, "Invalid SC01 event")
+  if frames[3].len == 0 or frames[4].len == 0 or frames[7].len == 0:
+    raise newException(ValueError, "Missing SC01 identity, message ID or topic")
+  result = Message[string](source: frames[3], id: frames[4],
+      time: frames[5].parseBiggestInt(), typ: EventType(event),
+      topic: frames[7], data: frames[8])
 
 func forwardedFrames*(message: Message[string]): array[6, string] =
   ## Preserve the originating timestamp and opaque payload across the PUB handoff.
@@ -203,8 +216,14 @@ proc sendHeartbeat(router: StarRouter) =
   echo msg
 
 # TODO send error msg incase of broker error
-proc registerActor(router: StarRouter, msg: Message[string]) =
+proc registerActor(router: StarRouter, msg: Message[string], transport: string) =
+  # Connection binding prevents another DEALER claiming an active actor ID.
+  # ROUTER identities are not authenticated principals.
+  for manager in router.actors.values:
+    if manager.actors.hasKey(msg.source) and manager[msg.source].transport != transport:
+      raise newException(ValueError, "Actor belongs to another transport")
   var actor = router.newActor(msg.source)
+  actor.transport = transport
   if not router.actors.haskey(msg.topic):
     router.actors[msg.topic] = ActorManager()
   router.actors[msg.topic][msg.source] = actor
@@ -217,37 +236,29 @@ proc handletarget(router: StarRouter, msg: Message[string]) =
   router.publishClientMessage(routedTarget(msg, actor.id))
 
 proc handleMessage*(router: StarRouter) {.async.} =
-  let source = await router.apiConn.receiveAsync()
-  let empty = await router.apiConn.receiveAsync()
-  doAssert empty.len == 0
-  let header = await router.apiConn.receiveAsync()
-  case header:
-    of "SC01":
-      let msg = await router.receiveClientMessage(source)
-      when defined(debug):
-        echo msg
-      try:
-        validatePayload(msg.data, msg.typ)
-        case dispatchAction(msg.typ):
-          of relayDocument:
-            router.bumpActor(msg.source)
-            router.publishClientMessage(msg)
-          of registerClient:
-            router.registerActor(msg)
-          of heartbeatClient:
-            router.bumpActor(msg)
-          of routeTarget:
-            router.handleTarget(msg)
-          of rejectEvent:
-            router.sendNack(source)
-            return
-        router.sendOK(source)
-      except KeyError, ValueError:
-        # Invalid canonical documents and missing recipients are never accepted.
-        router.sendNack(source)
-    of "SR01":
-      discard
-      # Broker-to-broker transport remains a separate protocol feature.
+  let frames = await receiveMultipart(router.apiConn)
+  let source = frames[0]
+  try:
+    let msg = decodeClientMessage(frames)
+    validatePayload(msg.data, msg.typ)
+    let action = dispatchAction(msg.typ)
+    if action != registerClient and not router.ownsActor(msg.source, source):
+      raise newException(ValueError, "Unregistered actor or mismatched transport")
+    case action:
+    of relayDocument:
+      router.bumpActor(msg.source)
+      router.publishClientMessage(msg)
+    of registerClient:
+      router.registerActor(msg, source)
+    of heartbeatClient:
+      router.bumpActor(msg)
+    of routeTarget:
+      router.handleTarget(msg)
+    of rejectEvent:
+      raise newException(ValueError, "Unsupported SC01 event")
+    router.sendOK(source)
+  except KeyError, ValueError:
+    router.sendNack(source)
 
 proc run*(router: StarRouter) {.async.} =
   router.connect()

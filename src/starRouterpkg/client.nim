@@ -132,24 +132,22 @@ proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
 
 proc fetch*(client: Client): Future[Message[string]] {.async.} =
   ## Fetch data from subscriptions
-  var msg = Message[string]()
-  try:
-    msg.topic = await client.subSocket.receiveAsync()
-    msg.source = await client.subSocket.receiveAsync()
-    msg.id = await client.subSocket.receiveAsync()
-    let time = (await client.subSocket.receiveAsync()).parseInt()
-    if time.isOld(client.timeout): raise newException(SlowMessageDefect,
-        fmt"MSG age older then the current timeout of {client.timeout}. DO NOT EXCEPT THIS.")
-    msg.time = time
-    let etyp = (await client.subSocket.receiveAsync()).parseInt()
-    msg.typ = EventType(etyp)
-    # TODO protobuffs man
-    msg.data = await client.subSocket.receiveAsync()
-    validatePayload(msg.data, msg.typ)
-    result = msg
-  except KeyError:
-    result = msg
-    discard # wrong msg typ
+  # Receive every frame before decoding, so rejected input cannot desynchronize
+  # the next fetch. Event time is provenance, not a receive timeout.
+  var frames: seq[string]
+  frames.add(await client.subSocket.receiveAsync())
+  while getsockopt[cint](client.subSocket, RCVMORE) != 0:
+    frames.add(await client.subSocket.receiveAsync())
+  if frames.len != 6:
+    raise newException(ValueError, "Invalid publication frame count")
+  let event = frames[4].parseInt()
+  if event < ord(low(EventType)) or event > ord(high(EventType)):
+    raise newException(ValueError, "Invalid publication event")
+  let msg = Message[string](topic: frames[0], source: frames[1],
+      id: frames[2], time: frames[3].parseBiggestInt(),
+      typ: EventType(event), data: frames[5])
+  validatePayload(msg.data, msg.typ)
+  return msg
 
 proc fetch*[T](typ: typedesc[T] = T, client: Client): Future[Message[T]] {.async.} =
   ## Fetch messages from subscriptions, but return T

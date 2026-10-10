@@ -74,3 +74,18 @@ docker run --init --rm -p 6000:6000 -p 6001:6001 starrouter
 
 Pull-request CI also exercises the actual container over all 60 generated
 StarIntel document types, including rejection without publication.
+
+** SC01 compatibility boundaries
+SC01 Target commands (event 8) deliver a validated target document as event 3
+on the selected actor ID topic. This is the existing legacy projection, not
+a new Target operation. Delete/get remain unsupported and receive NACK.
+Document timestamps are originating event times, including replayed history;
+they are preserved and are not interpreted as receive deadlines.
+
+Actor IDs are bound at registration to the observed ROUTER transport identity.
+Other connections cannot claim an active actor ID to register, publish, send
+heartbeats or route targets. This is connection binding, not authentication:
+transport IDs are client-selected, and SC01 still belongs on a trusted network.
+Application principal/tenant authority remains outside this legacy protocol.
+Both broker and client drain a complete multipart message before decoding,
+so malformed envelopes cannot corrupt the next message.
