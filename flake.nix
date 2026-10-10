@@ -32,6 +32,7 @@
           python3 scripts/check-runtime-release.py ${starintel-doc}
           export LD_LIBRARY_PATH=${libraries}
           nim c -r ${paths} --nimcache:"$TMPDIR/nimcache-tests" --out:test-wire tests/test_wire.nim
+          nim c -r ${paths} --nimcache:"$TMPDIR/nimcache-config-tests" --out:test-router-config tests/test_router_config.nim
           nim c ${paths} --nimcache:"$TMPDIR/nimcache-client" --out:test-client tests/client_wire.nim
           python3 tests/broker_wire.py "$PWD/starRouter" "$PWD/test-client"
           nim c -d:useStarIntel -d:useJsony ${paths} --nimcache:"$TMPDIR/nimcache-client-jsony" --out:test-client-jsony tests/client_wire.nim

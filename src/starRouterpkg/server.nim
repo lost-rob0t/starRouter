@@ -119,6 +119,10 @@ proc removeDeadActors(router: StarRouter) =
 proc newStarRouter*(pubListen: string = "tcp://127.0.0.1:6000",
     apiListen: string = "tcp://*:6001", timeout: int = 10,
     maxLives: int = 5): StarRouter =
+  if timeout <= 0:
+    raise newException(ValueError, "router timeout must be positive")
+  if maxLives <= 0:
+    raise newException(ValueError, "router maxLives must be positive")
   result = StarRouter(pubListen: pubListen, apiListen: apiListen,
       timeout: timeout, id: fmt"router-{ulid()}", maxLives: maxLives)
 
