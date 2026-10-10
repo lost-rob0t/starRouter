@@ -39,3 +39,14 @@ suite "StarLang document wire boundary":
     malformed.delete("_id")
     expect ValueError:
       validatePayload($malformed, newDocument)
+
+
+  test "SC01 ACK/NACK tokens fail closed on malformed reply frames":
+    check "1".isACK
+    check "2".isNACK
+    check not "2".isACK
+    check not "1".isNACK
+    for invalid in ["", "01", "+1", " 1", "1 ", "garbage", "9999999999999999999999999999"]:
+      check not invalid.isACK
+    for invalid in ["", "02", "+2", " 2", "2 ", "garbage", "9999999999999999999999999999"]:
+      check not invalid.isNACK

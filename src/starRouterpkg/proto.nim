@@ -65,12 +65,12 @@ proc parseMessage*[T](typ: typedesc[T] = T, message: string): T =
 
 
 
-proc isACK*(s: string): bool = s.parseInt == EventType.ack.ord
+proc isACK*(s: string): bool = s == $EventType.ack.ord
 
 proc isACK*(x: int): bool = x == EventType.ack.ord
 
 
-proc isNACK*(s: string): bool = s.parseInt == EventType.nack.ord
+proc isNACK*(s: string): bool = s == $EventType.nack.ord
 
 proc isNACK*(x: int): bool = x == EventType.nack.ord
 
