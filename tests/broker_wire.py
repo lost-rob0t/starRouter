@@ -194,6 +194,31 @@ try:
         assert not subscriber.poll(100), "target was dispatched twice"
     finally:
         named.close(linger=0)
+    # Test production Target dispatch with out-of-order actor registration.
+    # The selected actor must not depend on Table hash iteration or first-use offset.
+    rr_service = b"ss12-round-robin-service"
+    rr_ids = (b"ss12-rr-c", b"ss12-rr-b", b"ss12-rr-a")
+    rr_clients = []
+    try:
+        for identity in rr_ids:
+            peer = context.socket(zmq.DEALER)
+            peer.setsockopt(zmq.IDENTITY, identity)
+            peer.setsockopt(zmq.RCVTIMEO, 5000)
+            peer.setsockopt(zmq.SNDTIMEO, 5000)
+            peer.connect(api_address)
+            rr_clients.append(peer)
+            subscriber.setsockopt(zmq.SUBSCRIBE, identity)
+            assert send(7, "", rr_service, peer=peer, actor_id=identity) == [b"1"]
+        time.sleep(0.3)
+        for expected in (b"ss12-rr-a", b"ss12-rr-b", b"ss12-rr-c") * 2:
+            assert send(8, target_wire, rr_service) == [b"1"]
+            routed = subscriber.recv_multipart()
+            assert routed[0] == expected, (expected, routed)
+            assert routed[4] == b"3" and routed[-1].decode() == target_wire
+            assert not subscriber.poll(30), "duplicate round-robin target"
+    finally:
+        for peer in rr_clients:
+            peer.close(linger=0)
     # Claimed source is bound to its registration's ROUTER transport identity.
     attacker = context.socket(zmq.DEALER)
     attacker.setsockopt(zmq.IDENTITY, b"attacker")

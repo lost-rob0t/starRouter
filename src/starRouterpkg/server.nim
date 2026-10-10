@@ -20,9 +20,8 @@ type
   ActorManager = ref object
     # actor.id: Actor
     actors: Table[string, Actor]
-    # Last used index of actors.keys[lastUsed += 1]
-    # Simple round robin, although maybe a weighted solution might be better
-    lastUsed: int
+    # Record the last routed identity, not a hash-table iteration index.
+    lastRoutedId: string
   StarRouter* = ref object
     #TODO this should be whatever zmq type there is for a client
     ## Address: Connection string to listen on. This should include the port
@@ -91,13 +90,27 @@ proc values(manager: ActorManager): seq[Actor] =
 proc len(manager: ActorManager): int =
   result = manager.actors.len
 
+proc nextActorId*(ids: openArray[string], lastRoutedId: string): string =
+  ## Stable round-robin successor independent of Table iteration order.
+  ## A removed predecessor or newly registered actor cannot corrupt the cursor.
+  if ids.len == 0:
+    raise newException(ValueError, "No registered actor candidates")
+  var firstId = ids[0]
+  var nextId = ""
+  for id in ids:
+    if id < firstId:
+      firstId = id
+    if id > lastRoutedId and (nextId.len == 0 or id < nextId):
+      nextId = id
+  result = if nextId.len > 0: nextId else: firstId
+
 proc nextActor(manager: ActorManager): Actor =
-  var nextValue = manager.lastUsed + 1
-  let vals = manager.values()
-  if nextValue > vals.high:
-    nextValue = 0
-  result = vals[nextValue]
-  manager.lastUsed = nextValue
+  var ids: seq[string] = @[]
+  for id in manager.actors.keys:
+    ids.add id
+  let selected = nextActorId(ids, manager.lastRoutedId)
+  manager.lastRoutedId = selected
+  result = manager.actors[selected]
 proc nextActor(router: StarRouter, actorName: string): Actor =
   result = router.actors[actorName].nextActor()
 
