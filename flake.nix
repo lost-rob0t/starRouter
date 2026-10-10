@@ -30,6 +30,7 @@
         checkPhase = ''
           python3 scripts/sync-starintel-schema.py --offline
           python3 scripts/check-runtime-release.py ${starintel-doc}
+          python3 -O tests/test_broker_harness.py
           export LD_LIBRARY_PATH=${libraries}
           nim c -r ${paths} --nimcache:"$TMPDIR/nimcache-tests" --out:test-wire tests/test_wire.nim
           nim c ${paths} --nimcache:"$TMPDIR/nimcache-client" --out:test-client tests/client_wire.nim

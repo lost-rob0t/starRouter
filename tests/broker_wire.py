@@ -14,14 +14,20 @@ manifest = json.loads((root / "schemas/starintel-0.10.1/generated/portable-manif
 research_fixtures = json.loads((root / "schemas/starintel-0.10.1/research-fixtures.json").read_text())
 raw_key_contract = json.loads((root / "fixtures/raw-json-unique-keys.json").read_text())
 
+
+def must(condition: bool, context: object = "broker wire invariant failed") -> None:
+    """Fail closed even when Python runs with -O / PYTHONOPTIMIZE."""
+    if not condition:
+        raise AssertionError(context)
+
 minimal_operation = next(
     fixture["document"]
     for fixture in research_fixtures
     if fixture["name"] == "minimal-operation" and fixture["valid"]
 )
-assert raw_key_contract["contract"] == "starintel.raw-json-unique-keys/1"
-assert sum(case["valid"] for case in raw_key_contract["cases"]) == 9
-assert sum(not case["valid"] for case in raw_key_contract["cases"]) == 18
+must(raw_key_contract["contract"] == "starintel.raw-json-unique-keys/1")
+must(sum(case["valid"] for case in raw_key_contract["cases"]) == 9)
+must(sum(not case["valid"] for case in raw_key_contract["cases"]) == 18)
 
 def sample(node):
     if "$ref" in node:
@@ -68,7 +74,7 @@ def send(event, payload, topic=b"documents"):
     return api.recv_multipart()
 
 try:
-    assert send(7, "", b"test") == [b"1"]
+    must(send(7, "", b"test") == [b"1"])
     # Allow the ZeroMQ subscription handshake to finish.
     time.sleep(0.3)
 
@@ -81,9 +87,9 @@ try:
         entry for entry in document_entries
         if entry.get("persistence", "persistent") != "persistent"
     ]
-    assert len(document_entries) == 123
-    assert len(persistent_entries) == 90
-    assert len(transient_entries) == 33
+    must(len(document_entries) == 123)
+    must(len(persistent_entries) == 90)
+    must(len(transient_entries) == 33)
 
     count = 0
     target_wire = None
@@ -98,61 +104,61 @@ try:
                         extensions={"opaque": {"flag": False, "nil": None, "items": []}})
         wire = json.dumps(document)
         if dtype == "target": target_wire = wire
-        assert send(3, wire) == [b"1"], dtype
+        must(send(3, wire) == [b"1"], dtype)
         frames = subscriber.recv_multipart()
-        assert len(frames) == 6 and frames[-1].decode() == wire, (dtype, frames)
-        assert not subscriber.poll(30), "duplicate publication"
+        must(len(frames) == 6 and frames[-1].decode() == wire, (dtype, frames))
+        must(not subscriber.poll(30), "duplicate publication")
         count += 1
-    assert count == 90
+    must(count == 90)
 
     for case in raw_key_contract["cases"]:
         raw_wire = case["wire"]
         if case["valid"]:
-            assert send(3, raw_wire) == [b"1"], case["name"]
+            must(send(3, raw_wire) == [b"1"], case["name"])
             frames = subscriber.recv_multipart()
-            assert len(frames) == 6 and frames[-1].decode() == raw_wire, (case["name"], frames)
-            assert not subscriber.poll(30), "duplicate raw fixture publication"
+            must(len(frames) == 6 and frames[-1].decode() == raw_wire, (case["name"], frames))
+            must(not subscriber.poll(30), "duplicate raw fixture publication")
         else:
-            assert send(3, raw_wire) == [b"2"], case["name"]
-            assert not subscriber.poll(100), "invalid raw fixture published"
+            must(send(3, raw_wire) == [b"2"], case["name"])
+            must(not subscriber.poll(100), "invalid raw fixture published")
 
     invalid = [{"_id": "old", "dtype": "person", "schema_version": "0.10.1", "data": {}},
                {**document, "schemaVersion": "0.10.2"}, {**document, "confidence": "1.1"}, []]
     for value in invalid:
-        assert send(3, json.dumps(value)) == [b"2"]
-        assert not subscriber.poll(100), "invalid document published"
+        must(send(3, json.dumps(value)) == [b"2"])
+        must(not subscriber.poll(100), "invalid document published")
     # A rejection must leave multipart state usable for the next valid message.
-    assert send(6, wire) == [b"1"]
-    assert subscriber.recv_multipart()[-1].decode() == wire
-    assert not subscriber.poll(100)
+    must(send(6, wire) == [b"1"])
+    must(subscriber.recv_multipart()[-1].decode() == wire)
+    must(not subscriber.poll(100))
     if len(sys.argv) > 2:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "document.json"
             path.write_text(wire)
             result = subprocess.run([sys.argv[2], pub_address, api_address, str(path)],
                                     capture_output=True, text=True, timeout=15)
-            assert result.returncode == 0, result.stderr
-            assert "native client emit PASS" in result.stdout
-            assert "native JsonNode exact-number receive/re-emit PASS (18 messages)" in result.stdout
+            must(result.returncode == 0, result.stderr)
+            must("native client emit PASS" in result.stdout)
+            must("native JsonNode exact-number receive/re-emit PASS (18 messages)" in result.stdout)
             print(result.stdout.strip())
-            assert json.loads(subscriber.recv_multipart()[-1]) == document
+            must(json.loads(subscriber.recv_multipart()[-1]) == document)
             person = json.loads(subscriber.recv_multipart()[-1])
-            assert person["id"] == "native:person" and person["schemaVersion"] == "0.10.1" and person["deleted"] is False
-            assert not subscriber.poll(100)
+            must(person["id"] == "native:person" and person["schemaVersion"] == "0.10.1" and person["deleted"] is False)
+            must(not subscriber.poll(100))
     subscriber.setsockopt(zmq.SUBSCRIBE, b"test-actor")
     time.sleep(0.3)
-    assert send(8, target_wire, b"test") == [b"1"]
+    must(send(8, target_wire, b"test") == [b"1"])
     frames = subscriber.recv_multipart()
-    assert frames[0] == b"test-actor" and frames[4] == b"3" and frames[-1].decode() == target_wire
+    must(frames[0] == b"test-actor" and frames[4] == b"3" and frames[-1].decode() == target_wire)
     legacy = {"_id":"starintel:person:test","dataset":"test","dtype":"person","schema_version":"0.9.0",
               "version":1,"date_added":"2026-10-04T00:00:00Z","date_updated":"2026-10-04T00:00:00Z",
               "sources":[],"evidence":[],"data":{"fname":"Ada"},"extensions":{"opaque":{"flag":False,"nil":None}}}
     legacy_wire = json.dumps(legacy)
-    assert send(3, legacy_wire) == [b"1"]
-    assert subscriber.recv_multipart()[-1].decode() == legacy_wire
+    must(send(3, legacy_wire) == [b"1"])
+    must(subscriber.recv_multipart()[-1].decode() == legacy_wire)
     del legacy["_id"]
-    assert send(3, json.dumps(legacy)) == [b"2"]
-    assert not subscriber.poll(100)
+    must(send(3, json.dumps(legacy)) == [b"2"])
+    must(not subscriber.poll(100))
     print("real ZeroMQ broker: 90 persistent dtypes, 33 transient definitions excluded, 27 raw-key cases, exact payloads, single publication, NACK/no publication, recovery PASS")
 finally:
     api.close(linger=0)
