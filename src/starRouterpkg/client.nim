@@ -1,6 +1,8 @@
 import zmq
 import asyncdispatch
 import tables
+import std/[json, jsonutils]
+import starintel_doc/canonical as canonical
 import sequtils
 import proto
 import deques
@@ -8,9 +10,8 @@ import ulid
 import times
 import strformat
 import utils
-import payload
-import std/json
 import strutils
+import wire
 when defined(useStarIntel):
   import starintel_doc except Message
 
@@ -84,16 +85,14 @@ proc newMessage*[T](client: Client, data: T, eventType: EventType, source,
       topic: topic, time: time, typ: eventType)
 
 
-## Every SC01 control command carries an originating timestamp and message ID.
-## Older zero-timestamp register/heartbeat frames became invalid on replay bridges.
+## Control commands retain the original client timestamp and identity.
 proc controlMessage*(client: Client, event: EventType): Message[string] =
   if event notin {EventType.register, EventType.heartbeat}:
     raise newException(ValueError, "Expected register or heartbeat control event")
   result = Message[string](source: client.id, id: ulid(), time: unix(),
       typ: event, topic: client.actorName, data: "")
 
-## SC01 replies are transport acceptance, not durable storage receipts.
-## NACK or unknown replies must never look like successful A2A delivery.
+## Transport ACK is not durable persistence; rejection must propagate to callers.
 proc requireAck*(reply: string) =
   case reply
   of $EventType.ack.ord:
@@ -103,10 +102,13 @@ proc requireAck*(reply: string) =
   else:
     raise newException(IOError, "Unexpected StarRouter acknowledgement")
 
+# TODO Fix this, make it reliable
 proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
   ## Emit a `Message[T]` to the message broker.
   ## By default it uses std json `%*` to serialize to json string, but if you compile with `-d:useJsony`, you can use `toJson()`
-  discard tries # Retain the public signature; do not blindly replay commands.
+  discard tries # Never blindly replay an ambiguous message to the broker.
+  # Validate the complete payload before sending any multipart frame.
+  let payload = encodePayload(data.data, data.typ)
   # nim bindings sends the identity for us?
   await c.apiSocket.sendAsync("", SNDMORE)
   await c.apiSocket.sendAsync("SC01", SNDMORE)
@@ -115,13 +117,18 @@ proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
   await c.apiSocket.sendAsync($data.time, SNDMORE)
   await c.apiSocket.sendAsync($data.typ.ord, SNDMORE)
   await c.apiSocket.sendAsync(data.topic, SNDMORE)
-  when data.data is string or data.data is JsonNode:
-    await c.apiSocket.sendAsync(encodePayload(data.data))
-  elif defined(useJsony):
-    await c.apiSocket.sendAsync(data.data.toJson())
-  else:
-    await c.apiSocket.sendAsync(encodePayload(data.data))
+  await c.apiSocket.sendAsync(payload)
   requireAck(await c.apiSocket.receiveAsync())
+  #while not state and i < tries:
+  #  client.apiSocket.send($eventType.ord, SNDMORE)
+  #  client.apiSocket.send($data)
+  #  let resp = await client.apiSocket.receiveAsync()
+  #  if resp == "ACK":
+  #    state = true
+  #    break
+  #  inc(i)
+  #  if not state:
+  #    raise newException(IOError, "Server Failed to reply")
 
 proc fetch*(client: Client): Future[Message[string]] {.async.} =
   ## Fetch data from subscriptions
@@ -138,6 +145,7 @@ proc fetch*(client: Client): Future[Message[string]] {.async.} =
     msg.typ = EventType(etyp)
     # TODO protobuffs man
     msg.data = await client.subSocket.receiveAsync()
+    validatePayload(msg.data, msg.typ)
     result = msg
   except KeyError:
     result = msg
@@ -145,13 +153,25 @@ proc fetch*(client: Client): Future[Message[string]] {.async.} =
 
 proc fetch*[T](typ: typedesc[T] = T, client: Client): Future[Message[T]] {.async.} =
   ## Fetch messages from subscriptions, but return T
-  ## By default it uses std json `.to(T)` to parse to your type, but if you compile with `-d:useJsony`, you can use `fromJson(T)`
+  ## Document bindings use jsonutils after strict wire validation.
+  ## -d:useJsony selects jsony for non-document payload decoding.
   var msg = await client.fetch()
   result = Message[typ](id: msg.id, source: msg.source, topic: msg.topic, time: msg.time, typ: msg.typ)
-  when defined(useJsony):
-    result.data = msg.data.fromJson()
+  when T is JsonNode:
+    # Retain the validated document's exact numeric tokens in the public JSON API.
+    if msg.typ in {newDocument, updateDocument, EventType.target}:
+      result.data = canonical.parseWireJson(msg.data)
+    else:
+      result.data = msg.data.parseJson()
+  elif defined(useJsony):
+    # Generated document bindings use Option fields; decode them through the
+    # same jsonutils codec as the canonical runtime after strict validation.
+    if msg.typ in {newDocument, updateDocument, EventType.target}:
+      result.data = msg.data.parseJson().jsonTo(typ, Joptions(allowMissingKeys: true))
+    else:
+      result.data = msg.data.fromJson(typ)
   else:
-    result.data = msg.data.parseJson().to(typ)
+    result.data = msg.data.parseJson().jsonTo(typ, Joptions(allowMissingKeys: true))
 
 
 
@@ -207,8 +227,7 @@ proc sendHeartbeat*(client: Client) {.async.} =
   if unix() > client.heartExpires:
     when defined(debug):
       echo "It is love time!"
-    let msg = client.controlMessage(EventType.heartBeat)
-    await client.emit(msg)
+    await client.emit(client.controlMessage(EventType.heartBeat))
     client.heartExpires = unix() + client.timeout
 
 

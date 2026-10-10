@@ -1,0 +1,289 @@
+{
+  "scope": "57 base Auto-Dig dtypes plus separately installed operation; compared with StarLang #197 and frozen JS legacy schema. Survey excludes corpus data and does not assert discontinued workflows.",
+  "exactAliases": [],
+  "undefinedLabels": [
+    "dossier (outside the28; no executable definition found)"
+  ],
+  "contracts": [
+    {
+      "dtype": "alert",
+      "classification": "active-producer-backed",
+      "evidence": "integrations/node-red-starintel/lib/starintel-docs.js:43 alertDocument (currently explicit carrier)",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "analysis",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/auto_dig_quasar_host.js:75 dtype analysis",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "asset",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/seed_flock_dunwoody_mjcca_camera_access.py:391 asset factory",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "campaign-finance",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/import_dnc_fec_individual_contributions.py:567 campaign-finance factory",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "claim",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/generate-flock-cpd-next-level.py:590 claim factory",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "concept",
+      "classification": "active-producer-backed",
+      "evidence": "quasar/frontend/src/components/GraphPage.jsx:86 Concept creation picker",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "contract",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/generate-flock-cpd-next-level.py:313 contract factory",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "dataset-manifest",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/dark_academia_memberships_core.py:686 manifest factory",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "education",
+      "classification": "historical-only-observed",
+      "evidence": "Executable TYPE_FIELDS/data_schema and frozen JS legacy schema; only readers/compatibility or target selection found in surveyed current code.",
+      "classificationLimit": "No active specialized writer found is not proof of retirement; generic legacy authoring was supported.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "employment",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/import_dnc_fec_individual_contributions.py:498 employment factory",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "entity",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/import_aleph_public.py:88-120 dynamic mapped entity producer",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "event",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/enumerate_palantir_lobbying.py:427 event producer",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "evidence-record",
+      "classification": "historical-only-observed",
+      "evidence": "Executable TYPE_FIELDS/data_schema and frozen JS legacy schema; only readers/compatibility or target selection found in surveyed current code.",
+      "classificationLimit": "No active specialized writer found is not proof of retirement; generic legacy authoring was supported.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "financial-observation",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/import_dnc_fec_committee_transactions.py:454 producer",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "grant",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/generate-flock-cpd-next-level.py grant factory",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "legal-case",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/generate_dnc_key_people_wef_accountability.py:248 requested research output dtype; generic document factory",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "lobbying-filing",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/generate-flock-national-seed.py:236 requested output dtype; generic document factory",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "meeting",
+      "classification": "historical-only-observed",
+      "evidence": "Executable TYPE_FIELDS/data_schema and frozen JS legacy schema; only readers/compatibility or target selection found in surveyed current code.",
+      "classificationLimit": "No active specialized writer found is not proof of retirement; generic legacy authoring was supported.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "observation",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/seed_flock_dunwoody_mjcca_camera_access.py:422 observation factory",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "ownership",
+      "classification": "historical-only-observed",
+      "evidence": "Executable TYPE_FIELDS/data_schema and frozen JS legacy schema; only readers/compatibility or target selection found in surveyed current code.",
+      "classificationLimit": "No active specialized writer found is not proof of retirement; generic legacy authoring was supported.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "policy",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/generate-flock-cpd-next-level.py:425 policy factory",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "procurement",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/generate-flock-cpd-next-level.py:278 procurement factory",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "product",
+      "classification": "historical-only-observed",
+      "evidence": "Executable TYPE_FIELDS/data_schema and frozen JS legacy schema; only readers/compatibility or target selection found in surveyed current code.",
+      "classificationLimit": "No active specialized writer found is not proof of retirement; generic legacy authoring was supported.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "research-node",
+      "classification": "active-producer-backed",
+      "evidence": "quasar/frontend/src/lib/research-nodes.js createResearchNode and research-node-runner.js",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "research-pass",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/dark_academia_memberships_core.py:773 research-pass factory",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "social-media-post",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/seed_flock_dunwoody_mjcca_camera_access.py:405 social-media-post factory",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "source",
+      "classification": "active-producer-backed",
+      "evidence": "starintel-gpt-auto-dig/scripts/fetch_larry_fink_fec.py:257 source producer",
+      "classificationLimit": "Requested-output dtypes legal-case/lobbying-filing are pipeline-supported via generic authoring, not dedicated importers.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    },
+    {
+      "dtype": "task",
+      "classification": "historical-only-observed",
+      "evidence": "Executable TYPE_FIELDS/data_schema and frozen JS legacy schema; only readers/compatibility or target selection found in surveyed current code.",
+      "classificationLimit": "No active specialized writer found is not proof of retirement; generic legacy authoring was supported.",
+      "definition": "Pinned legacy-workflow-oracle.json entry plus source commit/hash",
+      "resolution": "Distinct persistent canonical document; never auto-aliased or dropped",
+      "structuralCoverage": "Full source field set, requireds, bounds, enum, structured nested fields, nullable timestamps, opaque keys; dual-oracle fixture and reversible mapping",
+      "semanticCoverage": "Existing producer/runner behavior remains consumer responsibility; schema does not invent evidence or state transitions"
+    }
+  ]
+}

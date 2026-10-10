@@ -35,15 +35,19 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v6
 
-      # Install the cosign tool except on PR
+      # Test Cosign installation and trust-root compatibility on every event
       # https://github.com/sigstore/cosign-installer
       - name: Install cosign
-        if: github.event_name != 'pull_request'
-        uses: sigstore/cosign-installer@6e04d228eb30da1757ee4e1dd75a0ec73a653e06 #v3.1.1
+        uses: sigstore/cosign-installer@6f9f17788090df1f26f669e9d70d6ae9567deba6 # v4.1.2
         with:
-          cosign-release: 'v2.1.1'
+          cosign-release: 'v2.6.5'
+
+      - name: Check Cosign and trusted-root compatibility
+        run: |
+          cosign version
+          cosign initialize
 
       # Set up BuildKit Docker container builder to be able to build
       # multi-platform images and export cache
@@ -77,10 +81,24 @@ jobs:
         with:
           context: .
           push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.meta.outputs.tags }}
+          load: ${{ github.event_name == 'pull_request' }}
+          tags: ${{ github.event_name == 'pull_request' && 'starrouter:validation' || steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Exercise the actual container wire contract
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          python3 -m pip install pyzmq
+          launcher="$RUNNER_TEMP/starrouter-container"
+          cat > "$launcher" <<'SH'
+          #!/bin/sh
+          exec docker run --init --rm --network=host starrouter:validation "$@"
+          SH
+          chmod +x "$launcher"
+          python3 tests/broker_wire.py "$launcher"
 
       # Sign the resulting Docker image digest except on PRs.
       # This will only write to the public Rekor transparency log when the Docker
@@ -96,3 +114,16 @@ jobs:
         # This step uses the identity token to provision an ephemeral certificate
         # against the sigstore community Fulcio instance.
         run: echo "${TAGS}" | xargs -I {} cosign sign --yes {}@${DIGEST}
+
+      - name: Verify the published image signature
+        if: ${{ github.event_name != 'pull_request' }}
+        env:
+          TAGS: ${{ steps.meta.outputs.tags }}
+          DIGEST: ${{ steps.build-and-push.outputs.digest }}
+        run: |
+          while IFS= read -r tag; do
+            cosign verify \
+              --certificate-identity "${GITHUB_SERVER_URL}/${GITHUB_WORKFLOW_REF}" \
+              --certificate-oidc-issuer "https://token.actions.githubusercontent.com" \
+              "${tag}@${DIGEST}"
+          done <<< "$TAGS"

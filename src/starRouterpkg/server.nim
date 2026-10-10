@@ -8,6 +8,7 @@ import utils
 import strformat
 import ulid
 import json
+import wire
 
 
 type
@@ -184,6 +185,7 @@ func forwardedFrames*(message: Message[string]): array[6, string] =
       $message.typ.ord, message.data]
 
 proc publishClientMessage*(router: StarRouter, message: Message[string]) =
+  validatePayload(message.data, message.typ)
   let frames = forwardedFrames(message)
   for index, frame in frames:
     if index < frames.high:
@@ -225,6 +227,7 @@ proc handleMessage*(router: StarRouter) {.async.} =
       when defined(debug):
         echo msg
       try:
+        validatePayload(msg.data, msg.typ)
         case dispatchAction(msg.typ):
           of relayDocument:
             router.bumpActor(msg.source)
@@ -239,8 +242,8 @@ proc handleMessage*(router: StarRouter) {.async.} =
             router.sendNack(source)
             return
         router.sendOK(source)
-      except KeyError:
-        # Unknown actors and missing target recipients are not successful writes.
+      except KeyError, ValueError:
+        # Invalid canonical documents and missing recipients are never accepted.
         router.sendNack(source)
     of "SR01":
       discard

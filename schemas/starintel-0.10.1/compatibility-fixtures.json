@@ -1,0 +1,208 @@
+{
+  "fixtureVersion": 1,
+  "authority": {
+    "library": "org.starintel/core@1",
+    "version": "0.10.1"
+  },
+  "cases": [
+    {
+      "name": "canonicalPersonIsIdempotent",
+      "input": {
+        "id": "person-current",
+        "dataset": "fixture",
+        "dtype": "person",
+        "schemaVersion": "0.10.1",
+        "fname": "Ada",
+        "lname": "Lovelace"
+      },
+      "expected": {
+        "documents": [
+          {
+            "id": "person-current",
+            "dataset": "fixture",
+            "dtype": "person",
+            "schemaVersion": "0.10.1",
+            "fname": "Ada",
+            "lname": "Lovelace"
+          }
+        ],
+        "quarantine": []
+      }
+    },
+    {
+      "name": "legacyPersonIdentifiersBecomeDocuments",
+      "input": {
+        "_id": "person-old",
+        "dataset": "fixture",
+        "dtype": "person",
+        "schema_version": "0.9.0",
+        "data": {
+          "fname": "Ada",
+          "external_ids": {
+            "passport": "A123"
+          }
+        }
+      },
+      "expected": {
+        "documents": [
+          {
+            "id": "person-old",
+            "dataset": "fixture",
+            "dtype": "person",
+            "schemaVersion": "0.10.1",
+            "fname": "Ada",
+            "externalIds": {
+              "passport": "A123"
+            },
+            "identifiers": [
+              {
+                "schema": "org.starintel/core@1/person-identifier",
+                "id": "starintel:person-identifier:3fda13f0fc0d030dda65e88b391eb01d662f438a9a3bbbb4b198e2de2ef49c2a"
+              }
+            ]
+          },
+          {
+            "id": "starintel:person-identifier:3fda13f0fc0d030dda65e88b391eb01d662f438a9a3bbbb4b198e2de2ef49c2a",
+            "dataset": "fixture",
+            "dtype": "person-identifier",
+            "schemaVersion": "0.10.1",
+            "person": {
+              "schema": "org.starintel/core@1/person",
+              "id": "person-old"
+            },
+            "scheme": "passport",
+            "value": "A123",
+            "normalizedValue": "a123"
+          }
+        ],
+        "quarantine": []
+      }
+    },
+    {
+      "name": "legacyGeoBecomesGeoPoint",
+      "input": {
+        "_id": "geo-old",
+        "dataset": "fixture",
+        "dtype": "geo",
+        "schema_version": "0.9.0",
+        "data": {
+          "lat": "40.7",
+          "long": "-74.0",
+          "coordinate_system": "EPSG:4326"
+        }
+      },
+      "expected": {
+        "documents": [
+          {
+            "id": "geo-old",
+            "dataset": "fixture",
+            "dtype": "geo-point",
+            "schemaVersion": "0.10.1",
+            "geometryType": "point",
+            "coordinateReferenceSystem": "EPSG:4326",
+            "latitude": "40.7",
+            "longitude": "-74.0"
+          }
+        ],
+        "quarantine": []
+      }
+    },
+    {
+      "name": "legacyAudioEmitsTranscript",
+      "input": {
+        "_id": "audio-old",
+        "dataset": "fixture",
+        "dtype": "media",
+        "schema_version": "0.9.0",
+        "data": {
+          "bytes_hash": "abc123",
+          "bytes_hash_algorithm": "sha256",
+          "sniffed_media_type": "audio/wav",
+          "language": "en",
+          "transcript_text": "Hello world"
+        }
+      },
+      "expected": {
+        "documents": [
+          {
+            "id": "audio-old",
+            "dataset": "fixture",
+            "dtype": "audio",
+            "schemaVersion": "0.10.1",
+            "bytesHash": "abc123",
+            "bytesHashAlgorithm": "sha256",
+            "sniffedMediaType": "audio/wav",
+            "language": "en",
+            "transcripts": [
+              {
+                "schema": "org.starintel/core@1/transcript",
+                "id": "starintel:transcript:7eea9559b680aeb35c50759dc175d6151d78e52d43e3c3c2803dd85dbe43871f"
+              }
+            ]
+          },
+          {
+            "id": "starintel:transcript:7eea9559b680aeb35c50759dc175d6151d78e52d43e3c3c2803dd85dbe43871f",
+            "dataset": "fixture",
+            "dtype": "transcript",
+            "schemaVersion": "0.10.1",
+            "sourceMedia": {
+              "schema": "org.starintel/core@1/audio",
+              "id": "audio-old"
+            },
+            "language": "en",
+            "text": "Hello world"
+          }
+        ],
+        "quarantine": []
+      }
+    },
+    {
+      "name": "unknownFieldsArePreserved",
+      "input": {
+        "_id": "person-unknown",
+        "dataset": "fixture",
+        "dtype": "person",
+        "schema_version": "0.9.0",
+        "data": {
+          "fname": "Grace",
+          "future_field": 42
+        }
+      },
+      "expected": {
+        "documents": [
+          {
+            "id": "person-unknown",
+            "dataset": "fixture",
+            "dtype": "person",
+            "schemaVersion": "0.10.1",
+            "fname": "Grace",
+            "extensions": {
+              "legacy": {
+                "futureField": 42
+              }
+            }
+          }
+        ],
+        "quarantine": []
+      }
+    },
+    {
+      "name": "aliasCollisionIsQuarantined",
+      "input": {
+        "_id": "legacy-id",
+        "id": "canonical-id",
+        "dataset": "fixture",
+        "dtype": "person",
+        "schema_version": "0.9.0"
+      },
+      "expected": {
+        "documents": [],
+        "quarantine": [
+          {
+            "reasonCode": "ambiguousFieldCollision"
+          }
+        ]
+      }
+    }
+  ]
+}

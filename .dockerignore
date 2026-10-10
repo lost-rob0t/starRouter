@@ -1,0 +1,5 @@
+.git
+result
+__pycache__
+*.log
+.direnv
