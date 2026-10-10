@@ -118,25 +118,37 @@ proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
   #    raise newException(IOError, "Server Failed to reply")
 
 proc fetch*(client: Client): Future[Message[string]] {.async.} =
-  ## Fetch data from subscriptions
-  var msg = Message[string]()
+  ## Always consume the complete six-frame PUB/SUB record before interpreting
+  ## its numeric fields. Otherwise a malformed timestamp/event leaves the
+  ## remaining frames to be misidentified as the next publication.
+  let topic = await client.subSocket.receiveAsync()
+  let source = await client.subSocket.receiveAsync()
+  let messageId = await client.subSocket.receiveAsync()
+  let wireTime = await client.subSocket.receiveAsync()
+  let wireEvent = await client.subSocket.receiveAsync()
+  let data = await client.subSocket.receiveAsync()
+
+  var messageTime: int64
   try:
-    msg.topic = await client.subSocket.receiveAsync()
-    msg.source = await client.subSocket.receiveAsync()
-    msg.id = await client.subSocket.receiveAsync()
-    let time = (await client.subSocket.receiveAsync()).parseInt()
-    if time.isOld(client.timeout): raise newException(SlowMessageDefect,
-        fmt"MSG age older then the current timeout of {client.timeout}. DO NOT EXCEPT THIS.")
-    msg.time = time
-    let etyp = (await client.subSocket.receiveAsync()).parseInt()
-    msg.typ = EventType(etyp)
-    # TODO protobuffs man
-    msg.data = await client.subSocket.receiveAsync()
-    validatePayload(msg.data, msg.typ)
-    result = msg
-  except KeyError:
-    result = msg
-    discard # wrong msg typ
+    messageTime = parseBiggestInt(wireTime)
+  except ValueError:
+    raise newException(ValueError, "Malformed published timestamp")
+  if messageTime.isOld(client.timeout):
+    raise newException(SlowMessageDefect,
+        fmt"MSG age older than the current timeout of {client.timeout}.")
+
+  var eventCode: int
+  try:
+    eventCode = parseInt(wireEvent)
+  except ValueError:
+    raise newException(ValueError, "Malformed published event type")
+  if eventCode < ord(low(EventType)) or eventCode > ord(high(EventType)):
+    raise newException(ValueError, "Published event type is outside the SC01 range")
+
+  let eventType = EventType(eventCode)
+  validatePayload(data, eventType)
+  return Message[string](topic: topic, source: source, id: messageId,
+      time: messageTime, typ: eventType, data: data)
 
 proc fetch*[T](typ: typedesc[T] = T, client: Client): Future[Message[T]] {.async.} =
   ## Fetch messages from subscriptions, but return T
