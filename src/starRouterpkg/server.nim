@@ -178,19 +178,24 @@ proc receiveClientMessage*(router: StarRouter, source: string): Future[Message[
   msg.data = await router.apiConn.receiveAsync()
   return msg
 
+func forwardedFrames*(message: Message[string]): array[6, string] =
+  ## Preserve the originating timestamp and opaque payload across the PUB handoff.
+  [message.topic, message.source, message.id, $message.time,
+      $message.typ.ord, message.data]
+
 proc publishClientMessage*(router: StarRouter, message: Message[string]) =
-  router.pubConn.send(message.topic, SNDMORE)
-  router.pubConn.send(message.source, SNDMORE)
-  router.pubConn.send(message.id, SNDMORE)
-  router.pubConn.send($unix(), SNDMORE)
-  router.pubConn.send($message.typ.ord, SNDMORE)
-  router.pubConn.send(message.data)
+  let frames = forwardedFrames(message)
+  for index, frame in frames:
+    if index < frames.high:
+      router.pubConn.send(frame, SNDMORE)
+    else:
+      router.pubConn.send(frame)
   when defined(debug):
     echo message
 
 proc sendHeartbeat(router: StarRouter) =
   let msg = Message[string](source: router.id, id: ulid(), data: "",
-      typ: EventType.heartBeat, topic: "broker")
+      time: unix(), typ: EventType.heartBeat, topic: "broker")
   router.publishClientMessage(msg)
   echo "sent hearts"
   echo msg
