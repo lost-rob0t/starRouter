@@ -148,11 +148,17 @@ proc receiveClientMessage*(router: StarRouter, source: string): Future[Message[
   var msg = Message[string]()
   msg.source = await router.apiConn.receiveAsync()
   msg.id = await router.apiConn.receiveAsync()
-  msg.time = (await router.apiConn.receiveAsync()).parseInt()
-  let typ = await router.apiConn.receiveAsync()
-  msg.typ = EventType(typ.parseInt())
+  # Always consume the complete SC01 body before parsing it. Otherwise an
+  # invalid number leaves trailing frames queued as the next ROUTER command.
+  let timestampToken = await router.apiConn.receiveAsync()
+  let eventToken = await router.apiConn.receiveAsync()
   msg.topic = await router.apiConn.receiveAsync()
   msg.data = await router.apiConn.receiveAsync()
+  msg.time = timestampToken.parseBiggestInt()
+  let eventNumber = eventToken.parseInt()
+  if eventNumber < ord(low(EventType)) or eventNumber > ord(high(EventType)):
+    raise newException(ValueError, "SC01 event is outside the supported range")
+  msg.typ = EventType(eventNumber)
   return msg
 
 proc publishClientMessage*(router: StarRouter, message: Message[string]) =
@@ -195,15 +201,18 @@ proc handleMessage*(router: StarRouter) {.async.} =
   let header = (await router.apiConn.receiveAsync())
   case header:
     of "SC01":
-      let msg = await router.receiveClientMessage(source)
-      when defined(debug):
-        echo msg
+      var msg: Message[string]
       try:
+        msg = await router.receiveClientMessage(source)
         validatePayload(msg.data, msg.typ)
       except ValueError:
+        # A syntactically invalid command has a definitive NACK, not a hang.
+        # It must not register an actor or publish a document.
         router.apiConn.send(source, SNDMORE)
         router.apiConn.send($EventType.nack.ord)
         return
+      when defined(debug):
+        echo msg
       try:
         case msg.typ:
           of newDocument, updateDocument:
