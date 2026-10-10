@@ -40,6 +40,22 @@ type
     ## Key is topic, value is message
     lvc*: Table[string, string]
     messages*: seq[string]
+  DispatchAction* = enum
+    relayDocument, registerClient, heartbeatClient, routeTarget, rejectEvent
+
+func dispatchAction*(event: EventType): DispatchAction =
+  ## SC01 is a single-action command; unhandled commands must never be ACKed.
+  case event
+  of newDocument, updateDocument, deleteDocument: relayDocument
+  of EventType.register: registerClient
+  of heartbeat: heartbeatClient
+  of target: routeTarget
+  else: rejectEvent
+
+proc routedTarget*(msg: Message[string], recipient: string): Message[string] =
+  ## Do not mutate the original reference or disguise a Target as a Document.
+  Message[string](source: msg.source, id: msg.id, time: msg.time,
+      typ: msg.typ, topic: recipient, data: msg.data)
 
 proc `==`(x, y: Actor): bool = result = x.id == y.id
 
@@ -90,8 +106,12 @@ proc bumpActor(router: StarRouter, msg: Message[string]) =
   router[actorName][msg.source].liveness = router.maxLives
 
 proc bumpActor(router: StarRouter, id: string) =
-  let actorname = id.split("-")[0]
-  router[actorName][id].lastHeart = unix() + router.timeout
+  ## Identity may contain hyphens; never recover an actor name by splitting it.
+  for actorName in router.actors.keys:
+    if router[actorName].actors.hasKey(id):
+      router[actorName][id].lastHeart = unix() + router.timeout
+      router[actorName][id].liveness = router.maxLives
+      return
 
 proc hurtActors(router: StarRouter) =
   # Called at end of msg checking loop, if client didnt send heart, assume something bad, and minus a life
@@ -134,6 +154,10 @@ proc sendOK*(router: StarRouter, dest: string) =
     echo fmt"Sending ok to: {dest}"
   router.apiConn.send(dest, SNDMORE)
   router.apiConn.send($EventType.ack.ord)
+
+proc sendNack*(router: StarRouter, dest: string) =
+  router.apiConn.send(dest, SNDMORE)
+  router.apiConn.send($EventType.nack.ord)
 
 
 proc multicast*[T](router: StarRouter, message: T) =
@@ -181,72 +205,42 @@ proc registerActor(router: StarRouter, msg: Message[string]) =
 
 # TODO send error msg incase of broker error
 proc handletarget(router: StarRouter, msg: Message[string]) =
-  var newMsg = msg
+  if not router.actors.hasKey(msg.topic) or router[msg.topic].actors.len == 0:
+    raise newException(KeyError, "No registered recipient for target")
   let actor = router.nextActor(msg.topic)
-  newMsg.topic = actor.id
-  newMsg.typ = newDocument
-  router.publishClientMessage(msg)
+  router.publishClientMessage(routedTarget(msg, actor.id))
 
 proc handleMessage*(router: StarRouter) {.async.} =
   let source = await router.apiConn.receiveAsync()
   let empty = await router.apiConn.receiveAsync()
   doAssert empty.len == 0
-  let header = (await router.apiConn.receiveAsync())
+  let header = await router.apiConn.receiveAsync()
   case header:
     of "SC01":
       let msg = await router.receiveClientMessage(source)
       when defined(debug):
         echo msg
       try:
-        case msg.typ:
-          of newDocument:
+        case dispatchAction(msg.typ):
+          of relayDocument:
             router.bumpActor(msg.source)
             router.publishClientMessage(msg)
-          of EventType.register:
+          of registerClient:
             router.registerActor(msg)
-            when defined(debug):
-              echo "Total actorsNames: ", $len(router.actors)
-          of heartbeat:
+          of heartbeatClient:
             router.bumpActor(msg)
-            router.sendOK(source)
-          of target:
+          of routeTarget:
             router.handleTarget(msg)
-          else:
-            when defined(debug):
-              echo "Invalid Command."
-            discard # not implemented
-      except KeyError:
-        # HACK Why doesnt the topic exist?
-        # The new api should allow you to create them, ensuring they exist from the start
-        router.registeractor(msg)
-
-      finally:
+          of rejectEvent:
+            router.sendNack(source)
+            return
         router.sendOK(source)
-
-      case msg.typ:
-        of newDocument:
-          router.bumpActor(msg.source)
-          router.publishClientMessage(msg)
-          router.sendOK(source)
-        of EventType.register:
-          router.registerActor(msg)
-          router.sendOK(source)
-          when defined(debug):
-            echo "Total actorsNames: ", $len(router.actors)
-        of heartbeat:
-          router.bumpActor(msg)
-          router.sendOK(source)
-        of target:
-          router.handleTarget(msg)
-          router.sendOK(source)
-        else:
-          echo "No run!"
-          discard # not implemented
+      except KeyError:
+        # Unknown actors and missing target recipients are not successful writes.
+        router.sendNack(source)
     of "SR01":
       discard
-      # TODO work on broker to broker messaging
-
-
+      # Broker-to-broker transport remains a separate protocol feature.
 
 proc run*(router: StarRouter) {.async.} =
   router.connect()
