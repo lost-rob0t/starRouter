@@ -84,6 +84,14 @@ proc newMessage*[T](client: Client, data: T, eventType: EventType, source,
       topic: topic, time: time, typ: eventType)
 
 
+## Every SC01 control command carries an originating timestamp and message ID.
+## Older zero-timestamp register/heartbeat frames became invalid on replay bridges.
+proc controlMessage*(client: Client, event: EventType): Message[string] =
+  if event notin {EventType.register, EventType.heartbeat}:
+    raise newException(ValueError, "Expected register or heartbeat control event")
+  result = Message[string](source: client.id, id: ulid(), time: unix(),
+      typ: event, topic: client.actorName, data: "")
+
 ## SC01 replies are transport acceptance, not durable storage receipts.
 ## NACK or unknown replies must never look like successful A2A delivery.
 proc requireAck*(reply: string) =
@@ -167,12 +175,7 @@ proc unsubscribe*(client: Client, topic: string) =
 
 
 proc register*(client: Client) {.async.} =
-  var msg = Message[string]()
-  msg.topic = client.actorName
-  msg.source = client.id
-  msg.typ = EventType.register
-  msg.data = ""
-  await client.emit(msg)
+  await client.emit(client.controlMessage(EventType.register))
 
 
 
@@ -204,8 +207,7 @@ proc sendHeartbeat*(client: Client) {.async.} =
   if unix() > client.heartExpires:
     when defined(debug):
       echo "It is love time!"
-    let msg = Message[string](source: client.id, id: ulid(), data: "",
-        typ: EventType.heartBeat, topic: client.actorName)
+    let msg = client.controlMessage(EventType.heartBeat)
     await client.emit(msg)
     client.heartExpires = unix() + client.timeout
 

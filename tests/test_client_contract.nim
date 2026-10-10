@@ -1,6 +1,6 @@
 ## Compile and execute client message constructors without broker connections or data writes.
 import std/[asyncdispatch, json]
-import ../src/starRouterpkg/[client, proto]
+import ../src/starRouterpkg/[client, proto, utils]
 proc canonicalSend(c: Client) {.async.} =
   let doc = %*{"id":"document:one", "dtype":"document", "dataset":"test", "schemaVersion":"0.10.1", "deleted":false}
   await c.emit(newMessage(doc, newDocument, "test", "document"))
@@ -39,3 +39,23 @@ doAssert rejected("ACK")
 doAssert rejected("")
 doAssert rejected("not-an-ordinal")
 echo "client A2A rejection propagation checks passed"
+
+# A zero timestamp used to escape in register/heartbeat frames. Every SC01
+# control message must have the same nonempty metadata as ordinary messages.
+let controlProbe = Client(id: "actor-instance", actorName: "star:v1:collector:wireless")
+let beforeControl = unix()
+for event in [EventType.register, EventType.heartbeat]:
+  let control = controlProbe.controlMessage(event)
+  doAssert control.source == controlProbe.id
+  doAssert control.topic == controlProbe.actorName
+  doAssert control.id.len > 0
+  doAssert control.time >= beforeControl and control.time <= unix()
+  doAssert control.typ == event
+  doAssert control.data == ""
+var rejectedNonControl = false
+try:
+  discard controlProbe.controlMessage(target)
+except ValueError:
+  rejectedNonControl = true
+doAssert rejectedNonControl
+echo "SC01 registration and heartbeat timestamp checks passed"
