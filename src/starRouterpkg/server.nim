@@ -45,7 +45,7 @@ proc `==`(x, y: Actor): bool = result = x.id == y.id
 
 proc newActor*(router: StarRouter, id: string): Actor =
   result = Actor(id: id)
-  result.liveness = 5
+  result.liveness = router.maxLives
   # Assume it is fine for now, wait until next beat time
   result.lastHeart = unix() + router.timeout
 
@@ -84,14 +84,23 @@ proc nextActor(router: StarRouter, actorName: string): Actor =
   result = router.actors[actorName].nextActor()
 
 
-proc bumpActor(router: StarRouter, msg: Message[string]) =
-  let actorName = msg.topic
-  router[actorName][msg.source].lastHeart = unix() + int64(router.timeout)
-  router[actorName][msg.source].liveness = router.maxLives
+proc bumpActor(router: StarRouter, msg: Message[string]): bool =
+  ## Heartbeats may refresh only a service the actor explicitly registered.
+  if not router.actors.hasKey(msg.topic): return false
+  if not router[msg.topic].actors.hasKey(msg.source): return false
+  router[msg.topic][msg.source].lastHeart = unix() + int64(router.timeout)
+  router[msg.topic][msg.source].liveness = router.maxLives
+  result = true
 
-proc bumpActor(router: StarRouter, id: string) =
-  let actorname = id.split("-")[0]
-  router[actorName][id].lastHeart = unix() + router.timeout
+proc bumpActor(router: StarRouter, id: string): bool =
+  ## Document topics are not service names. Search exact registered IDs instead
+  ## of splitting at '-', since canonical star:v1 actor names contain hyphens.
+  for actorName in router.actors.keys:
+    let manager = router[actorName]
+    if manager.actors.hasKey(id):
+      manager[id].lastHeart = unix() + int64(router.timeout)
+      manager[id].liveness = router.maxLives
+      result = true
 
 proc hurtActors(router: StarRouter) =
   # Called at end of msg checking loop, if client didnt send heart, assume something bad, and minus a life
@@ -134,6 +143,10 @@ proc sendOK*(router: StarRouter, dest: string) =
     echo fmt"Sending ok to: {dest}"
   router.apiConn.send(dest, SNDMORE)
   router.apiConn.send($EventType.ack.ord)
+
+proc sendNACK(router: StarRouter, dest: string) =
+  router.apiConn.send(dest, SNDMORE)
+  router.apiConn.send($EventType.nack.ord)
 
 
 proc multicast*[T](router: StarRouter, message: T) =
@@ -180,13 +193,16 @@ proc registerActor(router: StarRouter, msg: Message[string]) =
     router.actors[msg.topic] = ActorManager()
   router.actors[msg.topic][msg.source] = actor
 
-# TODO send error msg incase of broker error
-proc handletarget(router: StarRouter, msg: Message[string]) =
-  var newMsg = msg
+proc handleTarget(router: StarRouter, msg: Message[string]): bool =
+  ## Legacy target projection: no advertised recipient means no delivery.
+  if not router.actors.hasKey(msg.topic): return false
+  if router[msg.topic].len == 0: return false
+  var routed = msg
   let actor = router.nextActor(msg.topic)
-  newMsg.topic = actor.id
-  newMsg.typ = newDocument
-  router.publishClientMessage(newMsg)
+  routed.topic = actor.id
+  routed.typ = newDocument
+  router.publishClientMessage(routed)
+  result = true
 
 proc handleMessage*(router: StarRouter) {.async.} =
   let source = await router.apiConn.receiveAsync()
@@ -201,24 +217,32 @@ proc handleMessage*(router: StarRouter) {.async.} =
       try:
         validatePayload(msg.data, msg.typ)
       except ValueError:
-        router.apiConn.send(source, SNDMORE)
-        router.apiConn.send($EventType.nack.ord)
+        router.sendNACK(source)
         return
       try:
         case msg.typ:
           of newDocument, updateDocument:
-            router.bumpActor(msg.source)
+            if not router.bumpActor(msg.source):
+              router.sendNACK(source)
+              return
             router.publishClientMessage(msg)
           of EventType.register:
             router.registerActor(msg)
           of heartbeat:
-            router.bumpActor(msg)
+            if not router.bumpActor(msg):
+              router.sendNACK(source)
+              return
           of target:
-            router.handleTarget(msg)
+            if not router.handleTarget(msg):
+              router.sendNACK(source)
+              return
           else:
-            discard
+            # Unimplemented legacy events have no durable/result semantics.
+            router.sendNACK(source)
+            return
       except KeyError:
-        router.registerActor(msg)
+        router.sendNACK(source)
+        return
       router.sendOK(source)
     of "SR01":
       discard

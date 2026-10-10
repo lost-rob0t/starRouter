@@ -63,9 +63,11 @@ subscriber.setsockopt(zmq.SUBSCRIBE, b"documents")
 subscriber.setsockopt(zmq.RCVTIMEO, 5000)
 subscriber.connect(pub_address)
 
-def send(event, payload, topic=b"documents"):
-    api.send_multipart([b"", b"SC01", b"test-actor", b"wire-id", str(int(time.time())).encode(), str(event).encode(), topic, payload.encode()])
-    return api.recv_multipart()
+def send(event, payload, topic=b"documents", *, peer=api, actor_id=b"test-actor"):
+    peer.send_multipart([b"", b"SC01", actor_id, b"wire-id",
+                         str(int(time.time())).encode(), str(event).encode(),
+                         topic, payload.encode()])
+    return peer.recv_multipart()
 
 try:
     assert send(7, "", b"test") == [b"1"]
@@ -144,6 +146,52 @@ try:
     assert send(8, target_wire, b"test") == [b"1"]
     frames = subscriber.recv_multipart()
     assert frames[0] == b"test-actor" and frames[4] == b"3" and frames[-1].decode() == target_wire
+    # Missing routes and unimplemented legacy events must NACK, not pretend
+    # successful delivery or silently create an actor registration.
+    for attempt in range(2):
+        assert send(8, target_wire, b"missing-target-service") == [b"2"], attempt
+        assert not subscriber.poll(100), "undeliverable target was published"
+    assert send(0, "", b"unregistered-heartbeat-service") == [b"2"]
+    assert send(4, "", b"documents") == [b"2"]
+    assert send(5, "", b"documents") == [b"2"]
+    assert not subscriber.poll(100), "unsupported event published"
+
+    # An unregistered sender cannot turn a document into an actor registration.
+    unregistered = context.socket(zmq.DEALER)
+    unregistered_id = b"unregistered-writer-01"
+    unregistered.setsockopt(zmq.IDENTITY, unregistered_id)
+    unregistered.setsockopt(zmq.RCVTIMEO, 5000)
+    unregistered.setsockopt(zmq.SNDTIMEO, 5000)
+    unregistered.connect(api_address)
+    try:
+        assert send(3, wire, peer=unregistered, actor_id=unregistered_id) == [b"2"]
+        assert not subscriber.poll(100), "unregistered document was published"
+    finally:
+        unregistered.close(linger=0)
+
+    # Canonical actor names include hyphens: document publication refreshes the
+    # registration by exact ID, while Target selects the registered service.
+    named_id = b"star:v1:collector:wire-parser-01"
+    named_service = b"star:v1:collector:wire-parser"
+    named = context.socket(zmq.DEALER)
+    named.setsockopt(zmq.IDENTITY, named_id)
+    named.setsockopt(zmq.RCVTIMEO, 5000)
+    named.setsockopt(zmq.SNDTIMEO, 5000)
+    named.connect(api_address)
+    subscriber.setsockopt(zmq.SUBSCRIBE, named_id)
+    time.sleep(0.3)
+    try:
+        assert send(7, "", named_service, peer=named, actor_id=named_id) == [b"1"]
+        assert send(3, wire, peer=named, actor_id=named_id) == [b"1"]
+        frames = subscriber.recv_multipart()
+        assert frames[0] == b"documents" and frames[1] == named_id and frames[-1].decode() == wire
+        assert not subscriber.poll(100), "hyphenated actor emitted twice"
+        assert send(8, target_wire, named_service) == [b"1"]
+        frames = subscriber.recv_multipart()
+        assert frames[0] == named_id and frames[4] == b"3" and frames[-1].decode() == target_wire
+        assert not subscriber.poll(100), "target was dispatched twice"
+    finally:
+        named.close(linger=0)
     legacy = {"_id":"starintel:person:test","dataset":"test","dtype":"person","schema_version":"0.9.0",
               "version":1,"date_added":"2026-10-04T00:00:00Z","date_updated":"2026-10-04T00:00:00Z",
               "sources":[],"evidence":[],"data":{"fname":"Ada"},"extensions":{"opaque":{"flag":False,"nil":None}}}
