@@ -174,11 +174,17 @@ proc multicast*[T](router: StarRouter, message: T) =
 
 
 
-proc receiveMultipart*(connection: ZConnection): Future[seq[string]] {.async.} =
-  ## Drain the entire atomic ZeroMQ message before parsing or rejecting it.
+proc receiveMultipart*(connection: ZConnection,
+    maxFrames: int = high(int)): Future[seq[string]] {.async.} =
+  ## Always drain; retain no more than maxFrames. SC01 uses nine frames plus
+  ## one overflow marker so oversized multipart envelopes are still NACKed.
+  if maxFrames <= 0:
+    raise newException(ValueError, "Multipart retention limit must be positive")
   result.add(await connection.receiveAsync())
   while getsockopt[cint](connection, RCVMORE) != 0:
-    result.add(await connection.receiveAsync())
+    let frame = await connection.receiveAsync()
+    if result.len < maxFrames:
+      result.add(frame)
 
 proc decodeClientMessage(frames: seq[string]): Message[string] =
   if frames.len != 9 or frames[1] != "" or frames[2] != "SC01":
@@ -236,7 +242,7 @@ proc handletarget(router: StarRouter, msg: Message[string]) =
   router.publishClientMessage(routedTarget(msg, actor.id))
 
 proc handleMessage*(router: StarRouter) {.async.} =
-  let frames = await receiveMultipart(router.apiConn)
+  let frames = await receiveMultipart(router.apiConn, 10)
   let source = frames[0]
   try:
     let msg = decodeClientMessage(frames)
