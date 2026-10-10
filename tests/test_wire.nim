@@ -1,5 +1,5 @@
 import std/[unittest, json, asyncdispatch, strutils, os]
-import ../src/starRouterpkg/[wire, proto, client]
+import ../src/starRouterpkg/[wire, proto, client, utils]
 
 let valid = "{\"id\":\"person-current\", \"dataset\":\"fixture\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"fname\":\"Ada\",\"extensions\":{\"opaque\":{\"flag\":false,\"nil\":null,\"items\":[]}}}"
 
@@ -39,3 +39,17 @@ suite "StarLang document wire boundary":
     malformed.delete("_id")
     expect ValueError:
       validatePayload($malformed, newDocument)
+
+  test "wire timestamp freshness is bounded without signed overflow":
+    let current = unix()
+    check not isOld(current, 30)
+    check not isOld(current + 2, 30)
+    check not isOld(current - 2, 30)
+    check isOld(current - 3600, 30)
+    check isOld(current + 3600, 30)
+    check isOld(low(int64), 30)
+    check isOld(high(int64), 30)
+    expect ValueError:
+      discard isOld(current, 0)
+    expect ValueError:
+      discard isOld(current, -1)
