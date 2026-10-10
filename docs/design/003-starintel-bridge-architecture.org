@@ -1,0 +1,316 @@
+#+title: StarRouter 003 - StarIntel Bridge Architecture
+#+options: toc:3
+
+* Objective
+
+Design a bridge process that accepts StarRouter messages and forwards compatible durable data into StarIntel Server without requiring StarRouter clients to speak AMQP and without making StarIntel Server understand the legacy ZeroMQ wire protocol.
+
+The bridge is an anti-corruption layer between two messaging models:
+
+- StarRouter: legacy ZeroMQ request + PUB/SUB broker protocol;
+- StarIntel Server: RabbitMQ topic exchange for distributed document traffic, CouchDB for durable documents, Sento for local actors.
+
+* Primary architectural choice
+
+Use RabbitMQ as the bridge's StarIntel-facing interface.
+
+Do not make the HTTP API the primary high-volume bridge path.
+
+Reasons:
+
+1. RabbitMQ is already StarIntel's documented distributed actor/document boundary.
+2. StarIntel's HTTP =POST /new/document/:dtype= only proves publication, not persistence.
+3. The HTTP bulk route publishes elements sequentially and can partially accept a batch.
+4. The HTTP producer is serialized through one pinned agent.
+5. Rabbit routing keys directly express insert/update semantics.
+6. A bridge can use persistent AMQP messages, mandatory routing, and publisher confirms as its own reliable publishing boundary.
+
+HTTP remains useful for administrative probes, document verification, or a fallback adapter in tests.
+
+* Target data path
+
+#+begin_example
+SC01 client
+   |
+   v
+StarRouter compatibility ingress
+   |
+   | canonical Envelope
+   v
+Durable acceptance / outbox
+   |
+   +---------------------> transient PUB compatibility fanout
+   |
+   v
+Bridge dispatcher
+   |
+   +-- validate JSON
+   +-- classify EventType
+   +-- derive/check dtype
+   +-- preserve ids/provenance
+   +-- select routing key
+   v
+Confirmed Rabbit publisher
+   |
+   v
+exchange: documents
+   |
+   +-- documents.ingest.<dtype>
+   +-- documents.updated.<dtype>
+   v
+StarIntel consumers
+   |
+   v
+CouchDB / documents.new.<dtype>
+#+end_example
+
+* Deployment shape
+
+Recommended initial shape: *separate bridge process*.
+
+Benefits:
+
+- crash isolation from the broker;
+- independent restart and upgrade;
+- explicit queues/outbox ownership;
+- no AMQP dependency in the StarRouter protocol/client library;
+- bridge can be disabled without changing ordinary PUB/SUB clients;
+- simpler migration path if StarRouter is later replaced or embedded elsewhere.
+
+After the design is proven, the durable acceptance/outbox hook may live in the broker while the AMQP publisher remains a supervised bridge worker.
+
+* Bridge components
+
+** ZeroMQ ingress adapter
+
+Responsibilities:
+
+- consume only the designated reliable bridge stream, not arbitrary PUB traffic;
+- decode current SC01-compatible envelope or a dedicated internal durable stream;
+- validate frame bounds;
+- normalize to canonical =Envelope=;
+- never acknowledge durable acceptance until the outbox owns the message.
+
+The very first prototype may subscribe to PUB for compatibility experiments, but that mode must be labeled =best-effort= and may not satisfy the durable contract.
+
+** Validator / classifier
+
+Responsibilities:
+
+- parse payload as JSON when StarIntel mapping requires JSON;
+- enforce object body where required;
+- extract body =dtype=;
+- compare transport/topic hints with body dtype;
+- validate required fields for supported mappings;
+- reject/quarantine unsupported message types deterministically.
+
+Do not silently mutate a conflicting dtype to make a message pass.
+
+** Durable outbox
+
+Responsibilities:
+
+- unique record by message id;
+- store canonical envelope and original payload;
+- track publish destination/routing key;
+- record attempt count and next retry time;
+- record last error;
+- atomically move accepted -> pending/confirmed/quarantined states;
+- recover pending records after restart.
+
+See =004-durable-outbox-and-recovery.org=.
+
+** Rabbit publisher worker(s)
+
+Responsibilities:
+
+- maintain long-lived AMQP connection/channel;
+- use publisher confirms;
+- publish important messages as persistent;
+- use =mandatory= when the bridge expects the routing key to reach a queue;
+- correlate confirms with outbox records;
+- reconnect and replay unconfirmed records;
+- bound in-flight confirm window;
+- expose latency and failure metrics.
+
+** Verifier / optional persistence observer
+
+Publisher confirmation proves RabbitMQ accepted the publish according to its configured routing/durability semantics; it does not prove the StarIntel ingest consumer persisted the document.
+
+For workloads that require proof of persistence, add an optional asynchronous verifier:
+
+- observe =documents.new.<dtype>= and match deterministic =_id= / bridge metadata; or
+- query =GET /document/:id= after a bounded delay.
+
+This is a higher assurance mode, not required for the baseline forwarding ACK.
+
+* Event mapping
+
+| StarRouter event | Value | StarIntel mapping | Initial bridge status |
+|------------------+-------+-------------------+-----------------------|
+| heartbeat | 0 | none | never forward |
+| ack | 1 | none | never forward |
+| nack | 2 | none | never forward |
+| newDocument | 3 | =documents.ingest.<dtype>= | supported |
+| deleteDocument | 4 | no documented Rabbit delete contract | reject/quarantine |
+| getDocument | 5 | request/reply, possible HTTP GET | unsupported in one-way bridge |
+| updateDocument | 6 | =documents.updated.<dtype>= | supported after tests |
+| register | 7 | none | never forward |
+| target | 8 | semantic ambiguity; see below | conditional/future |
+
+* newDocument mapping
+
+Input requirements:
+
+- payload parses as JSON object;
+- payload contains non-empty string =dtype=;
+- message id exists;
+- configured maximum payload is not exceeded.
+
+Output:
+
+#+begin_example
+exchange    = documents
+routing key = documents.ingest.<dtype>
+body        = original/normalized StarIntel document JSON
+persistent  = true
+mandatory   = true
+message-id  = StarRouter message id
+#+end_example
+
+Do not rely solely on StarRouter =topic= as dtype. StarIntel's ingest consumer requires a body dtype. If topic is configured as a dtype hint and it differs from body dtype, classify as =DTYPE_MISMATCH= and quarantine/reject.
+
+Bridge metadata may be added under a namespaced extension only if it is compatible with the active StarIntel document spec, for example:
+
+#+begin_src json
+{
+  "extensions": {
+    "star_router_bridge": {
+      "message_id": "01...",
+      "source": "actor-01...",
+      "received_at": 0
+    }
+  }
+}
+#+end_src
+
+Do not overwrite existing provenance.
+
+* updateDocument mapping
+
+Input requirements:
+
+- payload object has non-empty =dtype=;
+- update contains an =_id= suitable for StarIntel update handling;
+- document semantics permit partial/full update.
+
+Output routing key:
+
+#+begin_example
+documents.updated.<dtype>
+#+end_example
+
+The StarIntel update consumer refetches revisions and retries conflicts. The bridge must not invent CouchDB =_rev= values.
+
+* target mapping
+
+StarRouter =target= currently means "route this message to one registered actor". StarIntel's target document is a durable document with =dtype=target= that is ingested, persisted, then routed to an external actor.
+
+These are not automatically equivalent.
+
+Initial rule:
+
+- do not reinterpret every StarRouter =target= event as a StarIntel target document;
+- support a StarIntel target only when the payload itself is an explicit valid target document, including =dtype: target= and actor semantics required by StarIntel;
+- otherwise return =UNSUPPORTED_OPERATION= or quarantine according to producer mode.
+
+This avoids accidental task amplification or routing to the wrong actor.
+
+* delete mapping
+
+StarIntel currently documents HTTP deletion but notes that deletion does not emit a Rabbit deletion event. There is no corresponding durable distributed deletion contract to map StarRouter =deleteDocument= onto safely.
+
+Therefore v1 bridge must reject/quarantine =deleteDocument= instead of guessing.
+
+A later StarIntel ADR should define deletion as a first-class event with authorization, tombstone semantics, replay behavior, and audit history.
+
+* getDocument mapping
+
+Do not send =getDocument= through Rabbit document ingest.
+
+Future choices:
+
+1. a bridge RPC adapter performs StarIntel HTTP =GET /document/:id= and replies using correlated StarRouter replies;
+2. define an XRAP resource endpoint for document retrieval;
+3. expose a dedicated StarIntel RPC service.
+
+Keep this out of the first durable-forwarding slice.
+
+* Backpressure relationship
+
+The bridge must be allowed to slow/reject durable producers when its durable storage limit is reached.
+
+Never "solve" overload by:
+
+- dropping durable messages;
+- unbounded in-memory buffering;
+- acknowledging before durable ownership;
+- spawning unlimited publish futures;
+- converting every failure into immediate retry.
+
+A durable outbox is a finite resource. Its high-water mark becomes an explicit admission-control boundary.
+
+* Failure matrix
+
+| Failure | Required behavior |
+|---------+-------------------|
+| StarIntel/Rabbit down before local acceptance | durable request not ACKed |
+| Rabbit down after local acceptance | retain outbox, retry later |
+| bridge crash after local acceptance | recover pending row after restart |
+| Rabbit accepts but confirm lost | replay possible; downstream idempotency required |
+| unroutable AMQP mandatory publish | mark retry/error; alert; do not retire |
+| invalid JSON | reject without retry |
+| missing dtype | reject without retry |
+| unsupported StarRouter event | reject/quarantine without hot loop |
+| outbox disk full | stop accepting durable messages; readiness false |
+| transient PUB subscriber slow | apply transient drop/block policy separately |
+
+* StarIntel compatibility requirements
+
+Before enabling bridge production traffic, assert against the live StarIntel version:
+
+- =documents= topic exchange exists and is durable;
+- =documents.ingest.#= is bound to the ingest queue;
+- updates binding is active;
+- body =dtype= is required and accepted;
+- selected document schema version is compatible;
+- target semantics if enabled are verified;
+- Rabbit credentials have publish permission only to required exchanges/routing keys where practical.
+
+* Implementation language
+
+The bridge can be implemented in Nim to reuse StarRouter protocol types and keep the adapter close to the source protocol. The AMQP client choice must be evaluated for:
+
+- publisher confirms;
+- mandatory returns;
+- connection recovery;
+- heartbeat support;
+- TLS;
+- maintained status;
+- Nix packaging;
+- benchmark behavior.
+
+Do not pick a library solely because it can call =basic.publish=.
+
+If the available Nim AMQP clients cannot meet the contract cleanly, a small Common Lisp bridge using StarIntel's ecosystem is acceptable, but it must still implement confirms rather than merely reuse the current unconfirmed producer abstraction.
+
+* Acceptance criteria for bridge v1
+
+- 100% of supported accepted messages survive bridge process restart;
+- Rabbit outage of configured test duration causes no accepted-message loss;
+- duplicate replay does not create duplicate logical StarIntel effects in deterministic-id fixtures;
+- invalid/unsupported messages cannot block healthy queue progress;
+- mandatory unroutable publish is visible and not retired;
+- memory remains bounded at configured in-flight/outbox limits;
+- bridge can run unattended under soak test with automatic reconnection;
+- metrics identify accepted, pending, confirmed, retried, rejected, quarantined, and oldest-pending age.

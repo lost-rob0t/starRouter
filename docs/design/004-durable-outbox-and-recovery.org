@@ -1,0 +1,303 @@
+#+title: StarRouter 004 - Durable Outbox and Recovery
+#+options: toc:3
+
+* Purpose
+
+Define the durability mechanism that lets StarRouter acknowledge a durable message locally while StarIntel/RabbitMQ is slow, unavailable, restarting, or temporarily unroutable.
+
+The outbox is not a cache. It is the ownership record for accepted durable work until the destination confirms acceptance.
+
+* Reliability model
+
+The bridge follows this transfer-of-ownership chain:
+
+#+begin_example
+producer owns message
+  |
+  | durable append succeeds
+  v
+StarRouter/bridge outbox owns message
+  |
+  | Rabbit publisher confirm succeeds
+  v
+RabbitMQ owns message
+  |
+  | StarIntel consumer ACKs after required processing
+  v
+StarIntel durable flow owns effect
+#+end_example
+
+At every transition, acknowledgement means the next component has accepted responsibility.
+
+RabbitMQ's reliability guidance makes the same distinction: writing bytes to a socket is not proof that a broker safely accepted a publish. Publisher confirms are required for reliable publishing, and unconfirmed messages must be considered candidates for retransmission.
+
+Reference: https://www.rabbitmq.com/docs/reliability
+
+* Storage choice
+
+For the first implementation, prefer a small embedded transactional store with WAL behavior and a mature crash-recovery story.
+
+SQLite is a reasonable default if a maintained Nim binding is available in Nix and the benchmark shows sufficient throughput. The important design properties are:
+
+- atomic transaction for dedupe check + append;
+- unique index on message id;
+- ordered scan by next-attempt/deadline;
+- WAL/crash recovery;
+- bounded file growth policy;
+- observable database integrity checks;
+- simple operational backup/inspection.
+
+Do not invent an ad-hoc append file unless benchmarks prove an embedded database cannot meet the target. A custom log requires checksums, torn-write recovery, compaction, indexing, concurrency semantics, and migration tooling that otherwise come for free.
+
+The storage implementation is replaceable behind an =OutboxStore= interface.
+
+* Logical schema
+
+#+begin_src sql
+CREATE TABLE outbox_message (
+  message_id        TEXT PRIMARY KEY,
+  protocol_version  TEXT NOT NULL,
+  source             TEXT NOT NULL,
+  event_type         INTEGER NOT NULL,
+  topic              TEXT NOT NULL,
+  document_type      TEXT,
+  payload             BLOB NOT NULL,
+  content_type        TEXT NOT NULL,
+  state               TEXT NOT NULL,
+  routing_key         TEXT,
+  accepted_at_ms      INTEGER NOT NULL,
+  next_attempt_ms     INTEGER NOT NULL,
+  attempt_count       INTEGER NOT NULL DEFAULT 0,
+  deadline_ms         INTEGER,
+  last_error_code     TEXT,
+  last_error_detail   TEXT,
+  confirmed_at_ms     INTEGER,
+  retired_at_ms       INTEGER
+);
+
+CREATE INDEX outbox_pending_idx
+ON outbox_message(state, next_attempt_ms, accepted_at_ms);
+#+end_src
+
+A real migration may add a separate attempt/event table rather than overwrite all error history. The minimal row above is enough for correctness.
+
+* States
+
+#+begin_example
+ACCEPTED
+  -> PUBLISHING
+  -> CONFIRMED
+  -> RETIRED
+
+ACCEPTED/PUBLISHING
+  -> RETRY_WAIT
+  -> PUBLISHING
+
+ACCEPTED/RETRY_WAIT
+  -> EXPIRED
+
+any non-retired
+  -> QUARANTINED
+#+end_example
+
+=CONFIRMED= means Rabbit publisher confirmation was correlated to the message. =RETIRED= means the configured replay retention period has elapsed and the row is eligible for compaction/deletion.
+
+Never remove the dedupe identity immediately on confirmation. A producer can retry late after losing its local ACK.
+
+* Atomic acceptance
+
+Producer durable request algorithm:
+
+1. decode and validate envelope enough to identify message id and size;
+2. begin transaction;
+3. look up =message_id=;
+4. if an existing compatible row exists, return its prior acceptance state;
+5. if an existing row has the same id but materially different immutable content, return =ID_COLLISION= and alert;
+6. insert accepted row;
+7. commit transaction and required durability barrier;
+8. only then emit producer ACK for durable acceptance.
+
+This makes retries idempotent at the first durable boundary.
+
+* Publisher algorithm
+
+Worker loop:
+
+#+begin_example
+claim bounded batch of due rows
+  |
+  v
+publish each with persistent delivery + mandatory routing
+  |
+  v
+track delivery sequence -> message_id
+  |
+  +-- basic.return --> mark unroutable / retry or quarantine
+  |
+  +-- basic.nack ----> retry
+  |
+  +-- confirm ack ---> CONFIRMED
+  |
+  +-- connection lost before confirm --> retry unknown set
+#+end_example
+
+Use asynchronous/batched confirms rather than synchronous confirm-per-message once correctness is established. RabbitMQ documents that batching/asynchronous confirms improve throughput and that confirms can arrive asynchronously.
+
+Reference: https://www.rabbitmq.com/docs/confirms
+
+* Persistent AMQP properties
+
+For durable document forwarding:
+
+- persistent delivery mode;
+- =message_id= property = StarRouter message id;
+- content type = =application/json=;
+- type/property = dtype if useful and compatible;
+- timestamp as metadata;
+- =mandatory=true= when at least one destination queue must exist.
+
+A publisher confirm by itself does not prove that a message was routed if an exchange accepts an unroutable message. Mandatory publishing plus handling =basic.return= closes that gap for the bridge's expected topology.
+
+* Connection failure
+
+On AMQP connection/channel failure:
+
+- stop claiming new rows until a bounded in-flight set is reconciled;
+- treat all in-flight but unconfirmed rows as uncertain and make them retryable;
+- reconnect with exponential backoff + jitter;
+- redeclare/assert expected exchange if the deployment contract allows;
+- resume due rows;
+- do not create new logical message ids.
+
+Duplicates are allowed by the contract and must be safe downstream.
+
+* Retry policy
+
+Classify failures:
+
+** Retryable
+
+- TCP/AMQP connection failure;
+- channel reset not caused by invalid publish parameters;
+- broker unavailable;
+- publish confirm timeout;
+- transient resource pressure;
+- temporary no-quorum state if deployment uses quorum queues.
+
+** Terminal / quarantine
+
+- invalid JSON;
+- missing/invalid dtype;
+- unsupported event type;
+- message exceeds configured maximum;
+- ID collision with different immutable content;
+- routing key generation failure;
+- schema incompatibility known to be permanent.
+
+** Operator-action required
+
+- mandatory unroutable publish due to missing StarIntel binding;
+- credentials/permission failure;
+- outbox corruption/integrity error;
+- disk exhaustion.
+
+Do not retry terminal errors forever.
+
+* Backoff
+
+Use capped exponential backoff with jitter, for example conceptual values:
+
+#+begin_example
+base = 250 ms
+max  = 30 s
+next = random(0, min(max, base * 2^attempt))
+#+end_example
+
+Exact defaults should be benchmarked. Operator-action failures can use a slower retry cadence while keeping readiness false and alerting.
+
+* Disk bounds
+
+Define both:
+
+- maximum outbox bytes;
+- maximum pending message count.
+
+Recommended admission states:
+
+| Utilization | Behavior |
+|-------------+----------|
+| <70% | normal |
+| 70-85% | warning metric/event |
+| 85-95% | shed optional/transient work; slow durable intake |
+| >95% | reject new durable acceptance with =OUTBOX_FULL=; readiness false |
+
+Percentages are starting defaults, not universal constants. Make them configuration values.
+
+Never ACK a durable message and then discard it to recover disk space.
+
+* Retention and compaction
+
+Keep confirmed message identities for a configurable dedupe retention window. Retain quarantined rows longer or until operator resolution.
+
+Compaction must be incremental and must not stall the broker event loop. If SQLite is selected, schedule checkpoint/maintenance policies and measure their latency effect under sustained writes.
+
+* Startup recovery
+
+At bridge startup:
+
+1. open store;
+2. run lightweight integrity/schema check;
+3. migrate schema transactionally if needed;
+4. convert stale =PUBLISHING= rows from the previous process into retryable state;
+5. expose readiness=false until store and Rabbit connection are initialized;
+6. start publisher;
+7. begin accepting durable traffic only when local storage can commit safely.
+
+Rabbit need not be healthy before accepting traffic if local outbox capacity is available and the configured operating mode explicitly permits offline buffering.
+
+* Shutdown
+
+Graceful shutdown sequence:
+
+1. stop accepting new durable messages;
+2. allow in-progress local acceptance transactions to finish;
+3. stop claiming new outbox rows;
+4. wait a bounded period for in-flight publisher confirms;
+5. mark remaining uncertain rows retryable;
+6. checkpoint/close store;
+7. close AMQP/ZeroMQ sockets with bounded linger.
+
+SIGTERM must not depend on an infinite wait for Rabbit or clients.
+
+* Optional higher assurance: persistence observation
+
+A publisher confirm transfers responsibility to RabbitMQ, not directly to CouchDB.
+
+For critical workloads, the bridge can hold a separate =PERSISTENCE_PENDING= record until it observes the resulting =documents.new.<dtype>= event or verifies the document by id through StarIntel HTTP.
+
+Do not make this mandatory in v1 because it couples the bridge to post-ingest semantics and increases latency/state. Add it as an assurance mode with independent metrics.
+
+* Crash test invariants
+
+Automated tests must kill the process at each boundary:
+
+- before transaction begin;
+- after row insert before commit;
+- immediately after commit before producer ACK;
+- after publish before Rabbit confirm;
+- after confirm before local state update;
+- after local =CONFIRMED= update before retirement.
+
+After restart, assert:
+
+- no accepted durable message disappears;
+- uncertain publishes can replay;
+- duplicate replay retains the same message id;
+- terminal invalid rows do not re-enter hot retry;
+- pending queue eventually drains after Rabbit recovers.
+
+* Rabbit topology note
+
+If StarIntel later uses quorum queues for critical ingest, publisher confirms become even more meaningful because RabbitMQ confirms a persistent quorum-queue message after quorum acceptance according to its documented semantics. Queue-type changes belong to StarIntel operations/design, not to this bridge PR.
+
+Reference: https://www.rabbitmq.com/docs/quorum-queues

@@ -1,0 +1,309 @@
+#+title: StarRouter 005 - Testing, Chaos, and Benchmark Plan
+#+options: toc:3
+
+* Goal
+
+Turn StarRouter from example-driven validation into a deterministic system whose correctness, loss behavior, restart behavior, and performance are measured automatically.
+
+Testing is the first implementation slice because several current defects are source-verifiable but the repository has no reliable regression harness to prove fixes stay fixed.
+
+* Test pyramid
+
+** Pure unit tests
+
+No sockets, no sleeps, no external broker.
+
+Cover:
+
+- =Message= constructors set every field correctly;
+- event enum encode/decode;
+- canonical envelope normalization;
+- SC01 frame parsing;
+- malformed frame rejection;
+- actor registry operations;
+- round-robin selection;
+- liveness deadline transitions with injected clock;
+- retry/backoff calculations with deterministic RNG seed;
+- dtype/routing-key mapping;
+- idempotency collision behavior;
+- outbox state machine.
+
+Time and randomness must be injectable. Unit tests should never wait ten real seconds for a heartbeat timeout.
+
+** In-process/component tests
+
+Run actual ZeroMQ sockets on ephemeral local ports with bounded test deadlines.
+
+Assertions:
+
+- request -> one dispatch;
+- request -> one terminal reply;
+- no duplicate publish for =newDocument=;
+- target output uses selected actor id;
+- hyphenated actor names remain valid;
+- registration/heartbeat/expiry;
+- malformed peer cannot kill broker;
+- slow/absent peer returns bounded error;
+- reconnect after router restart;
+- HWM/overload policy behaves as documented.
+
+Every loop/test must terminate or fail by a global deadline.
+
+** Bridge integration tests
+
+Bring up RabbitMQ plus a minimal fake/real StarIntel ingest topology under Nix/containers.
+
+Cases:
+
+- =newDocument= routes to =documents.ingest.<dtype>=;
+- =updateDocument= routes correctly;
+- missing dtype rejected;
+- conflicting topic/dtype rejected;
+- unsupported event quarantined;
+- mandatory unroutable publish not retired;
+- publisher confirm retires expected outbox row;
+- connection failure causes replay;
+- duplicate message id does not append second logical row.
+
+** StarIntel end-to-end tests
+
+Use a disposable StarIntel Server stack and database.
+
+Flow:
+
+1. create deterministic document fixture;
+2. submit through StarRouter durable API;
+3. wait for bounded acceptance;
+4. verify document persisted in StarIntel;
+5. repeat same message id;
+6. verify idempotent logical result;
+7. perform update fixture and verify final revision/content.
+
+This is the proof that the bridge works with actual server behavior, not only a mocked exchange.
+
+* Regression tests for current P0 defects
+
+Add these tests before fixes:
+
+** Duplicate dispatch
+
+Count calls to the publish seam after one =newDocument= request. Current code should reproduce a count greater than one; fixed code must equal exactly one.
+
+** Duplicate ACK
+
+Read all available reply frames for one request within a bounded window. Fixed code must return exactly one terminal reply.
+
+** Constructor event type
+
+Construct each =EventType= through =Client.newMessage=. Assert =message.typ == requestedType=.
+
+** Target mutation
+
+Register two test actors, submit a target, inspect emitted topic. It must equal one selected actor id and the emitted event type must match the target-dispatch contract.
+
+** Hyphenated actor heartbeat
+
+Register actor =github-actor=, heartbeat using its generated id, assert lookup does not truncate name.
+
+* Protocol property/fuzz tests
+
+Generate malformed frame sets:
+
+- zero frames;
+- missing delimiter;
+- wrong header;
+- missing body frame;
+- extra frames;
+- huge frame;
+- non-numeric time/type;
+- enum below/above range;
+- invalid UTF-8 where strings are required;
+- empty source/id/topic;
+- payload at limit and limit+1.
+
+Invariants:
+
+- broker process remains alive;
+- parser never reads beyond available frame set;
+- one bad peer cannot mutate unrelated actor state;
+- error is bounded and machine-readable;
+- no durable acceptance occurs for invalid envelope.
+
+Use a coverage-guided fuzz target if Nim/libFuzzer integration is practical under Nix. Otherwise start with deterministic generated cases and seeded random mutation.
+
+* Chaos/failure testing
+
+Chaos must operate against disposable local infrastructure, never production.
+
+** Process failures
+
+Kill -9 the bridge at each outbox/publish transition documented in 004.
+
+** Rabbit outage
+
+- stop Rabbit before submission;
+- stop after local acceptance;
+- stop while a confirm batch is in flight;
+- restart with same state;
+- restart with topology temporarily missing.
+
+Assert no locally accepted durable record disappears.
+
+** StarRouter restart
+
+Restart router while clients are active. Verify clients either reconnect or fail with a bounded error according to contract. No request may hang forever.
+
+** Network impairment
+
+Use a test proxy/netem where available to inject:
+
+- latency;
+- jitter;
+- packet loss;
+- connection reset;
+- half-open behavior;
+- short partitions.
+
+Focus on state recovery, not merely throughput degradation.
+
+** Disk pressure
+
+Fill the outbox volume toward configured thresholds. Verify warning, admission throttling, readiness failure, and hard rejection occur without deleting accepted rows.
+
+** Poison message
+
+Insert invalid/unsupported message among valid messages. Verify it is quarantined and valid messages continue.
+
+* Soak tests
+
+Soak stages:
+
+1. 30 minutes development smoke;
+2. 4 hours pre-merge extended test;
+3. 24 hours release candidate;
+4. 72 hours unattended stability gate before claiming production readiness.
+
+During soak record:
+
+- sent/accepted/confirmed/persisted counts;
+- duplicates by message id;
+- unexplained losses;
+- memory RSS;
+- file descriptors;
+- outbox bytes/pending age;
+- reconnect count;
+- CPU;
+- p50/p95/p99/p99.9 latency;
+- throughput;
+- event-loop lag if measurable.
+
+A soak that ends with counts that cannot be reconciled is a failure even if the process stayed alive.
+
+* Benchmark methodology
+
+The current =testDocsPerSec.nim= is not a sufficient benchmark because it runs indefinitely and does not define sent count, elapsed interval, latency distribution, correctness reconciliation, payload shapes, or resource use.
+
+Replace/retain it as an example and add a real benchmark executable.
+
+** Workload matrix
+
+Payload sizes:
+
+- 256 B
+- 1 KiB
+- 4 KiB
+- 16 KiB
+- 64 KiB
+- configured maximum
+
+Concurrency:
+
+- 1 producer
+- 4 producers
+- 16 producers
+- 64 producers where machine capacity permits
+
+Modes:
+
+- transient PUB fanout;
+- durable local acceptance only;
+- durable + Rabbit confirms;
+- durable + full StarIntel persistence observation.
+
+** Measurements
+
+- offered messages/s;
+- accepted messages/s;
+- confirmed messages/s;
+- persisted messages/s when applicable;
+- latency p50/p95/p99/p99.9/max;
+- CPU seconds per million messages;
+- peak RSS;
+- outbox write amplification/size;
+- network bytes;
+- retry/duplicate rates.
+
+Throughput without loss reconciliation is not a valid result.
+
+* Performance regression gates
+
+Do not choose hard numeric targets until a baseline is measured on named hardware.
+
+CI can still enforce relative gates:
+
+- no >10% throughput regression against stable baseline unless explicitly approved;
+- no >20% p99 latency regression under same fixture;
+- zero correctness regression;
+- zero unbounded memory trend in bounded load test.
+
+Store benchmark metadata: CPU model, cores, OS/Nix revision, Nim version, libzmq version, Rabbit version, payload mix, commit SHA.
+
+* Nix/CI gate
+
+Target =nix flake check= should run:
+
+- compile;
+- unit tests;
+- component tests with bounded local sockets;
+- formatting/static checks selected for Nim;
+- protocol fixture tests;
+- fast bridge integration tests if Rabbit service can be provisioned reproducibly.
+
+Long soak/chaos tests can run as scheduled/manual CI jobs rather than block every tiny PR.
+
+PR required checks should include at minimum:
+
+- nix build/check;
+- unit;
+- protocol/component;
+- integration;
+- Docker/OCI build only after the above pass.
+
+* Deterministic test rules
+
+- no fixed TCP ports when an ephemeral allocation works;
+- no infinite loops in tests;
+- every future/socket wait has a deadline;
+- no test depends on execution order;
+- unique temporary data directories/databases;
+- seeded randomness printed on failure;
+- cleanup via defer/finalizer even on assertion failure;
+- retries in product code are observable, not hidden by retrying the test itself.
+
+* Release correctness ledger
+
+For a run with N producer messages, calculate:
+
+#+begin_example
+N_sent
+N_rejected_before_acceptance
+N_durably_accepted
+N_confirmed_to_rabbit
+N_verified_persisted
+N_quarantined
+N_expired
+N_pending
+N_duplicate_replays
+#+end_example
+
+The ledger must balance according to the selected assurance mode. If a message is neither accounted for nor explicitly still pending, the test fails.

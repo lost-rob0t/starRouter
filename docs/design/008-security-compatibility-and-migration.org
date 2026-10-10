@@ -1,0 +1,313 @@
+#+title: StarRouter 008 - Security, Compatibility, and Migration
+#+options: toc:3
+
+* Objective
+
+Stabilize StarRouter without breaking existing clients, while replacing unsafe defaults and making the StarIntel bridge deployable as an explicit, reviewable boundary.
+
+* Security baseline
+
+The current README says StarRouter must not be exposed to the web. The executable entry point nevertheless defaults to wildcard TCP binds.
+
+Target defaults:
+
+#+begin_example
+pubAddress = tcp://127.0.0.1:6000
+apiAddress = tcp://127.0.0.1:6001
+#+end_example
+
+Non-loopback binding requires explicit configuration.
+
+Do not market this change as sufficient authentication. Network binding is only one layer.
+
+* Threat model
+
+Assets:
+
+- durable StarIntel documents;
+- bridge outbox contents;
+- Rabbit credentials;
+- actor registry/control plane;
+- service availability;
+- potentially sensitive StarIntel payloads.
+
+Untrusted actions to defend against:
+
+- arbitrary remote publish;
+- malformed multipart frames;
+- giant payload/resource exhaustion;
+- spoofed actor ids;
+- fake heartbeat/registration;
+- target-routing abuse;
+- replay/id collision attacks;
+- unauthorized Rabbit publishing;
+- payload leakage through logs;
+- connection floods.
+
+* ZeroMQ transport hardening
+
+Evaluate CURVE/ZAP for authenticated/encrypted non-loopback deployments supported by the chosen Nim/libzmq stack.
+
+Regardless of transport authentication:
+
+- max frame/message size;
+- connection/socket resource bounds;
+- protocol version/header validation;
+- structured rejection instead of assertions;
+- rate/admission limits where exposed beyond trusted localhost;
+- explicit =ROUTER_MANDATORY= behavior for targeted sends;
+- safe linger/timeouts;
+- no sensitive payload logging by default.
+
+A reverse proxy does not help a raw ZeroMQ TCP port in the same way it helps HTTP. If remote access is needed, use an authenticated network boundary or ZeroMQ-native security rather than exposing =tcp://*= casually.
+
+* Rabbit credentials
+
+Bridge credentials should follow least privilege.
+
+Prefer a dedicated Rabbit user/vhost policy that can:
+
+- connect to the intended vhost;
+- publish to the =documents= exchange using required routing keys;
+- optionally consume only the post-insert verification keys if verifier mode is enabled;
+- not administer unrelated queues/exchanges.
+
+Do not reuse broad StarIntel operator credentials in the bridge configuration.
+
+Secrets must come from environment/secret files/runtime secret management, never from committed design/config examples with real values.
+
+* StarIntel HTTP boundary
+
+The reviewed StarIntel HTTP docs currently warn that the API has no built-in authentication/authorization and wildcard CORS. This is another reason not to expose HTTP as the bridge's high-volume network boundary.
+
+If the bridge uses HTTP for optional persistence verification, keep it on a trusted local/internal network and follow StarIntel's own deployment threat model.
+
+* Payload handling
+
+Treat StarIntel documents as potentially sensitive.
+
+Rules:
+
+- metadata-only default logs;
+- outbox file permissions restricted to service user;
+- backup/export requires explicit operator action;
+- quarantine inspection does not dump payload by default;
+- metrics never contain raw payload/document id/user content as labels;
+- diagnostic payload samples are bounded/redacted.
+
+Encryption at rest for the outbox can be evaluated if the host threat model requires it; do not invent custom cryptography.
+
+* Compatibility strategy
+
+Do not replace SC01 in one change.
+
+Phases:
+
+** Phase A - characterize current protocol
+
+- golden SC01 fixtures;
+- exact event numeric values;
+- exact multipart order;
+- client/server compatibility tests;
+- document known bugs separately from intended behavior.
+
+** Phase B - internal canonical envelope
+
+Decode SC01 into the new internal envelope, route internally, encode legacy responses exactly as required.
+
+No client migration required yet.
+
+** Phase C - correlated protocol capability
+
+Add v0.4 correlated replies and durable acceptance semantics behind explicit negotiation/configuration.
+
+Legacy clients remain best-effort unless they opt into/are wrapped by the durable path.
+
+** Phase D - durable bridge
+
+Enable StarIntel bridge only for selected producers/topics/datasets first.
+
+** Phase E - deprecate ambiguous legacy behavior
+
+After instrumentation shows migration coverage, deprecate:
+
+- uncorrelated durable ACKs;
+- target semantics that cannot be validated;
+- unsafe wildcard defaults;
+- unbounded inbox behavior.
+
+* Protocol negotiation
+
+Possible simple mechanism:
+
+- retain =SC01= for legacy;
+- introduce a new header such as =SC02= only after its frame contract is written and tested; or
+- add a capability registration request while preserving header.
+
+Do not invent =SC02= in implementation until the ADR decides it. The key requirement is that a peer cannot accidentally receive a reply format it does not understand.
+
+=SR01= remains reserved for broker-to-broker behavior and must not be reused as the bridge header.
+
+* Migration slices
+
+** Slice 1: executable test harness
+
+Deliverables:
+
+- =nix flake check= package/test baseline;
+- deterministic unit tests;
+- local ZeroMQ component harness;
+- regressions for duplicate dispatch/ACK, constructor type, target routing, actor names;
+- no behavior cleanup hidden inside the harness PR except required test seams.
+
+Exit gate: current behavior is reproducibly measured and known defects fail targeted tests.
+
+** Slice 2: broker correctness
+
+Fix:
+
+- duplicate dispatch;
+- duplicate replies;
+- constructor event type;
+- target publishes wrong object;
+- actor identity mapping;
+- assertion-based malformed framing;
+- liveness deadline logic.
+
+Exit gate: protocol/component tests green, no P0 known defects.
+
+** Slice 3: bounded client/broker behavior
+
+Implement:
+
+- deadlines/time units;
+- inbox capacity/full policy;
+- socket HWM/linger/immediate/mandatory choices;
+- clean shutdown/reconnect;
+- loopback defaults;
+- structured status/error codes.
+
+Exit gate: overload and restart tests green; memory bounded.
+
+** Slice 4: canonical envelope + correlated replies
+
+Implement internal normalization and idempotent request tracking while retaining SC01 adapter.
+
+Exit gate: retry/stale ACK tests prove no cross-request acknowledgement confusion.
+
+** Slice 5: durable outbox
+
+Implement storage interface + selected embedded backend, acceptance states, recovery, disk bounds.
+
+Exit gate: kill-at-every-boundary tests show no accepted row loss.
+
+** Slice 6: Rabbit confirmed publisher
+
+Implement StarIntel routing mapping, publisher confirms, mandatory returns, persistent messages, reconnect/replay.
+
+Exit gate: Rabbit restart/topology failure tests reconcile all accepted messages.
+
+** Slice 7: StarIntel E2E
+
+Run disposable StarIntel stack, verify document/update persistence and duplicate behavior.
+
+Exit gate: full ledger balances.
+
+** Slice 8: observability/unattended
+
+Metrics, health/readiness, structured logs, service unit/container restart policy, runbooks.
+
+Exit gate: 24-hour then 72-hour soak with injected destination restarts.
+
+** Slice 9: performance pass
+
+Profile and optimize from measured baselines. Add async confirms/batching only with correctness tests unchanged.
+
+Exit gate: performance targets established and no correctness regression.
+
+* Rollout modes
+
+Use explicit bridge modes:
+
+#+begin_example
+OFF
+SHADOW
+CANARY
+ACTIVE
+#+end_example
+
+=OFF=: no bridge forwarding.
+
+=SHADOW=: observe/classify traffic and record mapping decisions/metrics, but do not publish durable StarIntel effects. Avoid storing sensitive payload unnecessarily.
+
+=CANARY=: forward only configured datasets/sources/dtypes.
+
+=ACTIVE=: forward all supported configured traffic.
+
+This gives an operational rollback lever independent of code rollback.
+
+* Shadow reconciliation
+
+Before ACTIVE:
+
+- count what would be supported/rejected/quarantined;
+- find topic/body dtype mismatches;
+- find missing dtype rates;
+- characterize payload sizes;
+- list actual event types in use;
+- estimate outbox capacity from observed traffic + outage budget.
+
+Do not discover these distributions for the first time after enabling durable forwarding.
+
+* Rollback
+
+Rollback must not delete pending outbox work.
+
+If a new bridge version is unhealthy:
+
+1. stop new intake / set bridge OFF or readiness false;
+2. shut down cleanly;
+3. preserve durable store snapshot;
+4. start previous compatible version only if its schema can read the store;
+5. otherwise restore software while keeping store for forward recovery;
+6. reconcile counts before declaring recovery complete.
+
+Database migrations need a compatibility table in each implementation PR.
+
+* Versioning
+
+Version independently:
+
+- application release;
+- wire protocol;
+- outbox schema;
+- StarIntel mapping profile.
+
+Expose all four in status output so a mixed deployment can be diagnosed.
+
+* Documentation updates required with implementation
+
+Before stable release update:
+
+- README installation; remove "nimble fails but gets deps" workflow;
+- protocol frame reference;
+- config reference with safe defaults;
+- delivery semantics;
+- StarIntel bridge mapping;
+- runbooks;
+- benchmark method/results;
+- upgrade/rollback guide;
+- security deployment notes.
+
+* Non-goals for the first stabilization program
+
+- full broker federation;
+- exactly-once marketing claim;
+- automatic semantics for StarRouter =deleteDocument=;
+- automatic reinterpretation of all =target= messages;
+- full XRAP replacement;
+- premature protobuf/wire-format replacement;
+- global total ordering;
+- bypassing StarIntel's documented Rabbit ingest flow to write CouchDB directly.
+
+Those can be separate designs after the broker has a reliable measured core.
