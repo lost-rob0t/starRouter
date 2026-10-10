@@ -33,6 +33,8 @@
           export LD_LIBRARY_PATH=${libraries}
           nim c -r ${paths} --nimcache:"$TMPDIR/nimcache-tests" --out:test-wire tests/test_wire.nim
           nim c ${paths} --nimcache:"$TMPDIR/nimcache-client" --out:test-client tests/client_wire.nim
+          nim c ${paths} --nimcache:"$TMPDIR/nimcache-multiservice" --out:test-multiservice-broker tests/multiservice_broker.nim
+          python3 tests/multiservice_liveness.py "$PWD/test-multiservice-broker"
           python3 tests/broker_wire.py "$PWD/starRouter" "$PWD/test-client"
           nim c -d:useStarIntel -d:useJsony ${paths} --nimcache:"$TMPDIR/nimcache-client-jsony" --out:test-client-jsony tests/client_wire.nim
           python3 tests/broker_wire.py "$PWD/starRouter" "$PWD/test-client-jsony"

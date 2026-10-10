@@ -113,12 +113,14 @@ proc bumpActor(router: StarRouter, msg: Message[string]) =
   router[actorName][msg.source].liveness = router.maxLives
 
 proc bumpActor(router: StarRouter, id: string) =
-  ## Identity may contain hyphens; never recover an actor name by splitting it.
+  ## A transport actor can register more than one service. Valid document
+  ## activity refreshes every registration for that exact ID, not just the
+  ## first table entry. Never split actor IDs on hyphens.
+  let deadline = unix() + router.timeout
   for actorName in router.actors.keys:
     if router[actorName].actors.hasKey(id):
-      router[actorName][id].lastHeart = unix() + router.timeout
+      router[actorName][id].lastHeart = deadline
       router[actorName][id].liveness = router.maxLives
-      return
 
 proc hurtActors(router: StarRouter) =
   # Called at end of msg checking loop, if client didnt send heart, assume something bad, and minus a life
