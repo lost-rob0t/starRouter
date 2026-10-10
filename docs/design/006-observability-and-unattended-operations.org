@@ -1,0 +1,309 @@
+#+title: StarRouter 006 - Observability and Unattended Operations
+#+options: toc:3
+
+* Objective
+
+StarRouter and the bridge should be able to run without an operator staring at a terminal. Unattended operation requires enough state exposure to answer four questions quickly:
+
+1. Is the process alive?
+2. Is it able to accept new work safely?
+3. Is accepted work making forward progress?
+4. If not, where is it stuck and is data at risk?
+
+Logging alone is not sufficient.
+
+* Health model
+
+Expose distinct states rather than one boolean.
+
+** Liveness
+
+Liveness answers: should the process be restarted?
+
+Healthy when:
+
+- event loop/supervisor is running;
+- internal fatal-error flag is clear;
+- outbox store can still be accessed by the process.
+
+Rabbit/StarIntel outage should not necessarily make liveness fail if the bridge can safely buffer work.
+
+** Readiness
+
+Readiness answers: should new durable work be sent here?
+
+Readiness false when any configured hard condition holds, including:
+
+- outbox cannot commit;
+- outbox above admission cutoff;
+- schema migration failed;
+- required local socket cannot bind;
+- bridge is shutting down;
+- destination topology/credentials are known permanently invalid;
+- corruption/invariant violation detected.
+
+Rabbit being temporarily down can be either ready or not-ready depending on configured offline-buffer policy and remaining outbox capacity. Make this explicit.
+
+** Degraded
+
+A process can be live and ready while degraded, for example:
+
+- Rabbit reconnecting but outbox has ample capacity;
+- retry rate above baseline;
+- pending age increasing;
+- one optional verifier unavailable;
+- transient PUB subscribers dropping.
+
+Expose degraded reasons as structured codes.
+
+* Metrics
+
+Minimum broker metrics:
+
+#+begin_example
+starrouter_requests_total{event_type,result}
+starrouter_dispatch_total{event_type}
+starrouter_replies_total{status}
+starrouter_protocol_errors_total{code}
+starrouter_registered_actors{actor_name}
+starrouter_actor_expirations_total{actor_name}
+starrouter_pub_messages_total{topic}
+starrouter_pub_dropped_total{reason}
+starrouter_inbox_depth{actor}
+starrouter_event_loop_lag_seconds
+#+end_example
+
+Minimum bridge metrics:
+
+#+begin_example
+starrouter_bridge_accepted_total{event_type,dtype}
+starrouter_bridge_rejected_total{reason}
+starrouter_bridge_quarantined_total{reason}
+starrouter_bridge_outbox_pending
+starrouter_bridge_outbox_bytes
+starrouter_bridge_oldest_pending_seconds
+starrouter_bridge_publish_attempts_total{result}
+starrouter_bridge_publish_confirmed_total
+starrouter_bridge_publish_retries_total{reason}
+starrouter_bridge_unroutable_total{routing_key}
+starrouter_bridge_inflight_confirms
+starrouter_bridge_rabbit_connected
+starrouter_bridge_rabbit_reconnects_total
+starrouter_bridge_accept_latency_seconds
+starrouter_bridge_confirm_latency_seconds
+starrouter_bridge_end_to_end_latency_seconds
+#+end_example
+
+Control label cardinality. Do not use message id, source URL, arbitrary topic, error detail, or document id as unbounded metric labels.
+
+* Structured events/logs
+
+Each operational log/event should be machine parseable and carry bounded fields such as:
+
+#+begin_src json
+{
+  "time": "...",
+  "level": "warn",
+  "component": "bridge.publisher",
+  "event": "publish_retry",
+  "message_id": "01...",
+  "routing_key": "documents.ingest.person",
+  "attempt": 4,
+  "error_code": "RABBIT_CONNECTION_LOST",
+  "retry_in_ms": 3200
+}
+#+end_src
+
+Message id is appropriate in logs/traces even though it is not appropriate as a metric label.
+
+Never log whole payloads by default. StarIntel documents can contain sensitive data. Provide an explicit debug mode with size limits/redaction and make the default metadata-only.
+
+* Trace/correlation
+
+Carry =message_id= and =correlation_id= through:
+
+- producer submission;
+- broker acceptance;
+- outbox row;
+- Rabbit message properties/headers;
+- StarIntel bridge logs.
+
+If OpenTelemetry is adopted, follow its messaging semantic conventions where practical, but keep local metric names stable behind an adapter because the messaging semantic convention is still evolving.
+
+Reference: https://opentelemetry.io/docs/specs/semconv/messaging/
+
+* Status endpoint / command
+
+Provide a cheap local administrative surface, ideally loopback/Unix-socket bound, that returns:
+
+- version + git revision;
+- uptime;
+- protocol version(s);
+- readiness/liveness/degraded state;
+- actor counts;
+- message counters;
+- outbox pending/quarantined/bytes/oldest age;
+- Rabbit connected + last successful confirm time;
+- current retry delay;
+- configured capacity thresholds without secrets.
+
+Do not require querying every outbox row to render status.
+
+Possible forms:
+
+- local HTTP =/health=, =/ready=, =/metrics=;
+- or a small XRAP/admin resource later.
+
+The first implementation should pick the simplest surface that monitoring can scrape.
+
+* Supervision
+
+The process should be organized into supervised components rather than one giant async loop whose exception policy is "print stack trace and continue".
+
+Conceptual actors/tasks:
+
+#+begin_example
+Supervisor
+  +-- ZmqIngress
+  +-- Registry/Liveness
+  +-- OutboxWriter
+  +-- RabbitPublisher
+  +-- RetryScheduler
+  +-- Metrics/Health
+  +-- OptionalPersistenceVerifier
+#+end_example
+
+A component failure policy should be explicit:
+
+- restart component locally when state is recoverable;
+- restart whole process when shared-state invariants may be compromised;
+- fail fast if durable store cannot be trusted;
+- never silently continue after an invariant violation that can lose accepted data.
+
+* Restart policy
+
+Under systemd/container orchestration:
+
+- restart on unexpected exit;
+- bounded restart backoff to avoid hot crash loops;
+- SIGTERM invokes graceful shutdown;
+- startup readiness stays false until local durable state is valid;
+- watchdog integration can be added after event-loop health is measurable.
+
+The process itself should reconnect to ordinary network outages. The supervisor should not need to restart the whole process every time RabbitMQ blips.
+
+* Alerts
+
+High-value alerts:
+
+** Page / urgent
+
+- accepted-message reconciliation mismatch;
+- durable outbox integrity failure;
+- outbox >95% / admission stopped;
+- oldest pending exceeds critical threshold;
+- mandatory unroutable messages sustained;
+- repeated authentication/authorization failures;
+- process crash loop;
+- message loss detected in verifier/soak ledger.
+
+** Ticket / warning
+
+- retry rate elevated;
+- outbox >70-85%;
+- reconnect frequency abnormal;
+- p99 confirmation latency regression;
+- actor churn/expiry spike;
+- quarantine count increasing;
+- disk growth above forecast.
+
+Avoid paging just because one transient retry happened.
+
+* SLO candidates
+
+Do not lock targets until baseline measurements exist. Define the shape now:
+
+- durable acceptance availability;
+- confirmed-forwarding success rate;
+- p99 acceptance latency;
+- p99 Rabbit confirmation latency;
+- maximum oldest-pending age under healthy destination;
+- zero unexplained accepted-message loss;
+- bounded duplicate rate under injected failures;
+- uptime between planned restarts.
+
+Correctness SLO is absolute: no unexplained loss of messages that were acknowledged as durably accepted.
+
+* Runbooks
+
+Create operator runbooks before unattended deployment for:
+
+1. Rabbit unavailable;
+2. outbox filling;
+3. mandatory unroutable messages;
+4. poison/quarantined messages;
+5. outbox integrity failure;
+6. StarIntel ingest stopped;
+7. disk full;
+8. high memory/CPU;
+9. repeated actor expiry;
+10. upgrade/rollback.
+
+Each runbook should state:
+
+- symptoms/metrics;
+- safe inspection commands;
+- whether new intake should be stopped;
+- whether replay is safe;
+- data-loss risk;
+- recovery steps;
+- verification after recovery.
+
+* Quarantine inspection
+
+Operators need a bounded command/API to:
+
+- count quarantined messages by reason;
+- inspect metadata for one message id;
+- export payload intentionally for debugging;
+- retry after correcting a recoverable configuration issue;
+- retire/delete only with explicit operator action and audit record.
+
+Do not make =retry all= the default remediation.
+
+* Upgrade behavior
+
+Before replacing a running bridge:
+
+- readiness false;
+- stop new intake;
+- drain/mark in-flight confirms;
+- leave unconfirmed rows durable;
+- start new version against same/migrated store;
+- verify old pending rows are recognized;
+- readiness true after compatibility check.
+
+Schema migrations require forward/backward compatibility or a documented rollback boundary.
+
+* Logging cleanup in current source
+
+The current broker has unconditional heartbeat =echo= calls and a log filename environment variable named =FEDIWATCH_LOG=. Stabilization should:
+
+- remove unconditional stdout heartbeat spam;
+- use StarRouter-specific configuration names;
+- define log level independently from flush policy;
+- ensure errors include component/event codes;
+- keep default logs payload-free.
+
+* Unattended release gate
+
+Before labeling unattended mode supported:
+
+- 72-hour soak completes;
+- no unexplained count mismatch;
+- process automatically recovers from at least three Rabbit restarts;
+- disk/outbox threshold behavior demonstrated;
+- SIGTERM/restart replay demonstrated;
+- monitoring can identify a deliberately injected poison message;
+- no unbounded RSS/file-descriptor trend;
+- runbooks tested against the disposable stack.
