@@ -175,6 +175,10 @@ proc fetch*[T](typ: typedesc[T] = T, client: Client): Future[Message[T]] {.async
 
 proc newClient*(actorName: string, address: string, apiAddress: string,
     timeout: int = 10, subscriptions: seq[string]): Client =
+  ## Poll and heartbeat windows must never be zero or negative.
+  ## The connection is deliberately not opened by this constructor.
+  if timeout <= 0:
+    raise newException(ValueError, "client timeout must be positive")
   let id = ulid()
   result = Client(actorName: actorName, address: address,
       subscriptions: subscriptions, apiAddress: apiAddress,

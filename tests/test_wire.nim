@@ -4,6 +4,18 @@ import ../src/starRouterpkg/[wire, proto, client]
 let valid = "{\"id\":\"person-current\", \"dataset\":\"fixture\",\"dtype\":\"person\",\"schemaVersion\":\"0.10.1\",\"fname\":\"Ada\",\"extensions\":{\"opaque\":{\"flag\":false,\"nil\":null,\"items\":[]}}}"
 
 suite "StarLang document wire boundary":
+  test "client rejects nonpositive poll and heartbeat timeouts before I/O":
+    for invalid in [0, -1, -100]:
+      expect ValueError:
+        discard newClient("timeout-probe", "inproc://sub", "inproc://api",
+            timeout = invalid, subscriptions = @[])
+    let normal = newClient("timeout-probe", "inproc://sub", "inproc://api",
+        subscriptions = @[])
+    check normal.timeout == 10
+    let explicit = newClient("timeout-probe", "inproc://sub", "inproc://api",
+        timeout = 2, subscriptions = @[])
+    check explicit.timeout == 2
+
   test "raw JSON remains exact, including opaque false/null/empty values":
     check encodePayload(valid, newDocument) == valid
     check parseJson(encodePayload(parseJson(valid), updateDocument)) == parseJson(valid)
