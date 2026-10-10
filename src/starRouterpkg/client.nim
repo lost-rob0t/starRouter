@@ -85,13 +85,28 @@ proc newMessage*[T](client: Client, data: T, eventType: EventType, source,
       topic: topic, time: time, typ: eventType)
 
 
+## Control commands retain the original client timestamp and identity.
+proc controlMessage*(client: Client, event: EventType): Message[string] =
+  if event notin {EventType.register, EventType.heartbeat}:
+    raise newException(ValueError, "Expected register or heartbeat control event")
+  result = Message[string](source: client.id, id: ulid(), time: unix(),
+      typ: event, topic: client.actorName, data: "")
+
+## Transport ACK is not durable persistence; rejection must propagate to callers.
+proc requireAck*(reply: string) =
+  case reply
+  of $EventType.ack.ord:
+    discard
+  of $EventType.nack.ord:
+    raise newException(IOError, "StarRouter NACK: command was rejected")
+  else:
+    raise newException(IOError, "Unexpected StarRouter acknowledgement")
+
 # TODO Fix this, make it reliable
 proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
   ## Emit a `Message[T]` to the message broker.
   ## By default it uses std json `%*` to serialize to json string, but if you compile with `-d:useJsony`, you can use `toJson()`
-  var
-    state = false
-    i = 0
+  discard tries # Never blindly replay an ambiguous message to the broker.
   # Validate the complete payload before sending any multipart frame.
   let payload = encodePayload(data.data, data.typ)
   # nim bindings sends the identity for us?
@@ -103,9 +118,7 @@ proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
   await c.apiSocket.sendAsync($data.typ.ord, SNDMORE)
   await c.apiSocket.sendAsync(data.topic, SNDMORE)
   await c.apiSocket.sendAsync(payload)
-  let resp = await c.apiSocket.receiveAsync()
-  if not resp.isACK:
-    raise newException(IOError, "Broker rejected message: " & resp)
+  requireAck(await c.apiSocket.receiveAsync())
   #while not state and i < tries:
   #  client.apiSocket.send($eventType.ord, SNDMORE)
   #  client.apiSocket.send($data)
@@ -119,24 +132,22 @@ proc emit*[T](c: Client, data: T, tries: int = 3) {.async.} =
 
 proc fetch*(client: Client): Future[Message[string]] {.async.} =
   ## Fetch data from subscriptions
-  var msg = Message[string]()
-  try:
-    msg.topic = await client.subSocket.receiveAsync()
-    msg.source = await client.subSocket.receiveAsync()
-    msg.id = await client.subSocket.receiveAsync()
-    let time = (await client.subSocket.receiveAsync()).parseInt()
-    if time.isOld(client.timeout): raise newException(SlowMessageDefect,
-        fmt"MSG age older then the current timeout of {client.timeout}. DO NOT EXCEPT THIS.")
-    msg.time = time
-    let etyp = (await client.subSocket.receiveAsync()).parseInt()
-    msg.typ = EventType(etyp)
-    # TODO protobuffs man
-    msg.data = await client.subSocket.receiveAsync()
-    validatePayload(msg.data, msg.typ)
-    result = msg
-  except KeyError:
-    result = msg
-    discard # wrong msg typ
+  # Receive every frame before decoding, so rejected input cannot desynchronize
+  # the next fetch. Event time is provenance, not a receive timeout.
+  var frames: seq[string]
+  frames.add(await client.subSocket.receiveAsync())
+  while getsockopt[cint](client.subSocket, RCVMORE) != 0:
+    frames.add(await client.subSocket.receiveAsync())
+  if frames.len != 6:
+    raise newException(ValueError, "Invalid publication frame count")
+  let event = frames[4].parseInt()
+  if event < ord(low(EventType)) or event > ord(high(EventType)):
+    raise newException(ValueError, "Invalid publication event")
+  let msg = Message[string](topic: frames[0], source: frames[1],
+      id: frames[2], time: frames[3].parseBiggestInt(),
+      typ: EventType(event), data: frames[5])
+  validatePayload(msg.data, msg.typ)
+  return msg
 
 proc fetch*[T](typ: typedesc[T] = T, client: Client): Future[Message[T]] {.async.} =
   ## Fetch messages from subscriptions, but return T
@@ -182,12 +193,7 @@ proc unsubscribe*(client: Client, topic: string) =
 
 
 proc register*(client: Client) {.async.} =
-  var msg = Message[string]()
-  msg.topic = client.actorName
-  msg.source = client.id
-  msg.typ = EventType.register
-  msg.data = ""
-  await client.emit(msg)
+  await client.emit(client.controlMessage(EventType.register))
 
 
 
@@ -219,9 +225,7 @@ proc sendHeartbeat*(client: Client) {.async.} =
   if unix() > client.heartExpires:
     when defined(debug):
       echo "It is love time!"
-    let msg = Message[string](source: client.id, id: ulid(), data: "",
-        typ: EventType.heartBeat, topic: client.actorName)
-    await client.emit(msg)
+    await client.emit(client.controlMessage(EventType.heartBeat))
     client.heartExpires = unix() + client.timeout
 
 

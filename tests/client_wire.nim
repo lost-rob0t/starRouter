@@ -1,4 +1,5 @@
 import std/[os, json, asyncdispatch, options]
+import zmq
 import ../src/starRouterpkg/[client, proto]
 import starintel_doc/generated
 import starintel_doc/canonical as canonical
@@ -41,6 +42,53 @@ for fixture in rawContract["cases"]:
   doAssert canonical.stringifyWireJson(roundtrip.data) == expected, fixture["name"].getStr
   inc exactCases
 doAssert exactCases == 9
+# Historical event time is retained through the production encoder/broker/client.
+let historical = c.newMessage(readFile(arguments[2]), newDocument, "", "native-wire")
+historical.time = 1700000000
+waitFor c.emit(historical)
+let replayed = waitFor c.fetch()
+doAssert replayed.time == historical.time
+doAssert replayed.data == readFile(arguments[2])
+waitFor c.emit(c.newMessage(person, updateDocument, "", "native-wire"))
+doAssert (waitFor c.fetch()).typ == updateDocument
+# Preserve SC01's existing Target -> recipient/newDocument projection.
+let targetRaw = readFile(arguments[3])
+waitFor c.emit(c.newMessage(targetRaw, target, "", c.actorName))
+let delivery = waitFor c.fetch()
+doAssert delivery.typ == newDocument
+doAssert delivery.topic == c.id and delivery.data == targetRaw
+# Unsupported delete must reach the caller as NACK and leave the socket usable.
+var rejectedDelete = false
+try:
+  waitFor c.emit(c.newMessage(person, deleteDocument, "", "native-wire"))
+except IOError:
+  rejectedDelete = true
+doAssert rejectedDelete
+waitFor c.emit(c.newMessage(person, newDocument, "", "native-wire"))
+doAssert (waitFor c.fetch()).typ == newDocument
+# A real PUB socket feeds malformed frames to the production client decoder.
+let fakeAddress = "ipc://" & arguments[2] & ".sock"
+let publisher = zmq.listen(fakeAddress, PUB)
+let receiver = newClient("frame-probe", fakeAddress, arguments[1], subscriptions = @["probe"])
+waitFor receiver.connect()
+waitFor sleepAsync(300)
+let validFrames = @["probe", "source", "id", "1700000000", "3", readFile(arguments[2])]
+for field in [3, 4, 5]:
+  var malformed = validFrames
+  malformed[field] = if field == 5: "[]" else: "invalid"
+  publisher.sendAll(malformed)
+  var rejected = false
+  try:
+    discard waitFor receiver.fetch()
+  except ValueError:
+    rejected = true
+  doAssert rejected
+  publisher.sendAll(validFrames)
+  let recovered = waitFor receiver.fetch()
+  doAssert recovered.time == 1700000000 and recovered.data == validFrames[5]
+receiver.close()
+publisher.close()
 c.close()
+echo "native historical timestamp, Target, NACK and multipart recovery PASS"
 echo "native JsonNode exact-number receive/re-emit PASS (18 messages)"
 echo "native client emit PASS"

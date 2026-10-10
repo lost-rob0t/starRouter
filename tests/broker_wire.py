@@ -63,9 +63,11 @@ subscriber.setsockopt(zmq.SUBSCRIBE, b"documents")
 subscriber.setsockopt(zmq.RCVTIMEO, 5000)
 subscriber.connect(pub_address)
 
-def send(event, payload, topic=b"documents"):
-    api.send_multipart([b"", b"SC01", b"test-actor", b"wire-id", str(int(time.time())).encode(), str(event).encode(), topic, payload.encode()])
-    return api.recv_multipart()
+def send(event, payload, topic=b"documents", *, peer=api, actor_id=b"test-actor"):
+    peer.send_multipart([b"", b"SC01", actor_id, b"wire-id",
+                         str(int(time.time())).encode(), str(event).encode(),
+                         topic, payload.encode()])
+    return peer.recv_multipart()
 
 try:
     assert send(7, "", b"test") == [b"1"]
@@ -129,7 +131,9 @@ try:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "document.json"
             path.write_text(wire)
-            result = subprocess.run([sys.argv[2], pub_address, api_address, str(path)],
+            target_path = Path(directory) / "target.json"
+            target_path.write_text(target_wire)
+            result = subprocess.run([sys.argv[2], pub_address, api_address, str(path), str(target_path)],
                                     capture_output=True, text=True, timeout=15)
             assert result.returncode == 0, result.stderr
             assert "native client emit PASS" in result.stdout
@@ -144,6 +148,85 @@ try:
     assert send(8, target_wire, b"test") == [b"1"]
     frames = subscriber.recv_multipart()
     assert frames[0] == b"test-actor" and frames[4] == b"3" and frames[-1].decode() == target_wire
+    # Missing routes and unimplemented legacy events must NACK, not pretend
+    # successful delivery or silently create an actor registration.
+    for attempt in range(2):
+        assert send(8, target_wire, b"missing-target-service") == [b"2"], attempt
+        assert not subscriber.poll(100), "undeliverable target was published"
+    assert send(0, "", b"unregistered-heartbeat-service") == [b"2"]
+    assert send(4, "", b"documents") == [b"2"]
+    assert send(5, "", b"documents") == [b"2"]
+    assert not subscriber.poll(100), "unsupported event published"
+
+    # An unregistered sender cannot turn a document into an actor registration.
+    unregistered = context.socket(zmq.DEALER)
+    unregistered_id = b"unregistered-writer-01"
+    unregistered.setsockopt(zmq.IDENTITY, unregistered_id)
+    unregistered.setsockopt(zmq.RCVTIMEO, 5000)
+    unregistered.setsockopt(zmq.SNDTIMEO, 5000)
+    unregistered.connect(api_address)
+    try:
+        assert send(3, wire, peer=unregistered, actor_id=unregistered_id) == [b"2"]
+        assert not subscriber.poll(100), "unregistered document was published"
+    finally:
+        unregistered.close(linger=0)
+
+    # Canonical actor names include hyphens: document publication refreshes the
+    # registration by exact ID, while Target selects the registered service.
+    named_id = b"star:v1:collector:wire-parser-01"
+    named_service = b"star:v1:collector:wire-parser"
+    named = context.socket(zmq.DEALER)
+    named.setsockopt(zmq.IDENTITY, named_id)
+    named.setsockopt(zmq.RCVTIMEO, 5000)
+    named.setsockopt(zmq.SNDTIMEO, 5000)
+    named.connect(api_address)
+    subscriber.setsockopt(zmq.SUBSCRIBE, named_id)
+    time.sleep(0.3)
+    try:
+        assert send(7, "", named_service, peer=named, actor_id=named_id) == [b"1"]
+        assert send(3, wire, peer=named, actor_id=named_id) == [b"1"]
+        frames = subscriber.recv_multipart()
+        assert frames[0] == b"documents" and frames[1] == named_id and frames[-1].decode() == wire
+        assert not subscriber.poll(100), "hyphenated actor emitted twice"
+        assert send(8, target_wire, named_service) == [b"1"]
+        frames = subscriber.recv_multipart()
+        assert frames[0] == named_id and frames[4] == b"3" and frames[-1].decode() == target_wire
+        assert not subscriber.poll(100), "target was dispatched twice"
+    finally:
+        named.close(linger=0)
+    # Claimed source is bound to its registration's ROUTER transport identity.
+    attacker = context.socket(zmq.DEALER)
+    attacker.setsockopt(zmq.IDENTITY, b"attacker")
+    attacker.setsockopt(zmq.RCVTIMEO, 5000)
+    attacker.connect(api_address)
+    try:
+        for event, body, topic in [(7, "", b"test"), (0, "", b"test"),
+                                   (3, wire, b"documents"), (8, target_wire, b"test")]:
+            assert send(event, body, topic, peer=attacker) == [b"2"], event
+            assert not subscriber.poll(50), "spoofed actor published"
+        assert send(7, "", b"attacker-service", peer=attacker, actor_id=b"attacker") == [b"1"]
+        assert send(3, wire, peer=attacker) == [b"2"]
+    finally:
+        attacker.close(linger=0)
+    # Parse errors, missing/extra frames, bad delimiters and protocols cannot
+    # strand a partial envelope or consume the next command.
+    valid_frames = [b"", b"SC01", b"test-actor", b"wire-id", b"1700000000",
+                    b"3", b"documents", wire.encode()]
+    bad_messages = [valid_frames[:4], valid_frames + [b"extra"]]
+    for index, bad in [(0, b"bad"), (1, b"SR01"), (4, b"not-time"),
+                       (5, b"-1"), (5, b"99")]:
+        malformed = valid_frames.copy()
+        malformed[index] = bad
+        bad_messages.append(malformed)
+    for malformed in bad_messages:
+        api.send_multipart(malformed)
+        assert api.recv_multipart() == [b"2"]
+        assert not subscriber.poll(50)
+        assert send(3, wire) == [b"1"]
+        assert subscriber.recv_multipart()[-1].decode() == wire
+    for payload in ["not-json", wire]:
+        assert send(4, payload) == [b"2"], "SC01 delete has no defined operation"
+        assert not subscriber.poll(50)
     legacy = {"_id":"starintel:person:test","dataset":"test","dtype":"person","schema_version":"0.9.0",
               "version":1,"date_added":"2026-10-04T00:00:00Z","date_updated":"2026-10-04T00:00:00Z",
               "sources":[],"evidence":[],"data":{"fname":"Ada"},"extensions":{"opaque":{"flag":False,"nil":None}}}
