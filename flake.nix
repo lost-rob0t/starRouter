@@ -31,6 +31,7 @@
           python3 scripts/sync-starintel-schema.py --offline
           python3 scripts/check-runtime-release.py ${starintel-doc}
           export LD_LIBRARY_PATH=${libraries}
+          nim c -r ${paths} --nimcache:"$TMPDIR/nimcache-heartbeat" --out:test-heartbeat tests/test_heartbeat.nim
           nim c -r ${paths} --nimcache:"$TMPDIR/nimcache-tests" --out:test-wire tests/test_wire.nim
           nim c ${paths} --nimcache:"$TMPDIR/nimcache-client" --out:test-client tests/client_wire.nim
           python3 tests/broker_wire.py "$PWD/starRouter" "$PWD/test-client"

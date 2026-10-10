@@ -20,3 +20,4 @@ requires "ulid"
 
 task test, "Run deterministic wire-contract and local broker tests":
   exec "nim c -r --path:src tests/test_wire.nim"
+  exec "nim c -r --path:src tests/test_heartbeat.nim"

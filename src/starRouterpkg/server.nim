@@ -3,6 +3,7 @@ import asyncdispatch
 import proto
 import times
 import tables
+import heartbeat
 import strutils
 import utils
 import strformat
@@ -14,8 +15,7 @@ import wire
 type
   Actor = ref object
     id: string
-    liveness: int
-    lastHeart: int64
+    heart: HeartbeatCounter
   ActorManager = ref object
     # actor.id: Actor
     actors: Table[string, Actor]
@@ -45,9 +45,7 @@ proc `==`(x, y: Actor): bool = result = x.id == y.id
 
 proc newActor*(router: StarRouter, id: string): Actor =
   result = Actor(id: id)
-  result.liveness = 5
-  # Assume it is fine for now, wait until next beat time
-  result.lastHeart = unix() + router.timeout
+  result.heart = newHeartbeatCounter(unix(), router.maxLives)
 
 
 proc `[]`(router: StarRouter, actorName: string): ActorManager =
@@ -86,30 +84,29 @@ proc nextActor(router: StarRouter, actorName: string): Actor =
 
 proc bumpActor(router: StarRouter, msg: Message[string]) =
   let actorName = msg.topic
-  router[actorName][msg.source].lastHeart = unix() + int64(router.timeout)
-  router[actorName][msg.source].liveness = router.maxLives
+  let actor = router[actorName][msg.source]
+  actor.heart.refresh(unix(), router.maxLives)
 
 proc bumpActor(router: StarRouter, id: string) =
   let actorname = id.split("-")[0]
-  router[actorName][id].lastHeart = unix() + router.timeout
+  let actor = router[actorName][id]
+  actor.heart.refresh(unix(), router.maxLives)
 
 proc hurtActors(router: StarRouter) =
   # Called at end of msg checking loop, if client didnt send heart, assume something bad, and minus a life
   for actorName in router.actors.keys:
     for actor in router[actorName].values():
-      let age = unix() - actor.lastHeart
-      if age > router.timeout:
-        actor.liveness -= 1
-        when defined(debug):
-          echo fmt"Hurt: {actor.id}"
-          echo fmt"Liveness: {actor.liveness}"
+      # A busy broker must charge each missed heartbeat window only once.
+      actor.heart.accrue(unix(), router.timeout)
+      when defined(debug):
+        echo fmt"Actor: {actor.id}; lives: {actor.heart.lives}"
 
 proc removeDeadActors(router: StarRouter) =
   # remove actors with 0 lives, they are likly dead
     for actorName in router.actors.keys:
       var actors = router[actorName].values()
       for x in 0..actors.high():
-        if actors[x].liveness <= 0:
+        if actors[x].heart.lives <= 0:
           let id = actors[x].id
           router[actorName].delete(id)
           when defined(debug):
@@ -119,6 +116,8 @@ proc removeDeadActors(router: StarRouter) =
 proc newStarRouter*(pubListen: string = "tcp://127.0.0.1:6000",
     apiListen: string = "tcp://*:6001", timeout: int = 10,
     maxLives: int = 5): StarRouter =
+  if timeout <= 0: raise newException(ValueError, "heartbeat timeout must be positive")
+  if maxLives <= 0: raise newException(ValueError, "maxLives must be positive")
   result = StarRouter(pubListen: pubListen, apiListen: apiListen,
       timeout: timeout, id: fmt"router-{ulid()}", maxLives: maxLives)
 
