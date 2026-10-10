@@ -81,7 +81,7 @@ proc newMessage*[T](client: Client, data: T, eventType: EventType, source,
   ## Create a new message using the source as the current client id.
   let time = now().toTime().toUnix()
   result = Message[typeOf(data)](data: data, source: client.id, id: ulid(),
-      topic: topic, time: time)
+      topic: topic, time: time, typ: eventType)
 
 
 # TODO Fix this, make it reliable

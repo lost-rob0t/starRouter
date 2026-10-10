@@ -11,5 +11,7 @@ jobs:
         with:
           nim-version: '2.2.4'
       - run: nim c -r tests/test_payload.nim
+      - run: sudo apt-get update && sudo apt-get install -y libzmq3-dev
       - run: nimble install -y --depsOnly
       - run: nim check --path:src tests/test_client_contract.nim
+      - run: nim c -r --path:src tests/test_client_contract.nim
