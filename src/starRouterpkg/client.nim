@@ -230,12 +230,20 @@ proc sendHeartbeat*(client: Client) {.async.} =
 
 
 
+func pollTimeoutMilliseconds*(seconds: int): int =
+  ## Client timeouts are seconds; ZeroMQ poll() accepts milliseconds.
+  ## Saturate at the portable C integer boundary instead of overflowing.
+  const maxSeconds = int(high(cint)) div 1000
+  if seconds > maxSeconds:
+    return int(high(cint))
+  result = seconds * 1000
+
 proc runInbox*[T](typ: typedesc[T], client: Client, inbox: Inbox[T]) {.async.} =
   var poller: ZPoller
   poller.register(client.subsocket, ZMQ_POLLIN)
   var message: Message[typ]
   while true:
-    let res = poll(poller, client.timeout)
+    let res = poll(poller, pollTimeoutMilliseconds(client.timeout))
     if res > 0:
       if events(poller[0]):
         message = await typ.fetch(client)
@@ -260,7 +268,7 @@ proc runStringInbox*(client: Client, inbox: Inbox[string]) {.async.} =
   poller.register(client.subsocket, ZMQ_POLLIN)
   var message: Message[string]
   while true:
-    let res = poll(poller, client.timeout)
+    let res = poll(poller, pollTimeoutMilliseconds(client.timeout))
     if res > 0:
       if events(poller[0]):
         message = await fetch(client)
