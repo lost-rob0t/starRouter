@@ -57,6 +57,12 @@ proc newInbox*[T](typ: typedesc[T], n: int = 100): Inbox[T] =
 proc newStringInbox*(n: int = 100): Inbox[string] =
   string.newInbox(n)
 
+proc pollTimeoutMillis*(seconds: int): int =
+  ## Client timeouts are seconds, while ZeroMQ polls take milliseconds.
+  if seconds <= 0 or seconds > int(high(int32)) div 1000:
+    raise newException(ValueError, "client timeout must be positive and fit in a millisecond poll interval")
+  result = seconds * 1000
+
 proc registerCB*[T](inbox: Inbox[T], callback: proc(doc: Message[T]): Future[void]) =
   ## Add a Callback to the inbox
   # TODO multiple callbacks?
@@ -164,6 +170,7 @@ proc fetch*[T](typ: typedesc[T] = T, client: Client): Future[Message[T]] {.async
 
 proc newClient*(actorName: string, address: string, apiAddress: string,
     timeout: int = 10, subscriptions: seq[string]): Client =
+  discard pollTimeoutMillis(timeout)
   let id = ulid()
   result = Client(actorName: actorName, address: address,
       subscriptions: subscriptions, apiAddress: apiAddress,
@@ -231,7 +238,7 @@ proc runInbox*[T](typ: typedesc[T], client: Client, inbox: Inbox[T]) {.async.} =
   poller.register(client.subsocket, ZMQ_POLLIN)
   var message: Message[typ]
   while true:
-    let res = poll(poller, client.timeout)
+    let res = poll(poller, pollTimeoutMillis(client.timeout))
     if res > 0:
       if events(poller[0]):
         message = await typ.fetch(client)
@@ -256,7 +263,7 @@ proc runStringInbox*(client: Client, inbox: Inbox[string]) {.async.} =
   poller.register(client.subsocket, ZMQ_POLLIN)
   var message: Message[string]
   while true:
-    let res = poll(poller, client.timeout)
+    let res = poll(poller, pollTimeoutMillis(client.timeout))
     if res > 0:
       if events(poller[0]):
         message = await fetch(client)
@@ -265,12 +272,12 @@ proc runStringInbox*(client: Client, inbox: Inbox[string]) {.async.} =
           echo message
         if inbox.filter(message):
           inbox.push(message)
-      else:
-        await client.sendHeartbeat()
 
     while not inbox.isEmpty:
       message = inbox.pop
       await inbox.callback(message)
+    # An idle SUB socket is normal; heartbeat even without deliveries.
+    await client.sendHeartbeat()
 
 
 

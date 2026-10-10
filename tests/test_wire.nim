@@ -39,3 +39,17 @@ suite "StarLang document wire boundary":
     malformed.delete("_id")
     expect ValueError:
       validatePayload($malformed, newDocument)
+
+suite "client idle liveness":
+  test "poll converts seconds to milliseconds and rejects invalid intervals":
+    check pollTimeoutMillis(1) == 1000
+    check pollTimeoutMillis(10) == 10000
+    expect ValueError:
+      discard pollTimeoutMillis(0)
+    expect ValueError:
+      discard pollTimeoutMillis(-1)
+    expect ValueError:
+      discard pollTimeoutMillis(int(high(int32)) div 1000 + 1)
+    expect ValueError:
+      discard newClient("test", "inproc://unused-sub", "inproc://unused-api",
+          timeout=0, subscriptions = @[])
