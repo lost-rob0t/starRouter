@@ -17,6 +17,29 @@
       python = pkgs.python3.withPackages (ps: [ ps.pyzmq ]);
       paths = "--noNimblePath --path:src --path:${starintel-doc}/src --path:${zmq} --path:${ulid}/src --path:${random}/src --path:${cligen} --path:${jsony}/src";
       libraries = pkgs.lib.makeLibraryPath [ pkgs.zeromq pkgs.pcre ];
+      embedded = pkgs.stdenv.mkDerivation {
+        pname = "starrouter-embedded-boundary";
+        version = "0.1.0";
+        src = self;
+        nativeBuildInputs = [ pkgs.nim python ];
+        buildInputs = [ pkgs.zeromq ];
+        buildPhase = ''
+          nim c --app:lib --noMain:on -d:release --nimcache:"$TMPDIR/nimcache-embedded" --out:libstarrouter.so src/starRouterEmbedded.nim
+        '';
+        doCheck = true;
+        checkPhase = ''
+          python3 tests/embedded_native.py "$PWD/libstarrouter.so"
+        '';
+        installPhase = ''
+          mkdir -p "$out/lib" "$out/include"
+          install -m755 libstarrouter.so "$out/lib/"
+          install -m644 include/starrouter.h "$out/include/"
+        '';
+        doInstallCheck = true;
+        installCheckPhase = ''
+          python3 tests/embedded_native.py "$out/lib/libstarrouter.so"
+        '';
+      };
       router = pkgs.stdenv.mkDerivation {
         pname = "starRouter";
         version = "0.3.1";
@@ -50,6 +73,8 @@
       };
     in {
       packages.${system}.default = router;
+      packages.${system}.embedded = embedded;
+      checks.${system}.embedded = embedded;
       checks.${system}.default = router;
       devShells.${system}.default = pkgs.mkShell {
         packages = [ pkgs.nim pkgs.nimble python ];

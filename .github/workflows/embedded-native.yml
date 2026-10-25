@@ -1,0 +1,20 @@
+name: Embedded native boundary
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: embedded-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+jobs:
+  native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - uses: cachix/install-nix-action@v31
+      - name: Build and test installed native boundary
+        run: nix build .#embedded -L
