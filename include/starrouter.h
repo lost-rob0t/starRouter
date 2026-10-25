@@ -22,6 +22,19 @@ int sr_send(uint64_t handle, const void *route, size_t route_len,
             const void *body, size_t body_len);
 /* Idempotent for a zero token; successful close clears the caller's token. */
 int sr_close(uint64_t *handle);
+/* Explicit SC01 broker embedding; separate from actor2actor body API.
+ * Frame carrier: repeated uint32 big-endian length followed by exact bytes.
+ * RECEIVE returns all 9 ROUTER frames, retained until SETTLE. Host must authorize
+ * every event and durably persist document effects before accepting settlement.
+ * API thread owns handle; dedicated native worker owns sockets and Nim state. */
+int sr_sc01_open(void *context, const char *api, const char *pub,
+                 uint32_t max_payload, uint32_t hwm, uint32_t timeout_ms,
+                 uint64_t *out_handle);
+int sr_sc01_receive(uint64_t handle, void *buffer, size_t capacity, size_t *length);
+int sr_sc01_settle(uint64_t handle, int accept);
+int sr_sc01_target(uint64_t handle, const char *actor, const char *id,
+                   const void *body, size_t length);
+int sr_sc01_close(uint64_t *handle);
 #ifdef __cplusplus
 }
 #endif

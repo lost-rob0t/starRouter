@@ -22,13 +22,14 @@
         version = "0.1.0";
         src = self;
         nativeBuildInputs = [ pkgs.nim python ];
-        buildInputs = [ pkgs.zeromq ];
+        buildInputs = [ pkgs.zeromq pkgs.pcre ];
         buildPhase = ''
-          nim c --app:lib --noMain:on -d:release --nimcache:"$TMPDIR/nimcache-embedded" --out:libstarrouter.so src/starRouterEmbedded.nim
+          nim c --app:lib --threads:on --mm:refc --dynlibOverride:pcre --passL:-lpcre ${paths} -d:release --nimcache:"$TMPDIR/nimcache-embedded" --out:libstarrouter.so src/starRouterEmbedded.nim
         '';
         doCheck = true;
         checkPhase = ''
           python3 tests/embedded_native.py "$PWD/libstarrouter.so"
+          python3 tests/embedded_sc01.py "$PWD/libstarrouter.so"
         '';
         installPhase = ''
           mkdir -p "$out/lib" "$out/include"
@@ -38,6 +39,7 @@
         doInstallCheck = true;
         installCheckPhase = ''
           python3 tests/embedded_native.py "$out/lib/libstarrouter.so"
+          python3 tests/embedded_sc01.py "$out/lib/libstarrouter.so"
         '';
       };
       router = pkgs.stdenv.mkDerivation {

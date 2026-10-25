@@ -107,6 +107,12 @@ proc ownsActor(router: StarRouter, id, transport: string): bool =
     if manager.actors.hasKey(id):
       return manager[id].transport == transport
 
+proc registeredActor*(router: StarRouter, id, transport: string): bool =
+  router.ownsActor(id, transport)
+
+proc actorCount*(router: StarRouter): int =
+  for manager in router.actors.values: result += manager.actors.len
+
 proc bumpActor(router: StarRouter, msg: Message[string]) =
   let actorName = msg.topic
   router[actorName][msg.source].lastHeart = unix() + int64(router.timeout)
@@ -212,12 +218,12 @@ proc publishClientMessage*(router: StarRouter, message: Message[string]) =
   when defined(debug):
     echo message
 
-proc sendHeartbeat(router: StarRouter) =
-  let msg = Message[string](source: router.id, id: ulid(), data: "",
+proc routerHeartbeat*(router: StarRouter): Message[string] =
+  Message[string](source: router.id, id: ulid(), data: "",
       time: unix(), typ: EventType.heartBeat, topic: "broker")
-  router.publishClientMessage(msg)
-  echo "sent hearts"
-  echo msg
+
+proc sendHeartbeat(router: StarRouter) =
+  router.publishClientMessage(router.routerHeartbeat())
 
 # TODO send error msg incase of broker error
 proc registerActor(router: StarRouter, msg: Message[string], transport: string) =
@@ -239,27 +245,56 @@ proc handletarget(router: StarRouter, msg: Message[string]) =
   let actor = router.nextActor(msg.topic)
   router.publishClientMessage(routedTarget(msg, actor.id))
 
+proc prepareClientMessage*(router: StarRouter, frames: seq[string]): Message[string] =
+  ## Shared SC01 admission: no registration, publication or acknowledgment effects.
+  result = decodeClientMessage(frames)
+  validatePayload(result.data, result.typ)
+  let action = dispatchAction(result.typ)
+  if action == rejectEvent:
+    raise newException(ValueError, "Unsupported SC01 event")
+  if action != registerClient and not router.ownsActor(result.source, frames[0]):
+    raise newException(ValueError, "Unregistered actor or mismatched transport")
+
+proc applyClientMessage*(router: StarRouter, msg: Message[string],
+                         transport: string): Message[string] =
+  ## Commit only after the embedding host's authorization/persistence decision.
+  ## The standalone CLI retains its historical transport-receipt behavior.
+  case dispatchAction(msg.typ)
+  of relayDocument:
+    router.bumpActor(msg.source)
+    result = msg
+  of registerClient:
+    router.registerActor(msg, transport)
+  of heartbeatClient:
+    router.bumpActor(msg)
+  of routeTarget:
+    if not router.actors.hasKey(msg.topic) or router[msg.topic].actors.len == 0:
+      raise newException(KeyError, "No registered recipient for target")
+    result = routedTarget(msg, router.nextActor(msg.topic).id)
+  of rejectEvent:
+    raise newException(ValueError, "Unsupported SC01 event")
+
+proc routeEmbeddedTarget*(router: StarRouter, actor, id, body: string): Message[string] =
+  ## Trusted host entry: host owns authorization, leases and idempotency.
+  validatePayload(body, target)
+  if not router.actors.hasKey(actor) or router[actor].actors.len == 0:
+    raise newException(KeyError, "No registered recipient for target")
+  let msg = Message[string](source: router.id, id: id, time: unix(),
+                            typ: target, topic: actor, data: body)
+  result = routedTarget(msg, router.nextActor(actor).id)
+
+proc maintainActors*(router: StarRouter) =
+  router.hurtActors()
+  router.removeDeadActors()
+
 proc handleMessage*(router: StarRouter) {.async.} =
   let frames = await receiveMultipart(router.apiConn)
   let source = frames[0]
   try:
-    let msg = decodeClientMessage(frames)
-    validatePayload(msg.data, msg.typ)
-    let action = dispatchAction(msg.typ)
-    if action != registerClient and not router.ownsActor(msg.source, source):
-      raise newException(ValueError, "Unregistered actor or mismatched transport")
-    case action:
-    of relayDocument:
-      router.bumpActor(msg.source)
-      router.publishClientMessage(msg)
-    of registerClient:
-      router.registerActor(msg, source)
-    of heartbeatClient:
-      router.bumpActor(msg)
-    of routeTarget:
-      router.handleTarget(msg)
-    of rejectEvent:
-      raise newException(ValueError, "Unsupported SC01 event")
+    let msg = router.prepareClientMessage(frames)
+    let publication = router.applyClientMessage(msg, source)
+    if publication != nil:
+      router.publishClientMessage(publication)
     router.sendOK(source)
   except KeyError, ValueError:
     router.sendNack(source)
