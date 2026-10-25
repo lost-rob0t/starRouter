@@ -17,6 +17,38 @@
       python = pkgs.python3.withPackages (ps: [ ps.pyzmq ]);
       paths = "--noNimblePath --path:src --path:${starintel-doc}/src --path:${zmq} --path:${ulid}/src --path:${random}/src --path:${cligen} --path:${jsony}/src";
       libraries = pkgs.lib.makeLibraryPath [ pkgs.zeromq pkgs.pcre ];
+      embedded = pkgs.stdenv.mkDerivation {
+        pname = "starrouter-embedded-boundary";
+        version = "0.1.0";
+        src = self;
+        nativeBuildInputs = [ pkgs.nim python pkgs.gdb ];
+        buildInputs = [ pkgs.zeromq pkgs.pcre ];
+        buildPhase = ''
+          nim c --app:lib --threads:on --mm:refc --debugger:native --dynlibOverride:pcre --passL:-lpcre ${paths} -d:release --nimcache:"$TMPDIR/nimcache-embedded" --out:libstarrouter.so src/starRouterEmbedded.nim
+        '';
+        doCheck = true;
+        checkPhase = ''
+          nim c -r --threads:on --mm:refc ${paths} --nimcache:"$TMPDIR/nimcache-embedded-id" --out:test-embedded-id tests/test_embedded_id.nim
+          python3 tests/embedded_native.py "$PWD/libstarrouter.so"
+          if ! python3 -X faulthandler tests/embedded_sc01.py "$PWD/libstarrouter.so" -v; then
+            timeout 45s gdb --batch -ex 'set pagination off' -ex 'handle SIGSEGV stop print nopass' -ex run -ex 'thread apply all bt 20' --args python3 tests/embedded_sc01.py "$PWD/libstarrouter.so" -v || true
+            exit 1
+          fi
+          python3 tests/embedded_security.py "$PWD/libstarrouter.so"
+        '';
+        installPhase = ''
+          mkdir -p "$out/lib" "$out/include"
+          install -m755 libstarrouter.so "$out/lib/"
+          install -m644 include/starrouter.h "$out/include/"
+          install -m644 native/security.h "$out/include/starrouter-security.h"
+        '';
+        doInstallCheck = true;
+        installCheckPhase = ''
+          python3 tests/embedded_native.py "$out/lib/libstarrouter.so"
+          python3 -X faulthandler tests/embedded_sc01.py "$out/lib/libstarrouter.so" -v
+          python3 tests/embedded_security.py "$out/lib/libstarrouter.so"
+        '';
+      };
       router = pkgs.stdenv.mkDerivation {
         pname = "starRouter";
         version = "0.3.1";
@@ -49,8 +81,14 @@
         '';
       };
     in {
-      packages.${system}.default = router;
-      checks.${system}.default = router;
+      packages.${system} = {
+        default = router;
+        inherit embedded;
+      };
+      checks.${system} = {
+        default = router;
+        inherit embedded;
+      };
       devShells.${system}.default = pkgs.mkShell {
         packages = [ pkgs.nim pkgs.nimble python ];
         LD_LIBRARY_PATH = libraries;
