@@ -28,6 +28,7 @@
         '';
         doCheck = true;
         checkPhase = ''
+          nim c -r --threads:on --mm:refc ${paths} --nimcache:"$TMPDIR/nimcache-embedded-id" --out:test-embedded-id tests/test_embedded_id.nim
           python3 tests/embedded_native.py "$PWD/libstarrouter.so"
           if ! python3 -X faulthandler tests/embedded_sc01.py "$PWD/libstarrouter.so" -v; then
             timeout 45s gdb --batch -ex 'set pagination off' -ex 'handle SIGSEGV stop print nopass' -ex run -ex 'thread apply all bt 20' --args python3 tests/embedded_sc01.py "$PWD/libstarrouter.so" -v || true

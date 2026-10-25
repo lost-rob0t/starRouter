@@ -174,8 +174,8 @@ func forwardedFrames*(message: Message[string]): array[6, string] =
       $message.typ.ord, message.data]
 
 
-proc routerHeartbeat*(router: RouterCore): Message[string] =
-  Message[string](source: router.id, id: ulid(), data: "",
+proc routerHeartbeat*(router: RouterCore, messageId: string = ""): Message[string] =
+  Message[string](source: router.id, id: (if messageId.len == 0: ulid() else: messageId), data: "",
       time: unix(), typ: EventType.heartBeat, topic: "broker")
 
 
@@ -240,17 +240,18 @@ proc maintainActors*(router: RouterCore) =
 
 
 proc initializeRouterCore*(router: RouterCore, pubListen, apiListen: string,
-                           timeout, maxLives: int) =
+                           timeout, maxLives: int, instanceId: string = "") =
   if timeout <= 0: raise newException(ValueError, "router timeout must be positive")
   if maxLives <= 0: raise newException(ValueError, "router maxLives must be positive")
   router.pubListen = pubListen
   router.apiListen = apiListen
   router.timeout = timeout
   router.maxLives = maxLives
-  router.id = fmt"router-{ulid()}"
+  let identity = if instanceId.len == 0: ulid() else: instanceId
+  router.id = "router-" & identity
 
 proc newRouterCore*(pubListen: string = "tcp://127.0.0.1:6000",
                     apiListen: string = "tcp://*:6001", timeout: int = 10,
-                    maxLives: int = 5): RouterCore =
+                    maxLives: int = 5, instanceId: string = ""): RouterCore =
   result = RouterCore()
-  result.initializeRouterCore(pubListen, apiListen, timeout, maxLives)
+  result.initializeRouterCore(pubListen, apiListen, timeout, maxLives, instanceId)

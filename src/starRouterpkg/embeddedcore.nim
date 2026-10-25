@@ -1,5 +1,5 @@
 ## Runs only on the dedicated native worker. No Lisp thread enters this module.
-import routercore, proto
+import routercore, proto, embeddedid
 
 type EmbeddedCore = ref object
   router: RouterCore
@@ -39,7 +39,7 @@ proc pack(frames: openArray[string], output: pointer, capacity: csize_t,
 proc sr_core_begin(): pointer {.exportc, cdecl.} =
   setupForeignThreadGc()
   try:
-    let core = EmbeddedCore(router: newRouterCore())
+    let core = EmbeddedCore(router: newRouterCore(instanceId = freshEmbeddedId()))
     GC_ref(core)
     return cast[pointer](core)
   except Exception:
@@ -79,7 +79,7 @@ proc sr_core_process(state: pointer, operation: cint, data: pointer,
       pack(forwardedFrames(publication), output, capacity, used)
     of 5:
       core.router.maintainActors()
-      pack(forwardedFrames(core.router.routerHeartbeat()), output, capacity, used)
+      pack(forwardedFrames(core.router.routerHeartbeat(freshEmbeddedId())), output, capacity, used)
     else: return -1
     return 0
   except KeyError:
