@@ -72,10 +72,14 @@
         '';
       };
     in {
-      packages.${system}.default = router;
-      packages.${system}.embedded = embedded;
-      checks.${system}.embedded = embedded;
-      checks.${system}.default = router;
+      packages.${system} = {
+        default = router;
+        inherit embedded;
+      };
+      checks.${system} = {
+        default = router;
+        inherit embedded;
+      };
       devShells.${system}.default = pkgs.mkShell {
         packages = [ pkgs.nim pkgs.nimble python ];
         LD_LIBRARY_PATH = libraries;
