@@ -30,16 +30,19 @@
         checkPhase = ''
           python3 tests/embedded_native.py "$PWD/libstarrouter.so"
           python3 tests/embedded_sc01.py "$PWD/libstarrouter.so"
+          python3 tests/embedded_security.py "$PWD/libstarrouter.so"
         '';
         installPhase = ''
           mkdir -p "$out/lib" "$out/include"
           install -m755 libstarrouter.so "$out/lib/"
           install -m644 include/starrouter.h "$out/include/"
+          install -m644 native/security.h "$out/include/starrouter-security.h"
         '';
         doInstallCheck = true;
         installCheckPhase = ''
           python3 tests/embedded_native.py "$out/lib/libstarrouter.so"
           python3 tests/embedded_sc01.py "$out/lib/libstarrouter.so"
+          python3 tests/embedded_security.py "$out/lib/libstarrouter.so"
         '';
       };
       router = pkgs.stdenv.mkDerivation {

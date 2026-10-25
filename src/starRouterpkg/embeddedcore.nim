@@ -1,8 +1,8 @@
 ## Runs only on the dedicated native worker. No Lisp thread enters this module.
-import server, proto
+import routercore, proto
 
 type EmbeddedCore = ref object
-  router: StarRouter
+  router: RouterCore
   pending: Message[string]
   transport: string
 
@@ -39,7 +39,7 @@ proc pack(frames: openArray[string], output: pointer, capacity: csize_t,
 proc sr_core_begin(): pointer {.exportc, cdecl.} =
   setupForeignThreadGc()
   try:
-    let core = EmbeddedCore(router: newStarRouter())
+    let core = EmbeddedCore(router: newRouterCore())
     GC_ref(core)
     return cast[pointer](core)
   except Exception:

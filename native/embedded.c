@@ -5,6 +5,7 @@
 #include <string.h>
 #include <errno.h>
 #include <limits.h>
+#include "authenticated_io.h"
 
 #define SR_SLOTS 64
 #define SR_MAX (16u * 1024u * 1024u)
@@ -15,7 +16,8 @@ struct slot {
   unsigned char *body;
   unsigned char route[255];
   size_t body_len, route_len, limit;
-  int pending;
+  int pending, secure, key_valid;
+  unsigned char peer_key[32];
 };
 static struct slot slots[SR_SLOTS];
 static pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
@@ -43,11 +45,12 @@ static int lookup(uint64_t id, struct slot **out) {
 }
 static int poison(struct slot *s, int code) {
   if(s->socket) zmq_close(s->socket);
-  s->socket=NULL; s->pending=0;
+  s->socket=NULL; s->pending=0; s->key_valid=0;
   return code;
 }
-int sr_open(void *context,const char *endpoint,const char *profile,
-            uint32_t limit,uint32_t hwm,uint32_t timeout,uint64_t *out) {
+static int open_impl(void *context,const char *endpoint,const char *profile,
+            uint32_t limit,uint32_t hwm,uint32_t timeout,
+            const unsigned char *secret,uint64_t *out) {
   unsigned i; int status=SR_NATIVE;
   void *socket=NULL; unsigned char *body=NULL;
   int zero=0, one=1, h=(int)hwm, t=(int)timeout;
@@ -62,19 +65,36 @@ int sr_open(void *context,const char *endpoint,const char *profile,
   OPT(ZMQ_RCVHWM,h); OPT(ZMQ_SNDHWM,h); OPT(ZMQ_RCVTIMEO,t);
   OPT(ZMQ_SNDTIMEO,t); OPT(ZMQ_MAXMSGSIZE,max);
 #undef OPT
-  if(zmq_bind(socket,endpoint)) goto done;
+  if(sr_secure_socket(socket,secret)||zmq_bind(socket,endpoint)) goto done;
   pthread_mutex_lock(&mutex);
   for(i=0;i<SR_SLOTS && slots[i].id;i++);
   if(i==SR_SLOTS || next_id==UINT64_MAX) {
     pthread_mutex_unlock(&mutex); goto done;
   }
   slots[i]=(struct slot){.id=next_id++, .owner=pthread_self(),
-    .socket=socket,.body=body,.limit=limit};
+    .socket=socket,.body=body,.limit=limit,.secure=secret!=NULL};
   *out=slots[i].id; socket=NULL; body=NULL; status=SR_OK;
   pthread_mutex_unlock(&mutex);
 done:
   if(socket) zmq_close(socket);
   free(body); return status;
+}
+int sr_open(void *context,const char *endpoint,const char *profile,
+            uint32_t limit,uint32_t hwm,uint32_t timeout,uint64_t *out) {
+  return open_impl(context,endpoint,profile,limit,hwm,timeout,NULL,out);
+}
+int sr_open_secure(void *context,const char *endpoint,const char *profile,
+            uint32_t limit,uint32_t hwm,uint32_t timeout,const void *secret,uint64_t *out) {
+  if(!secret)return SR_INVALID;
+  return open_impl(context,endpoint,profile,limit,hwm,timeout,secret,out);
+}
+int sr_peer_key(uint64_t id,void *key) {
+  struct slot *s=NULL;int status;
+  if(!key)return SR_INVALID;
+  pthread_mutex_lock(&mutex);status=lookup(id,&s);pthread_mutex_unlock(&mutex);
+  if(status)return status;
+  if(!s->socket||!s->secure||!s->key_valid)return SR_INVALID;
+  memcpy(key,s->peer_key,32);return SR_OK;
 }
 static int more(void *socket) {
   int v=0; size_t n=sizeof(v);
@@ -92,12 +112,14 @@ int sr_receive(uint64_t id,void *route,size_t rcap,size_t *rlen,
      held during I/O, so another owner can poll or shut down independently. */
   if(!s->socket) return SR_CLOSED;
   if(!s->pending) {
+    s->key_valid=0;
     n=zmq_recv(s->socket,s->route,sizeof(s->route),0);
     if(n<0) { status=errno==EAGAIN?SR_AGAIN:poison(s,SR_NATIVE); goto done; }
     if(n<1||n>255||more(s->socket)!=1) {status=poison(s,SR_MALFORMED);goto done;}
     s->route_len=(size_t)n;
-    n=zmq_recv(s->socket,s->body,s->limit,0);
-    if(n<0||(size_t)n>s->limit||more(s->socket)!=0) {
+    n=sr_message_receive(s->socket,s->body,s->limit,s->peer_key,&s->key_valid);
+    if(n<0||(size_t)n>s->limit||more(s->socket)!=0||
+       (s->secure&&!s->key_valid)) {
       status=poison(s,SR_MALFORMED);goto done;
     }
     s->body_len=(size_t)n; s->pending=1;

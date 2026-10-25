@@ -1,19 +1,20 @@
 # Embedded native boundary (experimental, incomplete)
 
-This optional shared library is a bounded ROUTER transport foundation for an
-in-process Server adapter. It is **not yet the embedded SC01 StarRouter broker**
-and does not implement Actor2Actor lifecycle/application semantics. The existing
-SC01 executable and Rabbit transports are unchanged. No full integration or
-production support is claimed by this package.
+This optional shared library provides the actual SC01 Nim broker core and an
+explicit actor2actor body transport boundary inside the host process. The
+standalone SC01 executable remains supported. Actor2actor lifecycle/application
+semantics belong to the host's canonical StarLang integration. Native broker
+source and tests are implemented; full Server durable E2E acceptance remains a
+separate required gate. Rabbit transports are unchanged.
 
 Build/test/install with `nix build .#embedded -L`. The derivation executes the
 actual library and loopback DEALER tests before and after installation. The
 library is `$out/lib/libstarrouter.so`; the C contract is
 `$out/include/starrouter.h`. No dependency lock changes are needed.
 
-The Nim library entry compiles a thin C/libzmq boundary. Exported calls do not
-enter Nim GC/runtime state on Lisp threads. No callbacks or native application
-threads are created. The host passes its existing libzmq context; the library
+The Nim library entry compiles the shared broker core and C/libzmq boundary.
+Exported calls do not enter Nim GC/runtime state on Lisp threads. SC01 uses
+one managed native worker per broker; no callbacks enter Lisp. The host passes its existing libzmq context; the library
 never creates or terminates a context. Host and binding must load the same
 libzmq binary. Close every handle before host context termination.
 
@@ -24,8 +25,8 @@ that opened the handle. A process-wide lock protects token lookup, while socket 
 that lock on its exclusive owner thread. This is not a throughput claim. At most 64 handles are admitted, with at most 16 MiB per handle and finite
 1–1000 ms I/O timeouts. Only literal loopback TCP listeners are accepted.
 
-Select `star.actor2actor/1` explicitly. SC01 and all other profiles return
-`SR_PROFILE`; there is no autodetection or fallback. One opaque body frame follows
+Select `star.actor2actor/1` explicitly. SC01 on that entry and all unknown profiles return
+`SR_PROFILE`; use the separate SC01 entry points for legacy actors. there is no autodetection or fallback. One opaque body frame follows
 the ROUTER routing identity. The host must use canonical StarLang
 `star-actor-wire` encoding/validation and perform authorization before effects.
 A route token is not authentication or tenant identity.
@@ -41,9 +42,9 @@ transmission. `SR_OK` from send means socket queue
 acceptance only, never actor admission or persistence. `SR_AGAIN` is a bounded
 transport wait result, not proof the application did not execute a prior command.
 
-Outstanding: actual SC01 broker embedding/reuse, canonical host lifecycle and
-policy integration, Server durable readback, Rabbit regression E2E, reconnect and
-backpressure fault coverage, and exact-head native CI. Python syntax checks alone
+Outstanding acceptance: canonical host lifecycle/policy integration, Server
+durable readback, Rabbit regression E2E, reconnect/backpressure fault coverage,
+and exact-head native SC01 CI. Python syntax checks alone
 are not native execution evidence. This package must remain experimental until
 those acceptance gates are satisfied.
 
@@ -103,5 +104,21 @@ requires explicit host settlement before ACK, validates canonical document and
 Target routing, rejects malformed documents and spoofed registered identities,
 and repeats worker teardown. These tests are authored but not yet executed in
 the local environment; the Nim/Nix hosted gate must run before claiming success.
-The earlier foundation-only limitation is superseded for SC01 implementation
-source, not for unexecuted runtime evidence or Server end-to-end acceptance.
+
+
+## Authenticated application ingress
+
+Application adapters must start one `sr_auth_start` ZAP owner for the host context
+and use `sr_open_secure` or `sr_sc01_open_secure` with a 32-byte server secret key.
+The fixed ZAP domain is `starrouter.loopback`. The whitelist contains public
+CURVE keys; application policy maps the authenticated key to a trusted principal
+and tenant. Call `sr_peer_key` or `sr_sc01_peer_key` immediately after successful
+receive and before dispatch/settlement. Those functions copy 32 raw key bytes
+from ZAP-authenticated `User-Id` metadata, not from actor names, routing identities
+or message bodies. Unsecured entry points are transport fixtures only. SC01
+secure mode also protects PUB subscriptions with the same peer policy.
+
+Close all secure sockets/brokers before replacing an immutable ZAP policy or
+terminating its context. This fixed-policy API does not claim live session
+revocation; policy replacement requires closing existing sessions. No secret is
+serialized in messages, and native SC01 copied secret storage is cleared on close.

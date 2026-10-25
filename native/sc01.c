@@ -6,6 +6,7 @@
 #include <errno.h>
 #include <stdint.h>
 #include <time.h>
+#include "authenticated_io.h"
 extern void *sr_core_begin(void);
 extern void sr_core_end(void *);
 extern int sr_core_process(void *,int,void *,size_t,void *,size_t,size_t *);
@@ -17,7 +18,8 @@ struct broker {
   char api_endpoint[128], pub_endpoint[128];
   unsigned char *input, *output, *received;
   size_t capacity, input_len, output_len, received_len;
-  uint32_t limit; int hwm, timeout, command, status, ready, pending;
+  uint32_t limit; int hwm, timeout, command, status, ready, pending, secure, key_valid;
+  unsigned char secret[32],peer_key[32];
 };
 static struct broker *brokers[COUNT];
 static pthread_mutex_t registry=PTHREAD_MUTEX_INITIALIZER;
@@ -57,7 +59,7 @@ static void *open_socket(struct broker *b,int kind,const char *endpoint) {
   OPT(ZMQ_MAXMSGSIZE,limit);
   if(kind==ZMQ_ROUTER){OPT(ZMQ_ROUTER_MANDATORY,one);}
 #undef OPT
-  if(zmq_bind(s,endpoint))goto fail;
+  if(sr_secure_socket(s,b->secure?b->secret:NULL)||zmq_bind(s,endpoint))goto fail;
   return s;
 fail: zmq_close(s);return NULL;
 }
@@ -83,16 +85,18 @@ static int publish(struct broker *b) {
 static int receive_message(struct broker *b) {
   size_t pos=0;unsigned count=0;int more=1,status;
   if(b->pending)return SR_OK;
+  b->key_valid=0;
   while(more) {
     int n;size_t opt=sizeof(more),cap;
     if(count>=9||pos+4>=b->capacity)return SR_CLOSED;
     cap=count==8?b->limit:255;
-    n=zmq_recv(b->api,b->received+pos+4,cap,0);
+    n=sr_message_receive(b->api,b->received+pos+4,cap,b->peer_key,&b->key_valid);
     if(n<0)return count==0&&errno==EAGAIN?SR_AGAIN:SR_CLOSED;
     if((size_t)n>cap)return SR_CLOSED;
     put32(b->received+pos,(size_t)n);pos+=4+(size_t)n;count++;
     if(zmq_getsockopt(b->api,ZMQ_RCVMORE,&more,&opt))return SR_CLOSED;
   }
+  if(b->secure&&!b->key_valid)return SR_CLOSED;
   b->received_len=pos;
   status=sr_core_process(b->core,1,b->received,pos,b->output,b->capacity,&b->output_len);
   if(status) {
@@ -165,10 +169,12 @@ static int call(struct broker *b,int command) {
 }
 static void release(struct broker *b) {
   pthread_cond_destroy(&b->request);pthread_cond_destroy(&b->completed);
-  pthread_mutex_destroy(&b->lock);free(b->input);free(b->output);free(b->received);free(b);
+  pthread_mutex_destroy(&b->lock);free(b->input);free(b->output);free(b->received);
+  {volatile unsigned char *p=b->secret;size_t n;for(n=0;n<32;n++)p[n]=0;}
+  free(b);
 }
-int sr_sc01_open(void *context,const char *api,const char *pub,uint32_t limit,
-                 uint32_t hwm,uint32_t timeout,uint64_t *out) {
+static int sc01_open_impl(void *context,const char *api,const char *pub,uint32_t limit,
+                 uint32_t hwm,uint32_t timeout,const unsigned char *secret,uint64_t *out) {
   struct broker *b;unsigned index;int status;
   if(!context||!out||*out||!endpoint_ok(api)||!endpoint_ok(pub)||!strcmp(api,pub)||
      limit<255||limit>16u*1024u*1024u||!hwm||hwm>65536||!timeout||timeout>1000)return SR_INVALID;
@@ -177,6 +183,7 @@ int sr_sc01_open(void *context,const char *api,const char *pub,uint32_t limit,
   b->output=malloc(b->capacity);b->received=malloc(b->capacity);
   if(!b->input||!b->output||!b->received) {free(b->input);free(b->output);free(b->received);free(b);return SR_NATIVE;}
   b->context=context;b->owner=pthread_self();b->limit=limit;b->hwm=(int)hwm;b->timeout=(int)timeout;
+  if(secret){memcpy(b->secret,secret,32);b->secure=1;}
   strcpy(b->api_endpoint,api);strcpy(b->pub_endpoint,pub);
   pthread_mutex_init(&b->lock,NULL);pthread_cond_init(&b->request,NULL);pthread_cond_init(&b->completed,NULL);
   if(pthread_create(&b->worker,NULL,worker_main,b)){release(b);return SR_NATIVE;}
@@ -191,6 +198,20 @@ int sr_sc01_open(void *context,const char *api,const char *pub,uint32_t limit,
   }
   if(status){call(b,9);pthread_join(b->worker,NULL);release(b);}
   return status;
+}
+int sr_sc01_open(void *context,const char *api,const char *pub,uint32_t limit,
+                 uint32_t hwm,uint32_t timeout,uint64_t *out) {
+  return sc01_open_impl(context,api,pub,limit,hwm,timeout,NULL,out);
+}
+int sr_sc01_open_secure(void *context,const char *api,const char *pub,uint32_t limit,
+                 uint32_t hwm,uint32_t timeout,const void *secret,uint64_t *out) {
+  if(!secret)return SR_INVALID;
+  return sc01_open_impl(context,api,pub,limit,hwm,timeout,secret,out);
+}
+int sr_sc01_peer_key(uint64_t id,void *key) {
+  struct broker *b=NULL;int status=lookup(id,&b);if(status)return status;
+  if(!key||!b->secure||!b->key_valid||!b->pending)return SR_INVALID;
+  memcpy(key,b->peer_key,32);return SR_OK;
 }
 int sr_sc01_receive(uint64_t id,void *buffer,size_t cap,size_t *len) {
   struct broker *b=NULL;int status;

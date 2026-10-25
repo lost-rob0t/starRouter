@@ -5,3 +5,4 @@ import starRouterpkg/embeddedcore
 {.passL: "-lzmq -lpthread".}
 {.compile: "../native/embedded.c".}
 {.compile: "../native/sc01.c".}
+{.compile: "../native/security.c".}

@@ -15,6 +15,13 @@ uint32_t sr_abi_version(void);
 int sr_open(void *context, const char *endpoint, const char *profile,
             uint32_t max_payload, uint32_t hwm, uint32_t timeout_ms,
             uint64_t *out_handle);
+/* Secure variants require a running ZAP worker for this borrowed context.
+ * SECRET is a 32-byte Curve secret key. Domain is fixed to starrouter.loopback. */
+int sr_open_secure(void *context, const char *endpoint, const char *profile,
+                   uint32_t max_payload, uint32_t hwm, uint32_t timeout_ms,
+                   const void *secret_key32, uint64_t *out_handle);
+/* Copy authenticated ZAP User-Id key for the most recent successful receive. */
+int sr_peer_key(uint64_t handle, void *public_key32);
 /* A small buffer retains the received message until a successful receive. */
 int sr_receive(uint64_t handle, void *route, size_t route_cap,
                size_t *route_len, void *body, size_t body_cap, size_t *body_len);
@@ -30,6 +37,10 @@ int sr_close(uint64_t *handle);
 int sr_sc01_open(void *context, const char *api, const char *pub,
                  uint32_t max_payload, uint32_t hwm, uint32_t timeout_ms,
                  uint64_t *out_handle);
+int sr_sc01_open_secure(void *context, const char *api, const char *pub,
+                        uint32_t max_payload, uint32_t hwm, uint32_t timeout_ms,
+                        const void *secret_key32, uint64_t *out_handle);
+int sr_sc01_peer_key(uint64_t handle, void *public_key32);
 int sr_sc01_receive(uint64_t handle, void *buffer, size_t capacity, size_t *length);
 int sr_sc01_settle(uint64_t handle, int accept);
 int sr_sc01_target(uint64_t handle, const char *actor, const char *id,
