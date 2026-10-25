@@ -9,6 +9,14 @@ from embedded_native import LIB, ZMQ, endpoint
 
 LIB.sr_sc01_open.argtypes = [C.c_void_p,C.c_char_p,C.c_char_p,C.c_uint32,
                             C.c_uint32,C.c_uint32,C.POINTER(C.c_uint64)]
+LIB.sr_sc01_open_secure.argtypes = [C.c_void_p,C.c_char_p,C.c_char_p,C.c_uint32,
+                                   C.c_uint32,C.c_uint32,C.c_void_p,C.POINTER(C.c_uint64)]
+LIB.sr_sc01_peer_key.argtypes = [C.c_uint64,C.c_void_p]
+LIB.sr_auth_start.argtypes = [C.c_void_p,C.c_void_p,C.c_size_t,C.POINTER(C.c_uint64)]
+LIB.sr_auth_close.argtypes = [C.POINTER(C.c_uint64)]
+ZMQ.zmq_curve_keypair.argtypes = [C.c_void_p,C.c_void_p]
+ZMQ.zmq_z85_decode.argtypes = [C.c_void_p,C.c_char_p]
+ZMQ.zmq_z85_decode.restype = C.c_void_p
 LIB.sr_sc01_receive.argtypes = [C.c_uint64,C.c_void_p,C.c_size_t,C.POINTER(C.c_size_t)]
 LIB.sr_sc01_settle.argtypes = [C.c_uint64,C.c_int]
 LIB.sr_sc01_target.argtypes = [C.c_uint64,C.c_char_p,C.c_char_p,C.c_void_p,C.c_size_t]
@@ -31,11 +39,27 @@ def sample(n):
     if n.get('format')=='date-time':return '2026-10-25T12:00:00Z'
     return 'fixture'
 
+def keypair():
+    public,secret=C.create_string_buffer(41),C.create_string_buffer(41)
+    if ZMQ.zmq_curve_keypair(public,secret):raise RuntimeError('CURVE unavailable')
+    raw_public,raw_secret=C.create_string_buffer(32),C.create_string_buffer(32)
+    if not ZMQ.zmq_z85_decode(raw_public,public):raise RuntimeError('Invalid public key')
+    if not ZMQ.zmq_z85_decode(raw_secret,secret):raise RuntimeError('Invalid secret key')
+    return public.value,secret.value,raw_public.raw,raw_secret.raw
+
 class SC01(unittest.TestCase):
+    SECURE=False
     def setUp(self):
         self.ctx=ZMQ.zmq_ctx_new();self.handle=C.c_uint64();self.sockets=[]
         self.api,self.pub=endpoint(),endpoint()
-        self.assertEqual(LIB.sr_sc01_open(self.ctx,self.api,self.pub,1048576,8,100,C.byref(self.handle)),0)
+        if self.SECURE:
+            self.server_keys,self.client_keys=keypair(),keypair()
+            self.auth=C.c_uint64()
+            self.assertEqual(LIB.sr_auth_start(self.ctx,self.client_keys[2],1,C.byref(self.auth)),0)
+            self.assertEqual(LIB.sr_sc01_open_secure(self.ctx,self.api,self.pub,1048576,8,100,
+                                                     self.server_keys[3],C.byref(self.handle)),0)
+        else:
+            self.assertEqual(LIB.sr_sc01_open(self.ctx,self.api,self.pub,1048576,8,100,C.byref(self.handle)),0)
         self.peer=self.socket(5,self.api,b'fixture')
         self.sub=self.socket(2,self.pub)
         self.assertEqual(ZMQ.zmq_setsockopt(self.sub,6,b'',0),0)
@@ -44,12 +68,16 @@ class SC01(unittest.TestCase):
         s=ZMQ.zmq_socket(self.ctx,kind);self.assertTrue(s);self.sockets.append(s)
         for key,value in [(17,0),(27,500),(28,500)]:
             x=C.c_int(value);self.assertEqual(ZMQ.zmq_setsockopt(s,key,C.byref(x),C.sizeof(x)),0)
+        if self.SECURE:
+            for key,value in [(48,self.client_keys[0]),(49,self.client_keys[1]),(50,self.server_keys[0])]:
+                self.assertEqual(ZMQ.zmq_setsockopt(s,key,value,len(value)),0)
         if identity:self.assertEqual(ZMQ.zmq_setsockopt(s,5,identity,len(identity)),0)
         self.assertEqual(ZMQ.zmq_connect(s,address),0);return s
     def tearDown(self):
         for s in self.sockets:ZMQ.zmq_close(s)
         self.assertEqual(LIB.sr_sc01_close(C.byref(self.handle)),0)
         self.assertEqual(LIB.sr_sc01_close(C.byref(self.handle)),0)
+        if self.SECURE:self.assertEqual(LIB.sr_auth_close(C.byref(self.auth)),0)
         self.assertEqual(ZMQ.zmq_ctx_term(self.ctx),0)
     def send(self,event,body=b'',topic=b'collector',peer=None,source=b'fixture'):
         parts=[b'',b'SC01',source,b'fixture-id',b'1792929600',str(event).encode(),topic,body]
@@ -109,5 +137,17 @@ class SC01(unittest.TestCase):
             handle=C.c_uint64()
             self.assertEqual(LIB.sr_sc01_open(self.ctx,endpoint(),endpoint(),1024,2,10,C.byref(handle)),0)
             self.assertEqual(LIB.sr_sc01_close(C.byref(handle)),0)
+
+class SecureSC01(SC01):
+    SECURE=True
+    def test_peer_key_comes_from_zap(self):
+        self.send(7)
+        self.assertEqual(self.receive()[0],0)
+        key=C.create_string_buffer(32)
+        self.assertEqual(LIB.sr_sc01_peer_key(self.handle,key),0)
+        self.assertEqual(key.raw,self.client_keys[2])
+        self.assertEqual(LIB.sr_sc01_settle(self.handle,0),0)
+        self.assertEqual(self.frames(self.peer),[b'2'])
+        self.assertEqual(LIB.sr_sc01_peer_key(self.handle,key),-1)
 
 if __name__=='__main__':unittest.main()

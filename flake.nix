@@ -21,15 +21,18 @@
         pname = "starrouter-embedded-boundary";
         version = "0.1.0";
         src = self;
-        nativeBuildInputs = [ pkgs.nim python ];
+        nativeBuildInputs = [ pkgs.nim python pkgs.gdb ];
         buildInputs = [ pkgs.zeromq pkgs.pcre ];
         buildPhase = ''
-          nim c --app:lib --threads:on --mm:refc --dynlibOverride:pcre --passL:-lpcre ${paths} -d:release --nimcache:"$TMPDIR/nimcache-embedded" --out:libstarrouter.so src/starRouterEmbedded.nim
+          nim c --app:lib --threads:on --mm:refc --debugger:native --dynlibOverride:pcre --passL:-lpcre ${paths} -d:release --nimcache:"$TMPDIR/nimcache-embedded" --out:libstarrouter.so src/starRouterEmbedded.nim
         '';
         doCheck = true;
         checkPhase = ''
           python3 tests/embedded_native.py "$PWD/libstarrouter.so"
-          python3 tests/embedded_sc01.py "$PWD/libstarrouter.so"
+          if ! python3 -X faulthandler tests/embedded_sc01.py "$PWD/libstarrouter.so" -v; then
+            timeout 45s gdb --batch -ex 'set pagination off' -ex 'handle SIGSEGV stop print nopass' -ex run -ex 'thread apply all bt 20' --args python3 tests/embedded_sc01.py "$PWD/libstarrouter.so" -v || true
+            exit 1
+          fi
           python3 tests/embedded_security.py "$PWD/libstarrouter.so"
         '';
         installPhase = ''
@@ -41,7 +44,7 @@
         doInstallCheck = true;
         installCheckPhase = ''
           python3 tests/embedded_native.py "$out/lib/libstarrouter.so"
-          python3 tests/embedded_sc01.py "$out/lib/libstarrouter.so"
+          python3 -X faulthandler tests/embedded_sc01.py "$out/lib/libstarrouter.so" -v
           python3 tests/embedded_security.py "$out/lib/libstarrouter.so"
         '';
       };
