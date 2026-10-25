@@ -17,6 +17,7 @@ struct slot {
   unsigned char route[255];
   size_t body_len, route_len, limit;
   int pending, secure, key_valid;
+  int key_ready; /* Expose authenticated metadata only after receive succeeds. */
   unsigned char peer_key[32];
 };
 static struct slot slots[SR_SLOTS];
@@ -45,7 +46,7 @@ static int lookup(uint64_t id, struct slot **out) {
 }
 static int poison(struct slot *s, int code) {
   if(s->socket) zmq_close(s->socket);
-  s->socket=NULL; s->pending=0; s->key_valid=0;
+  s->socket=NULL; s->pending=0; s->key_valid=0; s->key_ready=0;
   return code;
 }
 static int open_impl(void *context,const char *endpoint,const char *profile,
@@ -93,7 +94,7 @@ int sr_peer_key(uint64_t id,void *key) {
   if(!key)return SR_INVALID;
   pthread_mutex_lock(&mutex);status=lookup(id,&s);pthread_mutex_unlock(&mutex);
   if(status)return status;
-  if(!s->socket||!s->secure||!s->key_valid)return SR_INVALID;
+  if(!s->socket||!s->secure||!s->key_ready)return SR_INVALID;
   memcpy(key,s->peer_key,32);return SR_OK;
 }
 static int more(void *socket) {
@@ -112,7 +113,7 @@ int sr_receive(uint64_t id,void *route,size_t rcap,size_t *rlen,
      held during I/O, so another owner can poll or shut down independently. */
   if(!s->socket) return SR_CLOSED;
   if(!s->pending) {
-    s->key_valid=0;
+    s->key_valid=0; s->key_ready=0;
     n=zmq_recv(s->socket,s->route,sizeof(s->route),0);
     if(n<0) { status=errno==EAGAIN?SR_AGAIN:poison(s,SR_NATIVE); goto done; }
     if(n<1||n>255||more(s->socket)!=1) {status=poison(s,SR_MALFORMED);goto done;}
@@ -128,7 +129,7 @@ int sr_receive(uint64_t id,void *route,size_t rcap,size_t *rlen,
   if(rcap<s->route_len||bcap<s->body_len) {status=SR_BUFFER_SMALL;goto done;}
   memcpy(route,s->route,s->route_len);
   if(s->body_len) memcpy(body,s->body,s->body_len);
-  s->pending=0; status=SR_OK;
+  s->pending=0; s->key_ready=s->key_valid; status=SR_OK;
 done:
   return status;
 }
