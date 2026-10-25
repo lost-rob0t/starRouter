@@ -120,6 +120,14 @@ class Security(unittest.TestCase):
             self.option(peer, 50, keys[0])
             self.assertEqual(LIB.zmq_connect(peer, endpoint), 0)
             self.assertEqual(LIB.zmq_send(peer, b"body", 4, 0), 4)
+            too_small_route = C.create_string_buffer(1)
+            too_small_body = C.create_string_buffer(1)
+            short_rn, short_bn = C.c_size_t(), C.c_size_t()
+            self.assertEqual(LIB.sr_receive(handle, too_small_route, 1,
+                C.byref(short_rn), too_small_body, 1, C.byref(short_bn)), 2)
+            principal = C.create_string_buffer(b"\xa5" * 32, 32)
+            self.assertEqual(LIB.sr_peer_key(handle, principal), -1)
+            self.assertEqual(principal.raw, b"\xa5" * 32)
             route, body = C.create_string_buffer(255), C.create_string_buffer(1024)
             rn, bn = C.c_size_t(), C.c_size_t()
             self.assertEqual(LIB.sr_receive(handle, route, 255, C.byref(rn),
