@@ -1,0 +1,296 @@
+#+title: StarRouter 001 - Current-State Code Audit
+#+options: toc:3
+
+* Scope
+
+This audit covers the current StarRouter broker, client library, protocol definitions, tests, build files, and operational defaults. It is intentionally implementation-oriented: each finding names the affected code path, expected failure mode, severity, and stabilization requirement.
+
+The codebase is small enough that the complete active routing surface can be treated as one system rather than as isolated modules.
+
+* Executive finding
+
+StarRouter has a useful minimal architecture -- ZeroMQ ROUTER/DEALER for command traffic and PUB/SUB for fanout -- but the current implementation cannot yet provide a reliable durable delivery contract.
+
+There are several source-verifiable correctness bugs in the active message path, and the existing test files are examples/long-running clients rather than automated tests. The correct next move is not a rewrite. Stabilize the protocol boundary, build a deterministic harness, add durability/backpressure semantics, then add the StarIntel bridge behind those contracts.
+
+* P0 correctness findings
+
+** P0-1: client messages are processed twice
+
+File: =src/starRouterpkg/server.nim=
+Procedure: =handleMessage=
+Status: *verified from code*
+
+For the =SC01= path, =handleMessage= dispatches =msg.typ= inside a =try/finally= block and then performs a second =case msg.typ= immediately afterward.
+
+Consequences include:
+
+- =newDocument= may be published twice;
+- actor registration may run twice;
+- target routing may run twice;
+- ACK frames are emitted in the =finally= block and again in the second dispatch;
+- a queued/stale ACK can be consumed by a later client request because replies are not correlated by message id.
+
+Requirement:
+
+- exactly one dispatcher invocation per accepted frame set;
+- exactly one terminal protocol reply per request;
+- test exact publish count and exact reply count for every event type.
+
+** P0-2: =Client.newMessage= drops the requested event type
+
+File: =src/starRouterpkg/client.nim=
+Procedure: =newMessage=
+Status: *verified from code*
+
+The procedure accepts =eventType= but does not assign it to the returned =Message.typ=. This can serialize an unintended default enum value instead of the event selected by the caller.
+
+Requirement:
+
+- assign every required field explicitly;
+- remove unused parameters or make them authoritative;
+- add constructor round-trip tests for every =EventType=.
+
+** P0-3: target dispatch mutates one message and publishes another
+
+File: =src/starRouterpkg/server.nim=
+Procedure: =handleTarget=
+Status: *verified from code*
+
+The procedure copies =msg= into =newMsg=, selects an actor, changes =newMsg.topic= and =newMsg.typ=, then calls =publishClientMessage(msg)= rather than publishing =newMsg=.
+
+The intended targeted routing is therefore not represented in the published frames.
+
+Requirement:
+
+- fix only after a target-routing conformance test exists;
+- make the original message immutable in routing code where practical;
+- test selected actor id and emitted topic.
+
+** P0-4: =emit= is not a reliable request operation
+
+File: =src/starRouterpkg/client.nim=
+Procedure: =emit=
+Status: *verified from code*
+
+The procedure exposes =tries= but does not use it. It performs one send, waits indefinitely for one reply, and does not inspect whether the reply is ACK or NACK. There is no request id in the reply, so a duplicate/stale ACK can satisfy a later request.
+
+Requirement:
+
+- bounded request deadline;
+- correlated reply containing message id / request tracker;
+- explicit ACK/NACK/error parsing;
+- retry policy that preserves the original message id;
+- retry only when the operation is safe under at-least-once semantics.
+
+** P0-5: current PUB/SUB path is not a durable bridge transport
+
+Files: =server.nim=, =client.nim=, =tests/testSUb.nim=
+Status: *verified design limitation; runtime loss tests required*
+
+The test subscriber itself notes that a subscriber can miss the publisher's first messages. ZeroMQ PUB/SUB also has finite high-water marks and does not provide application-level durable replay.
+
+Requirement:
+
+- never define StarIntel durable ingest correctness as "the bridge subscribed to PUB";
+- retain PUB/SUB for transient fanout;
+- create a durable bridge acceptance path/outbox.
+
+* P1 reliability and routing findings
+
+** P1-1: actor-name parsing breaks hyphenated actor names
+
+File: =server.nim=
+Procedure: =bumpActor(router, id)=
+Status: *verified from code*
+
+Actor ids are generated as =actorName-ULID=. The server recovers the actor name with =id.split("-")[0]=. For an actor name such as =github-actor=, this produces =github= rather than =github-actor=.
+
+Requirement: never derive semantic actor names by splitting a composite id. Keep actor name as explicit state or map actor id directly to registration metadata.
+
+** P1-2: liveness initialization ignores configured =maxLives=
+
+File: =server.nim=
+Procedure: =newActor=
+Status: *verified from code*
+
+=newActor= hardcodes =liveness = 5= while the router has =maxLives=.
+
+Requirement: one authoritative liveness policy.
+
+** P1-3: liveness damage is loop-frequency dependent
+
+File: =server.nim=
+Procedures: =hurtActors=, =run=
+Status: *verified from code; timing impact requires runtime validation*
+
+Once an actor is considered stale, =hurtActors= can decrement a life on every broker loop iteration. Under heavy traffic that loop can run rapidly, so actor eviction speed may depend on unrelated message rate rather than heartbeat intervals.
+
+Requirement:
+
+- represent liveness as an expiry/deadline rather than repeated damage;
+- use a monotonic clock for elapsed-time decisions;
+- remove a client only when an explicit deadline expires, or count missed heartbeat epochs exactly once.
+
+** P1-4: KeyError recovery mutates registry state
+
+File: =server.nim=
+Procedure: =handleMessage=
+Status: *verified from code*
+
+A =KeyError= during dispatch is caught and handled by calling =registerActor(msg)= regardless of why the lookup failed. This can turn an unrelated malformed/unknown state into an actor registration and hides the root cause.
+
+Requirement: classify errors. Missing actor, malformed message, unsupported type, and internal registry corruption need distinct outcomes.
+
+** P1-5: malformed framing uses an assertion
+
+File: =server.nim=
+Procedure: =handleMessage=
+Status: *verified from code; process impact requires runtime validation*
+
+The delimiter frame is checked with =doAssert empty.len == 0=. A network peer should not be able to turn a protocol error into an assertion path.
+
+Requirement: reject malformed envelopes with a bounded protocol error, count the violation, and continue serving healthy peers.
+
+** P1-6: public interface defaults contradict safety documentation
+
+Files: =README.org=, =src/starRouter.nim=
+Status: *verified from code/docs*
+
+README says not to expose StarRouter to the web. The CLI entry point defaults both endpoints to =tcp://*=.
+
+Requirement: loopback by default. Explicit opt-in is required for non-loopback binding.
+
+** P1-7: no explicit ZeroMQ backpressure/security socket policy
+
+Files: =server.nim=, =client.nim=
+Status: *verified absence*
+
+The code does not configure application-specific HWM, send/receive timeouts, linger, immediate connection behavior, ROUTER mandatory delivery, authentication, or maximum accepted payload.
+
+Requirement: define each option by role rather than inherit library defaults accidentally.
+
+* P2 client/inbox findings
+
+** Inbox capacity is not initialized
+
+=newInbox(n)= constructs a deque with capacity but does not assign =Inbox.size=n=. =isFull= compares =size < len(documents)=, which is inconsistent with its name and does not enforce a bound.
+
+Requirement: make capacity explicit and implement a selected overload policy: block, reject, spill, or drop only for explicitly transient data.
+
+** Quiet =runStringInbox= heartbeat path is suspect
+
+The timeout branch does not mirror =runInbox= heartbeat behavior. Test that a completely idle string inbox maintains registration for multiple expiry windows.
+
+** Poll timeout units are inconsistent
+
+The router multiplies =timeout * 1000= before =poll= while client paths pass =timeout= directly even though the field is otherwise interpreted as seconds. Normalize time units in type/name/API: =timeoutMs= or duration type.
+
+** Filter/callback lifecycle is implicit
+
+Inbox loops call =filter= and =callback= without establishing defaults or validating registration.
+
+Requirement: fail construction/starting the loop with a clear configuration error rather than nil-callback runtime failure.
+
+** Registration messages lack normal envelope fields
+
+=register= initializes topic/source/type/data but not id/time. The transport should define which envelope fields are mandatory for control messages and enforce them uniformly.
+
+** Wall clock is used for liveness
+
+=utils.unix= is appropriate for externally meaningful timestamps but not ideal for process-local timeout measurement because wall time can jump.
+
+Requirement: carry both event timestamp and monotonic deadline internally.
+
+* Protocol design debt
+
+Current =Message[T]= contains =id, data, source, typ, time, topic=. Missing fields needed for robust distributed operation include:
+
+- protocol version;
+- correlation/request id;
+- causation/root id;
+- payload content type / encoding;
+- attempt number;
+- TTL/deadline;
+- optional trace context;
+- schema/document dtype distinct from transport topic;
+- extension metadata with forward-compatible unknown-field handling.
+
+Do not add every field to legacy SC01 frames immediately. Define a v0.4 canonical envelope internally, then provide SC01 decode/encode adapters.
+
+* Testing audit
+
+Current files under =tests/=
+
+- =test1.nim=: long-running integration/example client; no assertions;
+- =testDocsPerSec.nim=: progress counter/infinite run, not a bounded benchmark;
+- =testSUb.nim=: subscriber example/infinite run;
+- =config.nims=: only source path configuration.
+
+The files import =unittest= in places but do not constitute an automated regression suite.
+
+There is no current test proving:
+
+- one request -> one dispatch;
+- one request -> one ACK/NACK;
+- constructor correctness;
+- reconnect/retry behavior;
+- actor liveness state transitions;
+- target routing;
+- malformed-frame isolation;
+- subscriber overload behavior;
+- graceful shutdown;
+- bridge replay after outage;
+- sustained throughput or latency percentiles.
+
+* CI/build/packaging audit
+
+** GitHub Actions
+
+The current workflow is a Docker build/publish workflow. It does not provide a dedicated Nim unit/integration test, lint/static check, protocol conformance, Nix check, sanitizer, or benchmark gate.
+
+** Nix
+
+=flake.nix= supplies an x86_64-linux development shell with Nim/Nimble and ZeroMQ library path. It does not define a package or =checks= outputs.
+
+Requirement: =nix flake check= must become the canonical reproducible test gate.
+
+** Docker
+
+The Dockerfile uses the mutable =nimlang/nim:onbuild= image and installs =libzmq5=. Reproducibility and exact Nim/package versions are therefore not fully controlled by the repository's Nix lock.
+
+Recommendation: build the OCI artifact from the Nix package after the package/check contract exists.
+
+** Dependency metadata
+
+=starRouter.nimble= pins =zmq= but leaves several dependencies unpinned and does not list optional paths consistently. README documents that =nimble install= errors while still acquiring dependencies. This is not a release-grade dependency contract.
+
+* Stabilization order
+
+Do not start with performance tuning. Correctness comes first.
+
+1. Build deterministic protocol and actor-registry tests around current behavior.
+2. Fix duplicate dispatch/ACK behavior.
+3. Fix constructors and target routing.
+4. Add request correlation, deadlines, structured errors, and safe framing validation.
+5. Add bounded queues/backpressure and explicit socket options.
+6. Add bridge durable outbox + Rabbit confirms.
+7. Add reconnect/replay/chaos tests.
+8. Measure throughput and optimize only from profiles/benchmarks.
+9. Harden network exposure/authentication.
+10. Run soak tests before unattended deployment.
+
+* Release blocker definition
+
+StarRouter should not be labeled stable until all of the following are mechanically enforced:
+
+- zero known P0 correctness defects;
+- deterministic tests for each event type;
+- no silent durable-message loss in declared failure scenarios;
+- bounded memory under overload;
+- crash/restart recovery demonstrated;
+- documented at-least-once semantics and dedup/idempotency keys;
+- health/readiness/metrics available;
+- loopback-safe defaults;
+- reproducible build/test gate;
+- multi-hour then multi-day soak tests with zero unexplained loss/duplication beyond specified replay behavior.
